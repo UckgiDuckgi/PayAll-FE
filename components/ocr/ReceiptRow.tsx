@@ -47,6 +47,9 @@ export const ReceiptRow = ({ item, index, onSave }: ReceiptRowProps) => {
             type='text'
             defaultValue={item.name}
             className='w-[90%] h-7 border rounded px-2'
+            onBlur={(e) => {
+              if (e.target.value === '') e.target.value = '상품명';
+            }}
           />
         ) : (
           <p className='pl-1'>{item.name}</p>
@@ -56,9 +59,12 @@ export const ReceiptRow = ({ item, index, onSave }: ReceiptRowProps) => {
         {item.editing ? (
           <input
             ref={amountRef}
-            type='number'
+            type='text'
             defaultValue={item.amount}
             className='w-[80%] border rounded p-1'
+            onBlur={(e) => {
+              if (e.target.value === '') e.target.value = '0';
+            }}
           />
         ) : (
           <p className='pl-1'>{item.amount}</p>
@@ -68,9 +74,12 @@ export const ReceiptRow = ({ item, index, onSave }: ReceiptRowProps) => {
         {item.editing ? (
           <input
             ref={priceRef}
-            type='number'
+            type='text'
             defaultValue={item.price}
             className='w-[80%] border rounded p-1'
+            onBlur={(e) => {
+              if (e.target.value === '') e.target.value = '0';
+            }}
           />
         ) : (
           <p className='pl-1'>{item.price}</p>
