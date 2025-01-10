@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
@@ -13,12 +13,16 @@ export async function POST(request: Request) {
     });
 
     return NextResponse.json(response.data);
-  } catch (error: any) {
-    console.error('OCR API Error:', error.response?.data || error.message);
+  } catch (error) {
+    const axiosError = error as AxiosError;
+    console.error(
+      'OCR API Error:',
+      axiosError.response?.data || axiosError.message
+    );
     return NextResponse.json(
       {
         error: 'OCR request failed',
-        details: error.response?.data || error.message,
+        details: axiosError.response?.data || axiosError.message,
       },
       { status: 500 }
     );
