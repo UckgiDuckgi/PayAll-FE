@@ -27,9 +27,13 @@ interface Item {
 
 const PaperReceipt = ({
   items,
+  title,
+  bizNum,
   setItems,
 }: {
   items: Item[];
+  title: string;
+  bizNum: string;
   setItems: (items: Item[]) => void;
 }) => {
   const saveItems = (idx: number, newValues: Item) => {
@@ -41,9 +45,9 @@ const PaperReceipt = ({
     <div className='relative'>
       <div className='bg-white text-black pb-16 min-h-[500px]'>
         <div className='p-4 flex flex-col items-center'>
-          <p className='text-center font-bold text-lg mt-3'>라성 식자재마트</p>
+          <p className='text-center font-bold text-lg mt-3'>{title}</p>
           <p className='text-center text-sm font-semibold text-[#DCDCDC]'>
-            220-88-15371
+            {bizNum}
           </p>
           <div className='w-full border-[#5F5F5F] border-dashed border-b my-2' />
           <table className='w-full text-[#5F5F5F] font-semibold text-xs'>
@@ -84,7 +88,10 @@ const PaperReceipt = ({
             <p className='text-[#858585]'>합계</p>
             <p>
               {items
-                .reduce((acc, item) => acc + Number(item.price), 0)
+                .reduce(
+                  (acc, item) => acc + Number(item.price.replace(/,/g, '')),
+                  0
+                )
                 .toLocaleString()}
               원
             </p>

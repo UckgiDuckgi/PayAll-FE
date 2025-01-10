@@ -73,7 +73,7 @@ export const ReceiptRow = ({ item, index, onSave }: ReceiptRowProps) => {
             className='w-[80%] border rounded p-1'
           />
         ) : (
-          <p className='pl-1'>{Number(item.price).toLocaleString()}</p>
+          <p className='pl-1'>{item.price}</p>
         )}
       </td>
       <td>
