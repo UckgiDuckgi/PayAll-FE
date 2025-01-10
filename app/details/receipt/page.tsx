@@ -4,6 +4,7 @@ import { fileAtom } from '@/app/stores/atom';
 import PaperReceipt from '@/components/ocr/PaperReceipt';
 import { Button } from '@/components/ui/button';
 import { useAtom } from 'jotai';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { requestWithFile } from '@/lib/ocrRequest';
@@ -64,10 +65,14 @@ export default function Receipt() {
   return (
     <>
       {isLoading ? (
-        <div>Loading</div>
+        <Loading />
       ) : (
         <div className='p-4'>
           <div className='pt-20 w-full'></div>
+          <div className='text-white mb-5'>
+            <p>영수증을 확인하시고,</p>
+            <p>잘못된 부분은 수정해주세요</p>
+          </div>
           <div className='w-full mb-3'>
             <PaperReceipt
               items={items}
@@ -90,3 +95,19 @@ export default function Receipt() {
     </>
   );
 }
+
+const Loading = () => {
+  return (
+    <div className='w-full min-h-[calc(100vh-100px)] flex items-center justify-center'>
+      <div className='flex flex-col items-center justify-center'>
+        <Image
+          src='/images/ReceiptLoading.gif'
+          alt='loading'
+          width={250}
+          height={250}
+        />
+        <p className='mt-10 text-xl font-bold'>영수증을 분석중이에요</p>
+      </div>
+    </div>
+  );
+};
