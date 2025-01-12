@@ -1,8 +1,8 @@
 'use client';
 
-import { fileAtom } from '@/app/stores/atom';
 import PaperReceipt from '@/components/ocr/PaperReceipt';
 import { Button } from '@/components/ui/button';
+import { fileAtom } from '@/stores/atom';
 import { useAtom } from 'jotai';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
