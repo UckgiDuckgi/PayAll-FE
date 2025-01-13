@@ -18,10 +18,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='en'>
+    <html lang='ko'>
       <body>
         <div className='App'>
           <Header />
+          <div className='pt-16'></div>
           <div className='w-[90%] mx-auto'>{children}</div>
           <Nav />
         </div>

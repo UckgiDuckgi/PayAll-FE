@@ -42,10 +42,10 @@ type NavItemProps = {
 
 const Item = ({ icon: Icon, name, route }: NavItemProps) => {
   const router = useRouter();
-  const selectedPath =
-    location.pathname === ''
-      ? location.pathname
-      : location.pathname.split('/').slice(1, 3).join('/');
+  const selectedPath = '/';
+  // location.pathname === ''
+  //   ? location.pathname
+  //   : location.pathname.split('/').slice(1, 3).join('/');
   const iconFill = selectedPath === route.split('?')[0] ? '#777777' : '#D9D9D9';
 
   const handleRoute = () => {
