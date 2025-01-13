@@ -1,0 +1,25 @@
+import Image from 'next/image';
+
+const CART_CTN = 1;
+
+function Header() {
+  return (
+    <header className='mx-auto fixed top-0 w-full max-w-[600px] flex justify-between items-center py-6 px-8 bg-opacity-0'>
+      <Image src='/images/logo.png' alt='logo' width={70} height={20} />
+      <HeaderCart />
+    </header>
+  );
+}
+
+const HeaderCart = () => {
+  return (
+    <div className='flex items-center'>
+      <Image src='/icons/headerCart.svg' alt='cart' width={26} height={26} />
+      <span className='text-black bg-white rounded-full w-5 h-5 flex justify-center items-center text-xs font-bold absolute top-6 right-5'>
+        {CART_CTN}
+      </span>
+    </div>
+  );
+};
+
+export default Header;

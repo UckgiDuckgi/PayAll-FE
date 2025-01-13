@@ -95,7 +95,7 @@ export const ReceiptRow = ({ item, index, onSave }: ReceiptRowProps) => {
           </div>
         ) : (
           <div
-            className='w-6 h-6 bg-[#5F5F5F] rounded-full flex items-center justify-center cursor-pointer'
+            className='w-6 h-6 bg-darkGrey rounded-full flex items-center justify-center cursor-pointer'
             onClick={setEditing}
           >
             <LucidePencil className='w-3 h-3 text-white' strokeWidth={3} />
