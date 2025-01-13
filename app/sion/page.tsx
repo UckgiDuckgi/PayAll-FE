@@ -1,4 +1,5 @@
 import { AccentText } from '@/components/ui/AccentText';
+import { Counter } from '@/components/ui/Counter';
 import { SquareImage } from '@/components/ui/SquareImage';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -47,7 +48,8 @@ export default function Sion() {
         className='mt-4 text-[#AAAAAAs]'
         accentColor='text-white'
       />
-      <SquareImage src='/images/Logo.png' alt='test' />
+      <SquareImage src='/images/Logo.png' alt='test' className='mt-4' />
+      <Counter pid={1} className='mt-4' />
     </div>
   );
 }
