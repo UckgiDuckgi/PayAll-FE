@@ -1,3 +1,5 @@
+import Header from '@/components/Header';
+import Nav from '@/components/Nav';
 import type { Metadata } from 'next';
 import { Noto_Sans_KR } from 'next/font/google';
 import './globals.css';
@@ -17,8 +19,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body className={`$${notoSansKr.className} antialiased`}>
-        <div className='App'>{children}</div>
+      <body>
+        <div className='App'>
+          <Header />
+          <div className='w-[90%] mx-auto'>{children}</div>
+          <Nav />
+        </div>
       </body>
     </html>
   );
