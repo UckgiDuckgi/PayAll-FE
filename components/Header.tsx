@@ -4,8 +4,8 @@ const CART_CTN = 1;
 
 function Header() {
   return (
-    <header className='mx-auto fixed top-0 w-full max-w-[600px] flex justify-between items-center py-6 px-8 bg-opacity-0'>
-      <Image src='/images/logo.png' alt='logo' width={70} height={20} />
+    <header className='mx-auto fixed top-0 w-full max-w-[600px] flex justify-between items-center pt-4 pb-2 px-8 bg-opacity-0'>
+      <Image src='/images/logo.png' alt='logo' width={50} height={15} />
       <HeaderCart />
     </header>
   );
