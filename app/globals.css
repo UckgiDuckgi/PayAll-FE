@@ -43,6 +43,7 @@
 @layer base {
   html {
     @apply font-pretendard text-center;
+    font-size: 16px;
   }
   body {
     @apply bg-white;
@@ -50,19 +51,19 @@
 
   @screen sm {
     html {
-      font-size: 14px;
+      font-size: 16px;
     }
   }
 
   @screen md {
     html {
-      font-size: 15px;
+      font-size: 17px;
     }
   }
 
   @screen lg {
     html {
-      font-size: 16px;
+      font-size: 18px; /* 1024px 이상 */
     }
   }
 }
