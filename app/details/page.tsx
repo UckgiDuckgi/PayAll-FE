@@ -1,7 +1,7 @@
 'use client';
 
-import { fileAtom } from '@/app/stores/atom';
 import { Button } from '@/components/ui/button';
+import { fileAtom } from '@/stores/atom';
 import { useAtom } from 'jotai';
 import { useRouter } from 'next/navigation';
 import { useRef } from 'react';
