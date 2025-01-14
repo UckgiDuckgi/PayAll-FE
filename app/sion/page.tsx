@@ -1,5 +1,6 @@
 'use client';
 
+import { LowestProductCard } from '@/components/molecules/sion/LowestProductCard';
 import { ProductCard } from '@/components/molecules/sion/ProductCard';
 import { VenderCard } from '@/components/molecules/sion/VenderCard';
 import { AccentText } from '@/components/ui/AccentText';
@@ -10,6 +11,32 @@ import { Checkbox } from '@/components/ui/checkbox';
 export default function Sion() {
   return (
     <div>
+      <div className='flex gap-2 overflow-x-scroll'>
+        <LowestProductCard
+          imageUrl='/images/Logo.png'
+          title='나드 리프레쉬 퍼퓸드 바디워시 본품,프레쉬라벤더향, 680ml, 1개입 '
+          discount={10}
+          price={8900}
+        />
+        <LowestProductCard
+          imageUrl='/images/Logo.png'
+          title='나드 리프레쉬 퍼퓸드 바디워시 본품,프레쉬라벤더향, 680ml, 1개입 '
+          discount={20}
+          price={500000}
+        />
+        <LowestProductCard
+          imageUrl='/images/Logo.png'
+          title='나드 리프레쉬 퍼퓸드 바디워시 본품,프레쉬라벤더향, 680ml, 1개입 '
+          discount={30}
+          price={500000}
+        />
+        <LowestProductCard
+          imageUrl='/images/Logo.png'
+          title='나드 리프레쉬 퍼퓸드 바디워시 본품,프레쉬라벤더향, 680ml, 1개입 '
+          discount={40}
+          price={500000}
+        />
+      </div>
       <ProductCard
         name='나드 리프레쉬 퍼퓸드 바디워시 본품,
 프레쉬라벤더향, 680ml, 1개입 '
