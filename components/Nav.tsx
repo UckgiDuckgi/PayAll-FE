@@ -87,7 +87,7 @@ const Item = ({ icon: Icon, name, route }: NavItemProps) => {
 
 const Nav = () => {
   return (
-    <nav className='fixed bottom-0 z-[50] flex items-center justify-around bg-[#2B2B2B] py-6 w-full max-w-[600px]'>
+    <nav className='fixed bottom-0 z-[50] flex items-center justify-around bg-[#2B2B2B] py-6 w-full max-w-[512px]'>
       {NavIcons.map((item) => (
         <ul key={item.name}>
           <Item icon={item.icon} name={item.name} route={item.route} />
