@@ -1,3 +1,6 @@
+import Image from 'next/image';
+import { IconIndicator } from '../ui/IconIndicator';
+
 function PaymentDetailCard({
   paymentDetailId,
   productName,
@@ -21,22 +24,39 @@ function PaymentDetailCard({
           -{price.toLocaleString()}원
         </span>
       </div>
-      <div className='flex items-center justify-between px-2 py-1 rounded-[5px] bg-deepDarkGrey'>
+      <div className='flex items-center justify-between px-3 py-1 rounded-[5px] bg-deepDarkGrey'>
         <div className='space-y-1 text-left'>
-          <span className='font-bold text-[.625rem] text-darkGrey font-medium'>
+          <span className='font-bold text-[.625rem] text-darkGrey'>
             같은 상품의 최저가
           </span>
-          <div className='space-x-2'>
-            <span>{vendorName}</span>
+          <div className='flex items-center justify-between gap-2'>
+            <IconIndicator src={`/images/${vendorName}.png`} height={13} />
             <span className='text-[.75rem] font-medium'>
-              {lowestPrice.toLocaleString()}
+              {lowestPrice.toLocaleString()}원
             </span>
             <span className='text-[.625rem] text-main font-medium'>
               {(((price - lowestPrice) / price) * 100).toFixed(0)}% 절약
             </span>
           </div>
         </div>
-        <span>장바구니</span>
+        <div className='relative cursor-pointer'>
+          <button
+            className='w-9 h-9 rounded-full bg-darkGrey flex items-center justify-center'
+            onClick={() => {
+              console.log('장바구니 모달 열기');
+            }}
+          >
+            <Image
+              src='/icons/HeaderCart.svg'
+              alt='cart'
+              width={20}
+              height={20}
+            />
+          </button>
+          <div className='absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-[#D9D9D9] flex items-center justify-center text-xs font-bold text-darkGrey'>
+            +
+          </div>
+        </div>
       </div>
     </div>
   );

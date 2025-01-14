@@ -1,8 +1,10 @@
 'use client';
 
 import CardInfoCard from '@/components/molcules/CardInfoCard';
+import CategoryCarousel from '@/components/molcules/CategoryCarousel';
 import PaymentCard from '@/components/molcules/PaymentCard';
 import PaymentDetailCard from '@/components/molcules/PaymentDetailCard';
+import { COLORS } from '@/constants/color';
 
 export type CategoryExpense = {
   category_id: number;
@@ -79,7 +81,7 @@ function page() {
         product_name: '나드 리프레쉬 퍼퓸드...',
         price: 8900,
         lowest_price: 8750,
-        vendor_name: '11번가',
+        vendor_name: '11st',
         link: 'www.11st.~~~',
       },
       {
@@ -87,14 +89,14 @@ function page() {
         product_name: '행복한 나라 휴지롤 30개입',
         price: 8900,
         lowest_price: 8750,
-        vendor_name: 'G마켓',
+        vendor_name: 'Gmarket',
         link: 'www.gmarket.~~~',
       },
     ],
   };
 
   return (
-    <>
+    <div className='w-full'>
       {/* <CategoryChart
         categoryExpenses={MOCK_STAT.category_expenses}
         totalSpent={MOCK_STAT.total_spent}
@@ -127,7 +129,21 @@ function page() {
           />
         )
       )}
-    </>
+
+      {/* 가로 스크롤 캐러셀 컴포넌트로 분리 */}
+      <ul className='w-full overflow-x-scroll flex space-x-3 px-2 py-6 scrollbar-hide snap-x'>
+        {COLORS.map((color, idx) => (
+          <li key={idx} className='flex-shrink-0 snap-center'>
+            <CategoryCarousel
+              color={color}
+              categoryName='식비'
+              categoryIconName='food'
+              amount={432640}
+            />
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
 

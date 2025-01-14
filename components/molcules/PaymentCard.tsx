@@ -1,5 +1,5 @@
 import { PaymentData } from '@/app/haebeen/page';
-import { Button } from '../ui/button';
+import UploadButton from './ui/UploadButton';
 
 // TODO: props에 data 추가
 function PaymentCard({
@@ -53,10 +53,7 @@ function PaymentCard({
           ) : null}
         </div>
         {category !== '쇼핑' ? (
-          <Button className='h-fit w-fit py-1 px-2 flex items-center gap-1 bg-deepDarkGrey'>
-            <span className='text-[.625rem] text-grey'>영수증 촬영</span>
-            <span>*</span>
-          </Button>
+          <UploadButton />
         ) : (
           <a href={`/accounts/payments/${payment_id}`}>상세보기</a>
         )}
