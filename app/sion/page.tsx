@@ -9,6 +9,7 @@ import { CartProductCard } from '@/components/molecules/sion/CartProductCard';
 import { LowestProductCard } from '@/components/molecules/sion/LowestProductCard';
 import { ProductCard } from '@/components/molecules/sion/ProductCard';
 import { VenderCard } from '@/components/molecules/sion/VenderCard';
+import { WordChip } from '@/components/molecules/sion/WordChip';
 import { AccentText } from '@/components/ui/AccentText';
 import { Counter } from '@/components/ui/Counter';
 import { IconIndicator } from '@/components/ui/IconIndicator';
@@ -31,7 +32,13 @@ export default function Sion() {
         }}
         expense={100000}
       />
+      <div className='mt-4 flex gap-2'>
+        <WordChip word='삼다수' />
+        <WordChip word='코카콜라' />
+        <WordChip word='치토스' />
+      </div>
 
+      <div className='mt-4'></div>
       <div className='flex flex-col gap-4 mt-4'>
         <AccountCard
           index={0}
