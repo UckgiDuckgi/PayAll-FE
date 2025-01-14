@@ -1,7 +1,8 @@
 'use client';
 
+import CardInfoCard from '@/components/molcules/CardInfoCard';
 import PaymentCard from '@/components/molcules/PaymentCard';
-import CategoryChart from '@/components/molcules/ui/CategoryChart';
+import PaymentDetailCard from '@/components/molcules/PaymentDetailCard';
 
 export type CategoryExpense = {
   category_id: number;
@@ -24,6 +25,17 @@ type Stat = {
   fixed_expenses: FixedExpense[];
 };
 
+export type PaymentData = {
+  payment_id: number;
+  payment_place: string;
+  category: string;
+  payment_price: number;
+  payment_type: '오프라인' | '온라인';
+  payment_time: string;
+  bank_name: string;
+  account_name: string;
+};
+
 function page() {
   const MOCK_STAT: Stat = {
     date: '2025-01',
@@ -42,14 +54,79 @@ function page() {
     ],
   };
 
+  const MOCK_PAYMENT: PaymentData = {
+    payment_id: 1,
+    payment_place: '밥플러스 성수에이팩센터점',
+    category: '외식',
+    payment_price: 8000,
+    payment_type: '오프라인',
+    payment_time: '2025-01-07T19:48:12',
+    bank_name: 'KB국민',
+    account_name: 'ONE통장-저축예금',
+  };
+
+  const MOCK_PAYMENT_DETAIL = {
+    payment_place: '쿠팡',
+    category: '쇼핑',
+    payment_type: '온라인',
+    payment_time: '2025-01-07T17:30:12',
+    bank_name: 'KB국민',
+    account_name: 'ONE통장-저축예금',
+    payment_price: 83200,
+    payment_detail: [
+      {
+        payment_detail_id: 1,
+        product_name: '나드 리프레쉬 퍼퓸드...',
+        price: 8900,
+        lowest_price: 8750,
+        vendor_name: '11번가',
+        link: 'www.11st.~~~',
+      },
+      {
+        payment_detail_id: 2,
+        product_name: '행복한 나라 휴지롤 30개입',
+        price: 8900,
+        lowest_price: 8750,
+        vendor_name: 'G마켓',
+        link: 'www.gmarket.~~~',
+      },
+    ],
+  };
+
   return (
     <>
-      <CategoryChart
+      {/* <CategoryChart
         categoryExpenses={MOCK_STAT.category_expenses}
         totalSpent={MOCK_STAT.total_spent}
+      /> */}
+
+      <PaymentCard showAccount={true} paymentInfo={MOCK_PAYMENT} />
+
+      <CardInfoCard
+        cardImg='/images/Logo.png'
+        cardName='card name'
+        cardDescription='card description'
       />
 
-      <PaymentCard showAccount={true} />
+      {MOCK_PAYMENT_DETAIL.payment_detail.map(
+        ({
+          payment_detail_id,
+          product_name,
+          price,
+          lowest_price,
+          vendor_name,
+          link,
+        }) => (
+          <PaymentDetailCard
+            paymentDetailId={payment_detail_id}
+            productName={product_name}
+            price={price}
+            lowestPrice={lowest_price}
+            vendorName={vendor_name}
+            link={link}
+          />
+        )
+      )}
     </>
   );
 }

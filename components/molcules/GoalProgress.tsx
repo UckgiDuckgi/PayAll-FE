@@ -106,7 +106,7 @@ const GoalBadge = ({ percent }: { percent: number }) => {
           right:
             percent < 100
               ? '-18px'
-              : `calc(clamp(0px, 100vw, 600px) * 0.9 * (1 - 100 / ${percent}))`,
+              : `calc(clamp(0px, 100vw, 512px) * 0.9 * (1 - 100 / ${percent}))`,
           transform: percent < 100 ? 'translateX(0)' : 'translateX(50%)',
         }}
       >
@@ -118,7 +118,7 @@ const GoalBadge = ({ percent }: { percent: number }) => {
           right:
             percent < 100
               ? '-18px'
-              : `calc(clamp(0px, 100vw, 600px) * 0.9 * (1 - 100 / ${percent}))`,
+              : `calc(clamp(0px, 100vw, 512px) * 0.9 * (1 - 100 / ${percent}))`,
           transform: percent < 100 ? 'translateX(0)' : 'translateX(50%)',
         }}
       >
@@ -137,7 +137,7 @@ const GoalBadge = ({ percent }: { percent: number }) => {
           right:
             percent < 100
               ? '-5px'
-              : `calc(clamp(0px, 100vw, 600px) * 0.9 * (1 - 100 / ${percent}))`,
+              : `calc(clamp(0px, 100vw, 512px) * 0.9 * (1 - 100 / ${percent}))`,
           transform: percent < 100 ? 'translateX(0)' : 'translateX(50%)',
         }}
       ></span>
