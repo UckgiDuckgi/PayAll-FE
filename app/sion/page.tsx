@@ -1,5 +1,6 @@
 'use client';
 
+import { AccountCard } from '@/components/molecules/sion/AccountCard';
 import { CartProductCard } from '@/components/molecules/sion/CartProductCard';
 import { LowestProductCard } from '@/components/molecules/sion/LowestProductCard';
 import { ProductCard } from '@/components/molecules/sion/ProductCard';
@@ -12,6 +13,53 @@ import { Checkbox } from '@/components/ui/checkbox';
 export default function Sion() {
   return (
     <div className='overflow-y-scroll min-h-screen'>
+      <div className='flex flex-col gap-4'>
+        <AccountCard
+          index={0}
+          account={{
+            bank_name: '신한은행',
+            account_name: '신한 쌀쌀 통장',
+            account_number: '123-12-1234567',
+            balance: 1000000,
+          }}
+        />
+        <AccountCard
+          index={1}
+          account={{
+            bank_name: '하나은행',
+            account_name: '하나 달달 통장',
+            account_number: '123-12-1234567',
+            balance: 1000000,
+          }}
+        />
+        <AccountCard
+          index={2}
+          account={{
+            bank_name: '카카오뱅크',
+            account_name: '카카오 팔팔 통장',
+            account_number: '123-12-1234567',
+            balance: 1000000,
+          }}
+        />
+        <AccountCard
+          index={3}
+          account={{
+            bank_name: '우리은행',
+            account_name: '우리 칼칼 통장',
+            account_number: '123-12-1234567',
+            balance: 1000000,
+          }}
+        />
+        <AccountCard
+          index={4}
+          account={{
+            bank_name: '국민은행',
+            account_name: '국민 깔깔 통장',
+            account_number: '123-12-1234567',
+            balance: 1000000,
+          }}
+        />
+      </div>
       <CartProductCard
         imageUrl='/images/Logo.png'
         pid={1}
