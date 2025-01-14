@@ -2,6 +2,8 @@
 
 import { AccountCard } from '@/components/molecules/sion/AccountCard';
 import { AccountDetailCard } from '@/components/molecules/sion/AccountDetailCard';
+import { AdCarousel } from '@/components/molecules/sion/AdCarousel';
+import { AdCarouselItem } from '@/components/molecules/sion/AdCarouselItem';
 import { CartProductCard } from '@/components/molecules/sion/CartProductCard';
 import { LowestProductCard } from '@/components/molecules/sion/LowestProductCard';
 import { ProductCard } from '@/components/molecules/sion/ProductCard';
@@ -14,6 +16,8 @@ import { Checkbox } from '@/components/ui/checkbox';
 export default function Sion() {
   return (
     <div className='overflow-y-scroll min-h-screen'>
+      <AdCarousel />
+      <div className='mt-4'></div>
       <AccountDetailCard
         index={0}
         account={{

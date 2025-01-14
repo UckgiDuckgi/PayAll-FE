@@ -33,7 +33,7 @@ export const CartProductCard = ({
         </div>
         <IconIndicator src={`/images/${shop}.png`} height={12} />
         <div className='flex justify-between'>
-          <Counter pid={pid}></Counter>
+          <Counter />
           {price.toLocaleString()}원
         </div>
       </div>
