@@ -2,10 +2,15 @@
 
 import { AccountCard } from '@/components/molecules/sion/AccountCard';
 import { AccountDetailCard } from '@/components/molecules/sion/AccountDetailCard';
+import { AdCarousel } from '@/components/molecules/sion/AdCarousel';
+import { AdCarouselItem } from '@/components/molecules/sion/AdCarouselItem';
+import { BenefitCard } from '@/components/molecules/sion/BenefitCard';
 import { CartProductCard } from '@/components/molecules/sion/CartProductCard';
 import { LowestProductCard } from '@/components/molecules/sion/LowestProductCard';
 import { ProductCard } from '@/components/molecules/sion/ProductCard';
+import { SearchInput } from '@/components/molecules/sion/SearchInput';
 import { VenderCard } from '@/components/molecules/sion/VenderCard';
+import { WordChip } from '@/components/molecules/sion/WordChip';
 import { AccentText } from '@/components/ui/AccentText';
 import { Counter } from '@/components/ui/Counter';
 import { IconIndicator } from '@/components/ui/IconIndicator';
@@ -14,6 +19,10 @@ import { Checkbox } from '@/components/ui/checkbox';
 export default function Sion() {
   return (
     <div className='overflow-y-scroll min-h-screen'>
+      <AdCarousel />
+      <div className='mt-4'></div>
+      <BenefitCard />
+      <div className='mt-4'></div>
       <AccountDetailCard
         index={0}
         account={{
@@ -24,7 +33,15 @@ export default function Sion() {
         }}
         expense={100000}
       />
+      <div className='mt-4'></div>
+      <SearchInput placeholder='검색' submit={() => {}} />
+      <div className='mt-1 flex gap-2'>
+        <WordChip word='삼다수' />
+        <WordChip word='코카콜라' />
+        <WordChip word='치토스' />
+      </div>
 
+      <div className='mt-4'></div>
       <div className='flex flex-col gap-4 mt-4'>
         <AccountCard
           index={0}
