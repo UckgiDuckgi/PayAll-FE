@@ -1,6 +1,6 @@
 'use client';
 
-import ProgressBar from '@/components/molcules/GoalProgress';
+import ProgressBar from '@/components/molecules/GoalProgress';
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from 'chart.js';
 
 ChartJS.register(ArcElement, Tooltip, Legend);

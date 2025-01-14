@@ -22,7 +22,7 @@ export default function RootLayout({
       <body>
         <div className='App'>
           <Header />
-          <div className='w-[90%] mx-auto pt-16'>{children}</div>
+          <div className='w-[90%] mx-auto pt-16 pb-24'>{children}</div>
           <Nav />
         </div>
       </body>
