@@ -1,24 +1,43 @@
+'use client';
+
+import { ProductCard } from '@/components/molecules/sion/ProductCard';
+import { VenderCard } from '@/components/molecules/sion/VenderCard';
 import { AccentText } from '@/components/ui/AccentText';
 import { Counter } from '@/components/ui/Counter';
-import { SquareImage } from '@/components/ui/SquareImage';
-import { Button } from '@/components/ui/button';
+import { IconIndicator } from '@/components/ui/IconIndicator';
 import { Checkbox } from '@/components/ui/checkbox';
 
 export default function Sion() {
   return (
     <div>
-      <Button variant='basic' className=''>
-        동의
-      </Button>
-      <Button variant='back' className='mt-4'>
-        홈으로
-      </Button>
-      <Button variant='util' className='mt-4'>
-        담기
-      </Button>
-      <Button variant='util' className='mt-4' size='sm'>
-        연동하기
-      </Button>
+      <ProductCard
+        name='나드 리프레쉬 퍼퓸드 바디워시 본품,
+프레쉬라벤더향, 680ml, 1개입 '
+        priceShop={[
+          { price: 8900, shop: '11st', image: '/', link: '/' },
+          { price: 9160, shop: 'Gmarket', image: '/', link: '/' },
+          { price: 9270, shop: 'Coupang', image: '/', link: '/' },
+          //   { price: 9270, shop: 'SSG', image: '/', link: '/' },
+          //   { price: 9270, shop: 'Auction', image: '/', link: '/' },
+        ]}
+      />
+      <div className='flex w-full justify-around'>
+        <VenderCard
+          shop='11st'
+          price={8900}
+          onClick={() => console.log('click')}
+        />
+        <VenderCard
+          shop='Gmarket'
+          price={9160}
+          onClick={() => console.log('click')}
+        />
+        <VenderCard
+          shop='Auction'
+          price={9270}
+          onClick={() => console.log('click')}
+        />
+      </div>
       <div className='mt-4'>
         <Checkbox className=''></Checkbox>
       </div>
@@ -48,7 +67,11 @@ export default function Sion() {
         className='mt-4 text-[#AAAAAAs]'
         accentColor='text-white'
       />
-      <SquareImage src='/images/Logo.png' alt='test' className='mt-4' />
+      <IconIndicator src='/images/11st.png' height={16} />
+      <IconIndicator src='/images/Gmarket.png' height={16} />
+      <IconIndicator src='/images/Coupang.png' height={16} />
+      <IconIndicator src='/images/SSG.png' height={16} />
+      <IconIndicator src='/images/Auction.png' height={16} />
       <Counter pid={1} className='mt-4' />
     </div>
   );

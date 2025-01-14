@@ -19,7 +19,6 @@ export function Counter({
       setCount(count - 1);
     }
   };
-  console.log(pid);
   return (
     <div
       className={cn(
