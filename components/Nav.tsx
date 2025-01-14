@@ -65,8 +65,8 @@ const Item = ({ icon: Icon, name, route }: NavItemProps) => {
         <Image
           src={Icon}
           alt={name}
-          width={24}
-          height={24}
+          width={20}
+          height={20}
           className={`${iconFill ? 'fill-border' : 'fill-[#777777]'}`} // 선택 상태에 따른 스타일
         />
         {name && (
@@ -87,7 +87,7 @@ const Item = ({ icon: Icon, name, route }: NavItemProps) => {
 
 const Nav = () => {
   return (
-    <nav className='fixed bottom-0 z-[50] flex items-center justify-around bg-[#2B2B2B] py-6 w-full max-w-[512px]'>
+    <nav className='fixed bottom-0 z-[50] flex items-center justify-around bg-[#2B2B2B] py-5 w-full max-w-[512px]'>
       {NavIcons.map((item) => (
         <ul key={item.name}>
           <Item icon={item.icon} name={item.name} route={item.route} />

@@ -72,7 +72,7 @@ export default function Sion() {
       <IconIndicator src='/images/Coupang.png' height={16} />
       <IconIndicator src='/images/SSG.png' height={16} />
       <IconIndicator src='/images/Auction.png' height={16} />
-      <Counter pid={1} className='mt-4' />
+      <Counter className='mt-4' />
     </div>
   );
 }

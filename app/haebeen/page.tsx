@@ -1,9 +1,11 @@
 'use client';
 
-import CardInfoCard from '@/components/molcules/CardInfoCard';
-import CategoryCarousel from '@/components/molcules/CategoryCarousel';
-import PaymentCard from '@/components/molcules/PaymentCard';
-import PaymentDetailCard from '@/components/molcules/PaymentDetailCard';
+import CardInfoCard from '@/components/molecules/CardInfoCard';
+import CategoryCarousel from '@/components/molecules/CategoryCarousel';
+import FixedExpensesCard from '@/components/molecules/FixedExpensesCard';
+import PaymentCard from '@/components/molecules/PaymentCard';
+import PaymentDetailCard from '@/components/molecules/PaymentDetailCard';
+import { Modal } from '@/components/molecules/ui/Modal';
 import { COLORS } from '@/constants/color';
 
 export type CategoryExpense = {
@@ -13,6 +15,7 @@ export type CategoryExpense = {
 };
 
 type FixedExpense = {
+  fixed_id: number;
   fixed_name: string;
   amount: number;
   due_date: string;
@@ -50,9 +53,24 @@ function page() {
       { category_id: 3, category: '생활,가정', amount: 100000 },
     ],
     fixed_expenses: [
-      { fixed_name: '쿠팡 와우', amount: 24000, due_date: '2025-01-06' },
-      { fixed_name: '쿠팡 와우', amount: 400000, due_date: '2025-01-08' },
-      { fixed_name: '쿠팡 와우', amount: 24000, due_date: '2025-01-11' },
+      {
+        fixed_id: 1,
+        fixed_name: '쿠팡 와우',
+        amount: 24000,
+        due_date: '2025-01-06',
+      },
+      {
+        fixed_id: 2,
+        fixed_name: '쿠팡 와우',
+        amount: 400000,
+        due_date: '2025-01-08',
+      },
+      {
+        fixed_id: 3,
+        fixed_name: '쿠팡 와우',
+        amount: 24000,
+        due_date: '2025-01-11',
+      },
     ],
   };
 
@@ -110,25 +128,29 @@ function page() {
         cardDescription='card description'
       />
 
-      {MOCK_PAYMENT_DETAIL.payment_detail.map(
-        ({
-          payment_detail_id,
-          product_name,
-          price,
-          lowest_price,
-          vendor_name,
-          link,
-        }) => (
-          <PaymentDetailCard
-            paymentDetailId={payment_detail_id}
-            productName={product_name}
-            price={price}
-            lowestPrice={lowest_price}
-            vendorName={vendor_name}
-            link={link}
-          />
-        )
-      )}
+      <ul>
+        {MOCK_PAYMENT_DETAIL.payment_detail.map(
+          ({
+            payment_detail_id,
+            product_name,
+            price,
+            lowest_price,
+            vendor_name,
+            link,
+          }) => (
+            <li key={payment_detail_id}>
+              <PaymentDetailCard
+                paymentDetailId={payment_detail_id}
+                productName={product_name}
+                price={price}
+                lowestPrice={lowest_price}
+                vendorName={vendor_name}
+                link={link}
+              />
+            </li>
+          )
+        )}
+      </ul>
 
       {/* 가로 스크롤 캐러셀 컴포넌트로 분리 */}
       <ul className='w-full overflow-x-scroll flex space-x-3 px-2 py-6 scrollbar-hide snap-x'>
@@ -143,6 +165,29 @@ function page() {
           </li>
         ))}
       </ul>
+
+      <ul className='space-y-3 my-5'>
+        {MOCK_STAT.fixed_expenses.map(
+          ({ fixed_id, fixed_name, amount, due_date }) => (
+            <li key={fixed_id}>
+              <FixedExpensesCard
+                id={fixed_id}
+                expensesName={fixed_name}
+                expensesPrice={amount}
+                date={due_date}
+              />
+            </li>
+          )
+        )}
+      </ul>
+
+      <Modal
+        title='배송지 정보'
+        description='서울 성동구 뚝섬로1가길 17 (성수동1가, 얼리브홈 서울숲), 503호 [04779]'
+        btnText='확인'
+      >
+        <span>배송지 정보</span>
+      </Modal>
     </div>
   );
 }
