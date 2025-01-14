@@ -4,13 +4,17 @@ import Image from 'next/image';
 
 interface IconIndicatorProps {
   src: string;
+  width?: number;
   height: number;
+  opacity?: number;
   alt?: string;
 }
 
 export const IconIndicator = ({
   src,
+  width,
   height,
+  opacity,
   alt = '',
 }: IconIndicatorProps) => {
   return (
@@ -24,8 +28,9 @@ export const IconIndicator = ({
         className='w-auto'
         style={{
           height: `${height}px`,
-          width: 'auto',
+          width: width ? width : 'auto',
           objectFit: 'contain',
+          opacity: opacity,
         }}
       />
     </div>
