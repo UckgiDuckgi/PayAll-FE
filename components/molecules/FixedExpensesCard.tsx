@@ -1,10 +1,8 @@
 function FixedExpensesCard({
-  id,
   date,
   expensesName,
   expensesPrice,
 }: {
-  id: number;
   date: string;
   expensesName: string;
   expensesPrice: number;

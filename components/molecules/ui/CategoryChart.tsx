@@ -36,7 +36,7 @@ function CategoryChart({
               chart: { data: { labels: string[] } };
             }
           ) => {
-            let idx = context.dataIndex;
+            const idx = context.dataIndex;
             return `${context.chart.data.labels[idx]}: ${value}원`;
           },
         },
