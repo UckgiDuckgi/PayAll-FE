@@ -1,5 +1,6 @@
 'use client';
 
+import { CardCarousel } from '@/components/molecules/CardCarousel';
 import ProgressBar from '@/components/molecules/GoalProgress';
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from 'chart.js';
 
@@ -30,6 +31,8 @@ export default function Home() {
         start_date={MOCK_GOAL.start_date}
         end_date={MOCK_GOAL.end_date}
       />
+
+      <CardCarousel />
     </>
   );
 }
