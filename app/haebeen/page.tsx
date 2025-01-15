@@ -2,7 +2,7 @@
 
 import CardInfoCard from '@/components/molecules/CardInfoCard';
 import CartContainer from '@/components/molecules/CartContainer';
-import CategoryCarousel from '@/components/molecules/CategoryCarousel';
+import CategoryCarouselItem from '@/components/molecules/CategoryCarouselItem';
 import CategorySubCard from '@/components/molecules/CategorySubCard';
 import DeliveryFeeProgress from '@/components/molecules/DeliveryFeeProgress';
 import FixedExpensesCard from '@/components/molecules/FixedExpensesCard';
@@ -163,7 +163,7 @@ function page() {
       <ul className='w-full overflow-x-scroll flex space-x-3 px-2 py-6 scrollbar-hide snap-x'>
         {COLORS.map((color, idx) => (
           <li key={idx} className='flex-shrink-0 snap-center'>
-            <CategoryCarousel
+            <CategoryCarouselItem
               color={color}
               categoryName='식비'
               categoryIconName='food'

@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-function CategoryCarousel({
+function CategoryCarouselItem({
   color,
   categoryName,
   categoryIconName,
@@ -36,4 +36,4 @@ function CategoryCarousel({
   );
 }
 
-export default CategoryCarousel;
+export default CategoryCarouselItem;
