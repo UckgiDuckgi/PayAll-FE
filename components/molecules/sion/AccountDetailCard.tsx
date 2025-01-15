@@ -14,7 +14,6 @@ type AccountDetailCardProps = {
   expense: number;
 };
 export const AccountDetailCard = ({
-  index,
   account,
   expense,
 }: AccountDetailCardProps) => {

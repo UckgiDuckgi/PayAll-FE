@@ -12,7 +12,6 @@ type Account = {
   balance: number;
 };
 export const AccountCard = ({
-  index,
   account,
 }: {
   index: number;

@@ -6,7 +6,6 @@ import { X } from 'lucide-react';
 
 export const CartProductCard = ({
   imageUrl,
-  pid,
   title,
   price,
   shop,

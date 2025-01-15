@@ -4,19 +4,15 @@ import { IconIndicator } from '../ui/IconIndicator';
 import BottomSheet from './ui/BottomSheet';
 
 function PaymentDetailCard({
-  paymentDetailId,
   productName,
   price,
   lowestPrice,
   vendorName,
-  link,
 }: {
-  paymentDetailId: number;
   productName: string;
   price: number;
   lowestPrice: number;
   vendorName: string;
-  link: string;
 }) {
   return (
     <div className='w-full px-2 py-4 space-y-1 border-b-[1px] border-darkGrey'>

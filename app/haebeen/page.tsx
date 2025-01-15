@@ -132,22 +132,13 @@ function page() {
 
       <ul>
         {MOCK_PAYMENT_DETAIL.payment_detail.map(
-          ({
-            payment_detail_id,
-            product_name,
-            price,
-            lowest_price,
-            vendor_name,
-            link,
-          }) => (
-            <li key={payment_detail_id}>
+          ({ product_name, price, lowest_price, vendor_name }) => (
+            <li key={product_name}>
               <PaymentDetailCard
-                paymentDetailId={payment_detail_id}
                 productName={product_name}
                 price={price}
                 lowestPrice={lowest_price}
                 vendorName={vendor_name}
-                link={link}
               />
             </li>
           )
@@ -169,18 +160,15 @@ function page() {
       </ul>
 
       <ul className='space-y-3 my-5'>
-        {MOCK_STAT.fixed_expenses.map(
-          ({ fixed_id, fixed_name, amount, due_date }) => (
-            <li key={fixed_id}>
-              <FixedExpensesCard
-                id={fixed_id}
-                expensesName={fixed_name}
-                expensesPrice={amount}
-                date={due_date}
-              />
-            </li>
-          )
-        )}
+        {MOCK_STAT.fixed_expenses.map(({ fixed_name, amount, due_date }) => (
+          <li key={fixed_name}>
+            <FixedExpensesCard
+              expensesName={fixed_name}
+              expensesPrice={amount}
+              date={due_date}
+            />
+          </li>
+        ))}
       </ul>
 
       <Modal
