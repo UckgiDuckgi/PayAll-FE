@@ -2,9 +2,11 @@
 
 import CardInfoCard from '@/components/molecules/CardInfoCard';
 import CategoryCarousel from '@/components/molecules/CategoryCarousel';
+import DeliveryFeeProgress from '@/components/molecules/DeliveryFeeProgress';
 import FixedExpensesCard from '@/components/molecules/FixedExpensesCard';
 import PaymentCard from '@/components/molecules/PaymentCard';
 import PaymentDetailCard from '@/components/molecules/PaymentDetailCard';
+import CategoryChart from '@/components/molecules/ui/CategoryChart';
 import { Modal } from '@/components/molecules/ui/Modal';
 import { COLORS } from '@/constants/color';
 
@@ -115,10 +117,10 @@ function page() {
 
   return (
     <div className='w-full'>
-      {/* <CategoryChart
+      <CategoryChart
         categoryExpenses={MOCK_STAT.category_expenses}
         totalSpent={MOCK_STAT.total_spent}
-      /> */}
+      />
 
       <PaymentCard showAccount={true} paymentInfo={MOCK_PAYMENT} />
 
@@ -188,6 +190,8 @@ function page() {
       >
         <span>배송지 정보</span>
       </Modal>
+
+      <DeliveryFeeProgress fee={17600} totalFee={19900} />
     </div>
   );
 }

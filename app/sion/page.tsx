@@ -26,7 +26,7 @@ export default function Sion() {
       <AccountDetailCard
         index={0}
         account={{
-          bank_name: '신한은행',
+          bank_name: 'woori',
           account_name: '신한 쌀쌀 통장',
           account_number: '123-12-1234567',
           balance: 1000000,
@@ -44,28 +44,10 @@ export default function Sion() {
       <div className='mt-4'></div>
       <div className='flex flex-col gap-4 mt-4'>
         <AccountCard
-          index={0}
-          account={{
-            bank_name: '신한은행',
-            account_name: '신한 쌀쌀 통장',
-            account_number: '123-12-1234567',
-            balance: 1000000,
-          }}
-        />
-        <AccountCard
           index={1}
           account={{
-            bank_name: '하나은행',
+            bank_name: 'hana',
             account_name: '하나 달달 통장',
-            account_number: '123-12-1234567',
-            balance: 1000000,
-          }}
-        />
-        <AccountCard
-          index={2}
-          account={{
-            bank_name: '카카오뱅크',
-            account_name: '카카오 팔팔 통장',
             account_number: '123-12-1234567',
             balance: 1000000,
           }}
@@ -73,7 +55,7 @@ export default function Sion() {
         <AccountCard
           index={3}
           account={{
-            bank_name: '우리은행',
+            bank_name: 'woori',
             account_name: '우리 칼칼 통장',
             account_number: '123-12-1234567',
             balance: 1000000,
@@ -82,8 +64,26 @@ export default function Sion() {
         <AccountCard
           index={4}
           account={{
-            bank_name: '국민은행',
+            bank_name: 'kb',
             account_name: '국민 깔깔 통장',
+            account_number: '123-12-1234567',
+            balance: 1000000,
+          }}
+        />
+        <AccountCard
+          index={0}
+          account={{
+            bank_name: 'sinhan',
+            account_name: '신한 쌀쌀 통장',
+            account_number: '123-12-1234567',
+            balance: 1000000,
+          }}
+        />
+        <AccountCard
+          index={2}
+          account={{
+            bank_name: 'kakao',
+            account_name: '카카오 팔팔 통장',
             account_number: '123-12-1234567',
             balance: 1000000,
           }}

@@ -1,7 +1,8 @@
-import { COLORS, GRADIENT_COLORS } from '@/constants/color';
+import { COLORS_MAP } from '@/constants/color';
+import { Bank } from './AccountCard';
 
 type Account = {
-  bank_name: string;
+  bank_name: Bank;
   account_name: string;
   account_number: string;
   balance: number;
@@ -21,7 +22,7 @@ export const AccountDetailCard = ({
     <div
       className='flex flex-col w-full rounded-xl p-5 items-start justify-around'
       style={{
-        background: `linear-gradient(60deg, ${COLORS[index]} 0%, ${GRADIENT_COLORS[index]} 50%, ${COLORS[index]} 100%)`,
+        background: `linear-gradient(60deg, ${COLORS_MAP[account.bank_name][0]} 0%, ${COLORS_MAP[account.bank_name][1]} 50%, ${COLORS_MAP[account.bank_name][0]} 100%)`,
       }}
     >
       <div className=''>{account.account_name}</div>
@@ -30,7 +31,7 @@ export const AccountDetailCard = ({
       </div>
       <div className='flex justify-between w-full'>
         <div className=' text-sm flex justify-center items-center'>잔액</div>
-        <div className=' text-xl font-bold'>
+        <div className='tracking-wider  text-xl font-bold'>
           {account.balance.toLocaleString()}
           <span className='text-[1rem]'> 원</span>
         </div>
@@ -39,7 +40,7 @@ export const AccountDetailCard = ({
         <div className='text-sm flex justify-center items-center'>
           이번달 지출
         </div>
-        <div className=' text-xl font-bold'>
+        <div className=' text-xl font-bold tracking-wider '>
           {expense.toLocaleString()}
           <span className='text-[1rem]'> 원</span>
         </div>
