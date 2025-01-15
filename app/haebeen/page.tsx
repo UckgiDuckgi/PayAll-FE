@@ -1,7 +1,9 @@
 'use client';
 
 import CardInfoCard from '@/components/molecules/CardInfoCard';
+import CartContainer from '@/components/molecules/CartContainer';
 import CategoryCarousel from '@/components/molecules/CategoryCarousel';
+import CategorySubCard from '@/components/molecules/CategorySubCard';
 import DeliveryFeeProgress from '@/components/molecules/DeliveryFeeProgress';
 import FixedExpensesCard from '@/components/molecules/FixedExpensesCard';
 import PaymentCard from '@/components/molecules/PaymentCard';
@@ -192,6 +194,28 @@ function page() {
       </Modal>
 
       <DeliveryFeeProgress fee={17600} totalFee={19900} />
+
+      <CategorySubCard
+        img={'/images/subscribes/T.svg'}
+        category='외식'
+        color='#B77DF1'
+        paymentName='롯데리아'
+        amount={23870}
+      />
+
+      <CartContainer title='배송 정보' bgColor='#1b1b1b'>
+        <div className='flex flex-col items-start justify-center gap-1 mt-1 mb-20'>
+          <div className='flex items-center justify-center gap-1 text-[.75rem]'>
+            <span className='text-grey'>문해빈</span>
+            <span className='w-[2px] h-[2px] rounded-full bg-grey' />
+            <span className='text-grey'>010-7330-9731</span>
+          </div>
+          <div className='font-medium text-[.8125rem]'>
+            서울 성동구 뚝섬로1가길 17 (성수동1가, 얼리브홈 서울숲), 503호
+            [04779]
+          </div>
+        </div>
+      </CartContainer>
     </div>
   );
 }
