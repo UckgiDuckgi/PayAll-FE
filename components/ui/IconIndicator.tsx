@@ -5,7 +5,7 @@ import Image from 'next/image';
 interface IconIndicatorProps {
   src: string;
   width?: number;
-  height: number;
+  height?: number;
   opacity?: number;
   alt?: string;
 }
@@ -27,8 +27,8 @@ export const IconIndicator = ({
         priority
         className='w-auto'
         style={{
-          height: `${height}px`,
-          width: width ? width : 'auto',
+          height: height ? `${height}px` : 'auto',
+          width: width ? `${width}px` : 'auto',
           objectFit: 'contain',
           opacity: opacity,
         }}

@@ -47,7 +47,7 @@ export type PaymentData = {
   account_name: string;
 };
 
-function page() {
+function Page() {
   const MOCK_STAT: Stat = {
     date: '2025-01',
     total_spent: 832000,
@@ -220,4 +220,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;
