@@ -18,7 +18,6 @@ export const AccountCard = ({
   account: Account;
 }) => {
   if (!account) return;
-  console.log(COLORS_MAP[account.bank_name]);
   return (
     <button>
       <div

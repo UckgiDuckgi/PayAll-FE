@@ -8,7 +8,9 @@ import PaymentCard from '@/components/molecules/PaymentCard';
 import PaymentDetailCard from '@/components/molecules/PaymentDetailCard';
 import CategoryChart from '@/components/molecules/ui/CategoryChart';
 import { Modal } from '@/components/molecules/ui/Modal';
+import Tabs from '@/components/molecules/ui/Tabs';
 import { COLORS } from '@/constants/color';
+import { useState } from 'react';
 
 export type CategoryExpense = {
   category_id: number;
@@ -115,8 +117,18 @@ function page() {
     ],
   };
 
+  const tabs = ['소비 분석', '소비 목표', '추천 혜택'];
+  const [selectedIdx, setSelectedIdx] = useState(0);
+  const handleSelectedIdx = (idx: number) => setSelectedIdx(idx);
+
   return (
     <div className='w-full'>
+      <Tabs
+        tabs={tabs}
+        selectedIdx={selectedIdx}
+        handleSelectedIdx={handleSelectedIdx}
+      />
+
       <CategoryChart
         categoryExpenses={MOCK_STAT.category_expenses}
         totalSpent={MOCK_STAT.total_spent}
