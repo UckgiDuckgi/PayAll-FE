@@ -28,7 +28,7 @@ export const AccountCard = ({
       >
         <div className='flex gap-2'>
           <div className='flex flex-col'>
-            <div className='tracking-wider text-[0.6875rem] w-full text-left font-bold'>
+            <div className='tracking-wider text-[0.6875rem] w-full text-left'>
               {account.account_name}
             </div>
             <div className='tracking-wider text-[1.125rem] font-bold'>

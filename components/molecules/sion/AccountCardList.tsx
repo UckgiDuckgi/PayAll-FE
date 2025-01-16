@@ -60,7 +60,7 @@ export const AccountCardList = ({
     >
       {accounts.map((account, index) => (
         <motion.div
-          key={account.account_number}
+          key={index}
           variants={item}
           className='w-full overflow-hidden'
         >
