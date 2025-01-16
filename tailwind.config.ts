@@ -13,6 +13,7 @@ const config: Config = {
     extend: {
       fontFamily: {
         sans: ['var(--font-pretendard)'],
+        dohyeon: ['var(--font-bm-dohyeon)'],
       },
       colors: {
         main: '#6A8DFF',

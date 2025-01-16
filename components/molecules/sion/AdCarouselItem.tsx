@@ -16,7 +16,7 @@ export const AdCarouselItem = ({
 }: AdCarouselItemProps) => {
   return (
     <div
-      className='w-full min-h-40 flex items-center pl-8 pr-5 justify-stretch rounded-lg'
+      className='w-full min-h-40 flex items-center pl-8 pr-5 justify-stretch rounded-lg font-dohyeon'
       style={{
         background: `linear-gradient(to right, #131313 14%, #2C2C2C 50%, #131313 76%)`,
       }}

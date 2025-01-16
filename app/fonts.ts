@@ -14,3 +14,8 @@ export const pretendardFont = localFont({
   ],
   variable: '--font-pretendard',
 });
+
+export const bmDohyeonFont = localFont({
+  src: [{ path: './fonts/BMDOHYEON.otf', weight: '400' }],
+  variable: '--font-bm-dohyeon',
+});
