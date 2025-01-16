@@ -131,10 +131,12 @@ function Page() {
         handleSelectedIdx={handleSelectedIdx}
       />
 
-      <CategoryChart
-        categoryExpenses={MOCK_STAT.category_expenses}
-        totalSpent={MOCK_STAT.total_spent}
-      />
+      <div className='mt-10'>
+        <CategoryChart
+          categoryExpenses={MOCK_STAT.category_expenses}
+          totalSpent={MOCK_STAT.total_spent}
+        />
+      </div>
 
       <PaymentCard showAccount={true} paymentInfo={MOCK_PAYMENT} />
 
