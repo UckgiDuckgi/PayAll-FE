@@ -13,7 +13,7 @@ import { COLORS } from '@/constants/color';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { MOCK_PAYMENT, MOCK_STAT } from '../(head)/haebeen/page';
+import { MOCK_PAYMENT, MOCK_STAT } from '../haebeen/page';
 
 const TitleLine = ({ title }: { title: string }) => {
   return (
@@ -83,7 +83,7 @@ function page() {
         <div className='mt-6 space-y-3'>
           <TitleLine title='카테고리 별 지출' />
 
-          <ul className='w-full overflow-x-scroll flex space-x-3 px-2 pb-6 pt-1 scrollbar-hide snap-x'>
+          <ul className='w-full overflow-x-scroll flex space-x-4 px-2 pb-6 pt-1 scrollbar-hide snap-x'>
             {MOCK_STAT.category_expenses.map(
               ({ category_id, category, amount }, idx) => (
                 <Link

@@ -1,3 +1,6 @@
+'use client';
+
+import { AdCarousel } from '@/components/molecules/sion/AdCarousel';
 import { PayAllLogo } from '@/components/ui/PayAllLogo';
 
 export default function Home() {
@@ -5,6 +8,7 @@ export default function Home() {
     <>
       <div className='flex justify-center items-center h-screen'>
         <PayAllLogo />
+        <AdCarousel />
       </div>
     </>
   );
