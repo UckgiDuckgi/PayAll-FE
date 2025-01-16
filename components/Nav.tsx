@@ -25,7 +25,7 @@ export const NavIcons: NavItem[] = [
   {
     name: '소비분석',
     icon: '/icons/Chart.svg',
-    route: 'chart',
+    route: 'statistics?date=2025-01',
   },
   {
     name: '마이페이지',
@@ -54,7 +54,7 @@ const Item = ({ icon: Icon, name, route }: NavItemProps) => {
 
   return (
     <div
-      className={`flex h-[2.625rem] w-[2.625rem] cursor-pointer items-center justify-center ${
+      className={`flex h-[2rem] w-[2.625rem] cursor-pointer items-center justify-center ${
         name === '' ? 'rounded-xl' : ''
       }`}
     >

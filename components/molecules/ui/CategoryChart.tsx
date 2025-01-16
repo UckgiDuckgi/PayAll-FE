@@ -13,7 +13,7 @@ function CategoryChart({
   totalSpent: number;
 }) {
   const data = {
-    labels: categoryExpenses.map((category) => category.category),
+    // labels: categoryExpenses.map((category) => category.category),
     datasets: [
       {
         data: categoryExpenses.map((category) => category.amount),

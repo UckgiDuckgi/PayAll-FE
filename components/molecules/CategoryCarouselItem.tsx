@@ -1,11 +1,13 @@
 import Image from 'next/image';
 
 function CategoryCarouselItem({
+  percent,
   color,
   categoryName,
   categoryIconName,
   amount,
 }: {
+  percent: number;
   color: string;
   categoryName: string;
   categoryIconName: string;
@@ -25,10 +27,13 @@ function CategoryCarouselItem({
         />
       </span>
       <div className='box-border w-fit absolute top-[1.18925rem] flex flex-col items-centerspace-y-1 py-2 px-4 pt-6 rounded-[20px] bg-deepDarkGrey whitespace-nowrap'>
-        <span className='text-center text-darkGrey text-[.8125rem] font-bold'>
-          {categoryName}
+        <span className='space-x-1 text-center text-[#A5A5A5] text-[.8125rem] font-bold'>
+          <span>{categoryName}</span>
+          <span className='text-[.6875rem]' style={{ color: color }}>
+            {percent}%
+          </span>
         </span>
-        <span className='text-[.9325rem] font-bold'>
+        <span className='tracking-wide text-[.9325rem] font-bold'>
           {amount.toLocaleString()}원
         </span>
       </div>

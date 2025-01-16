@@ -35,7 +35,7 @@ export const CardCarousel = () => {
     '/images/cards/samsung.svg',
   ];
   return (
-    <div className='relative top-32'>
+    <div className='relative top-10'>
       <Carousel
         opts={{
           align: 'center',
