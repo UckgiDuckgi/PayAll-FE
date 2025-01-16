@@ -1,3 +1,5 @@
+'use client';
+
 import { Button } from '@/components/ui/button';
 import { fileAtom } from '@/stores/atom';
 import { useAtom } from 'jotai';
@@ -40,7 +42,9 @@ function UploadButton() {
         className='h-fit w-fit py-1 px-2 flex items-center gap-1 bg-deepDarkGrey'
         onClick={() => fileInputRef.current?.click()}
       >
-        <span className='text-[.625rem] text-grey'>영수증 촬영</span>
+        <span className='text-[.625rem] text-grey font-medium'>
+          영수증 촬영
+        </span>
         <span className='bg-grey w-[1.25rem] h-[1.25rem] rounded-full flex items-center justify-center'>
           <Image src='/icons/Camera.svg' alt='camera' width={12} height={11} />
         </span>

@@ -13,7 +13,7 @@ import { COLORS } from '@/constants/color';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { MOCK_PAYMENT, MOCK_STAT } from '../haebeen/page';
+import { MOCK_PAYMENT, MOCK_STAT } from '../(head)/haebeen/page';
 
 const TitleLine = ({ title }: { title: string }) => {
   return (

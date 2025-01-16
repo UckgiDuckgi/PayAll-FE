@@ -1,5 +1,8 @@
+'use client';
+
 import { AccentText } from '@/components/ui/AccentText';
 import { Triangle } from '@/public/icons/Triangle';
+import { useRouter } from 'next/navigation';
 
 export default function AccountUnionCard({
   username,
@@ -12,9 +15,13 @@ export default function AccountUnionCard({
   totalBalance: number;
   difference: number;
 }) {
+  const router = useRouter();
   return (
-    <div className='w-full h-32 bg-gradient-to-r from-[#333333] to-[#8A8A8A] rounded-2xl p-5 pr-3 pb-3 flex items-center justify-stretch'>
-      <div className='flex flex-col w-full pb-2'>
+    <button
+      className='w-full h-32 bg-gradient-to-r from-[#333333] to-[#8A8A8A] rounded-2xl p-5 pr-3 pb-3 flex items-center justify-stretch'
+      onClick={() => router.push('/accounts/0')}
+    >
+      <div className='flex flex-col w-full pb-2 text-left'>
         <div className='text-[0.6875rem]'>
           <span className='text-sm font-semibold'>{username}</span> 님의 총자산
         </div>
@@ -51,6 +58,6 @@ export default function AccountUnionCard({
           PayAll
         </span>
       </div>
-    </div>
+    </button>
   );
 }

@@ -10,7 +10,7 @@ export const GRADIENT_COLORS = [
 ];
 
 export const COLORS_MAP: Record<Bank, string[]> = {
-  // total: ['#333333', '#8A8A8A'],
+  union: ['#333333', '#8A8A8A'],
   hana: ['#00B697', '#8ABBB3'],
   kb: ['#FFDB5C', '#F1E7C8'],
   sinhan: ['#0046FF', '#C3D3FF'],

@@ -1,4 +1,4 @@
-import { CategoryExpense } from '@/app/haebeen/page';
+import { CategoryExpense } from '@/app/(head)/haebeen/page';
 import { COLORS } from '@/constants/color';
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';

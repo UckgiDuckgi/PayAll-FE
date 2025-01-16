@@ -1,25 +1,24 @@
 import { IconIndicator } from '@/components/ui/IconIndicator';
 import { COLORS_MAP } from '@/constants/color';
 
-//${GRADIENT_COLORS[index]}
-//${COLORS[index]}
-
-export type Bank = 'hana' | 'kb' | 'sinhan' | 'kakao' | 'woori';
+export type Bank = 'hana' | 'kb' | 'sinhan' | 'kakao' | 'woori' | 'union';
 type Account = {
   bank_name: Bank;
+  account_id: number;
   account_name: string;
   account_number: string;
   balance: number;
 };
 export const AccountCard = ({
   account,
+  onClick,
 }: {
-  index: number;
   account: Account;
+  onClick: () => void;
 }) => {
   if (!account) return;
   return (
-    <button className='w-full'>
+    <button className='w-full' onClick={onClick}>
       <div
         className='overflow-hidden relative flex flex-col w-full justify-between rounded-[15px] py-5 px-6 h-28'
         style={{

@@ -2,6 +2,7 @@ import { COLORS_MAP } from '@/constants/color';
 import { Bank } from './AccountCard';
 
 type Account = {
+  account_id: number;
   bank_name: Bank;
   account_name: string;
   account_number: string;
@@ -9,7 +10,6 @@ type Account = {
 };
 
 type AccountDetailCardProps = {
-  index: number;
   account: Account;
   expense: number;
 };
@@ -32,7 +32,7 @@ export const AccountDetailCard = ({
         <div className=' text-sm flex justify-center items-center'>잔액</div>
         <div className='tracking-wider  text-xl font-bold'>
           {account.balance.toLocaleString()}
-          <span className='text-[1rem]'> 원</span>
+          <span className='text-[1rem] font-normal'> 원</span>
         </div>
       </div>
       <div className='flex justify-between w-full'>

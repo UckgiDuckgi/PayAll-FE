@@ -1,4 +1,5 @@
-import { PaymentData } from '@/app/haebeen/page';
+import { PaymentData } from '@/app/(head)/haebeen/page';
+import { ChevronRight } from 'lucide-react';
 import UploadButton from './ui/UploadButton';
 
 // TODO: props에 data 추가
@@ -55,7 +56,12 @@ function PaymentCard({
         {category !== '쇼핑' ? (
           <UploadButton />
         ) : (
-          <a href={`/accounts/payments/${payment_id}`}>상세보기</a>
+          <a
+            href={`/accounts/payments/${payment_id}`}
+            className='text-[0.5rem] font-medium flex items-center gap-1'
+          >
+            상세보기 <ChevronRight className='w-2 h-2' />
+          </a>
         )}
       </div>
     </div>
