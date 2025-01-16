@@ -4,9 +4,11 @@ import { Goal } from '@/app/page';
 import ProgressBar from '@/components/molecules/GoalProgress';
 import { BenefitCard } from '@/components/molecules/sion/BenefitCard';
 import { AccentText } from '@/components/ui/AccentText';
+import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import dayjs from 'dayjs';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const EmotionBox = ({ differ }: { differ: number }) => {
   if (differ < 0) {
@@ -105,6 +107,10 @@ function page() {
 
         <BenefitCard />
       </div>
+
+      <Button className='w-full bg-main'>
+        <Link href='/statistics/goal/register'>목표 설정하기</Link>
+      </Button>
     </>
   );
 }

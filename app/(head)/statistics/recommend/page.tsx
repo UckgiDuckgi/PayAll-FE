@@ -1,5 +1,6 @@
 import { CardCarousel } from '@/components/molecules/CardCarousel';
 import CategorySubCard from '@/components/molecules/CategorySubCard';
+import Link from 'next/link';
 
 function page() {
   return (
@@ -14,8 +15,13 @@ function page() {
       </div>
 
       <div className='w-full absolute top-72'>
-        <div className='text-right text-[0.75rem]'>
-          모든 카드와 혜택 보러가기
+        <div className='flex items-center justify-end'>
+          <Link
+            href='/statistics/recommend/cards'
+            className='text-right text-[0.75rem]'
+          >
+            모든 카드와 혜택 보러가기
+          </Link>
         </div>
         <div className='flex items-end justify-between pt-5'>
           <span className='text-[1.125rem] font-bold text-grey'>
@@ -44,8 +50,13 @@ function page() {
           amount={23870}
         />
 
-        <div className='text-right text-[0.75rem]'>
-          모든 구독과 혜택 보러가기
+        <div className='flex items-center justify-end'>
+          <Link
+            href='/statistics/recommend/subscriptions'
+            className='text-right text-[0.75rem]'
+          >
+            모든 구독과 혜택 보러가기
+          </Link>
         </div>
       </div>
     </div>
