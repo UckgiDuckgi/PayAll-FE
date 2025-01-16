@@ -19,7 +19,11 @@ export default function Sion() {
   return (
     <div className='overflow-y-scroll min-h-screen'>
       <AdCarousel />
-      <div className='mt-4'></div>
+      <div className='mt-4'>
+        <div className='font-bold'>가나다라끠끠끠</div>
+        <div className='font-medium'>가나다라끠끠끠</div>
+        <div className='font-regular'>가나다라끠끠끠</div>
+      </div>
       <BenefitCard />
       <div className='mt-4'></div>
       <AccountDetailCard
@@ -88,6 +92,7 @@ export default function Sion() {
           }}
         />
       </div>
+
       <CartProductCard
         imageUrl='/images/Logo.png'
         pid={1}

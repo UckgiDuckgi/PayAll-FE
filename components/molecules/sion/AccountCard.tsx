@@ -19,7 +19,7 @@ export const AccountCard = ({
 }) => {
   if (!account) return;
   return (
-    <button>
+    <button className='w-full'>
       <div
         className='overflow-hidden relative flex flex-col w-full justify-between rounded-[15px] py-5 px-6 h-28'
         style={{
@@ -28,7 +28,7 @@ export const AccountCard = ({
       >
         <div className='flex gap-2'>
           <div className='flex flex-col'>
-            <div className='tracking-wider text-[0.6875rem] w-full text-left font-bold'>
+            <div className='tracking-wider text-[0.6875rem] w-full text-left'>
               {account.account_name}
             </div>
             <div className='tracking-wider text-[1.125rem] font-bold'>

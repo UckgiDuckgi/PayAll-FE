@@ -1,5 +1,63 @@
+import { Bank } from '@/components/molecules/sion/AccountCard';
+import { AccountCardList } from '@/components/molecules/sion/AccountCardList';
+import AccountUnionCard from '@/components/molecules/sion/AccountUnionCard';
+import dayjs from 'dayjs';
+
+const accounts: {
+  bank_name: Bank;
+  account_name: string;
+  account_number: string;
+  balance: number;
+}[] = [
+  {
+    bank_name: 'sinhan',
+    account_name: '신한 쌀쌀 통장',
+    account_number: '123-12-1234567',
+    balance: 1000000,
+  },
+  {
+    bank_name: 'hana',
+    account_name: '하나 달달 통장',
+    account_number: '123-12-1234567',
+    balance: 1000000,
+  },
+  {
+    bank_name: 'woori',
+    account_name: '우리 칼칼 통장',
+    account_number: '123-12-1234567',
+    balance: 1000000,
+  },
+  {
+    bank_name: 'kb',
+    account_name: '국민 깔깔 통장',
+    account_number: '123-12-1234567',
+    balance: 1000000,
+  },
+  {
+    bank_name: 'kakao',
+    account_name: '카카오 팔팔 통장',
+    account_number: '123-12-1234567',
+    balance: 1000000,
+  },
+];
+
 export default function Accounts() {
+  const lastMonth = dayjs().subtract(1, 'month');
+  const daysInLastMonth = lastMonth.daysInMonth();
+  const currentDay = dayjs().date();
+
+  const lastMonthDate = lastMonth.date(Math.min(currentDay, daysInLastMonth));
+  const formattedLastMonthDate = lastMonthDate.format('MM월 DD일');
+
   return (
-    <div className='mx-auto text-4xl pt-10 text-center'>계좌 목록 페이지</div>
+    <div className='py-8 flex flex-col items-center justify-center'>
+      <AccountUnionCard
+        username='김덕지'
+        formattedLastMonthDate={formattedLastMonthDate}
+        totalBalance={123456}
+        difference={123456}
+      />
+      <AccountCardList accounts={accounts} className='mt-4' />
+    </div>
   );
 }

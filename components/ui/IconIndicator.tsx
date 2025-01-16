@@ -5,9 +5,11 @@ import Image from 'next/image';
 interface IconIndicatorProps {
   src: string;
   width?: number;
-  height: number;
+  height?: number;
   opacity?: number;
   alt?: string;
+  className?: string;
+  color?: string;
 }
 
 export const IconIndicator = ({
@@ -16,9 +18,11 @@ export const IconIndicator = ({
   height,
   opacity,
   alt = '',
+  className,
+  color,
 }: IconIndicatorProps) => {
   return (
-    <div className='flex items-center '>
+    <div className={`flex items-center ${className}`}>
       <Image
         src={src}
         alt={alt}
@@ -27,11 +31,12 @@ export const IconIndicator = ({
         priority
         className='w-auto'
         style={{
-          height: `${height}px`,
-          width: width ? width : 'auto',
+          height: height ? `${height}px` : 'auto',
+          width: width ? `${width}px` : 'auto',
           objectFit: 'contain',
           opacity: opacity,
         }}
+        color={color}
       />
     </div>
   );
