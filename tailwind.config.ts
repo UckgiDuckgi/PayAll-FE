@@ -12,7 +12,7 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        pretendard: ['Pretendard-Regular', 'sans-serif'],
+        sans: ['var(--font-pretendard)'],
       },
       colors: {
         main: '#6A8DFF',

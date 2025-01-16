@@ -8,6 +8,8 @@ interface IconIndicatorProps {
   height?: number;
   opacity?: number;
   alt?: string;
+  className?: string;
+  color?: string;
 }
 
 export const IconIndicator = ({
@@ -16,9 +18,11 @@ export const IconIndicator = ({
   height,
   opacity,
   alt = '',
+  className,
+  color,
 }: IconIndicatorProps) => {
   return (
-    <div className='flex items-center '>
+    <div className={`flex items-center ${className}`}>
       <Image
         src={src}
         alt={alt}
@@ -32,6 +36,7 @@ export const IconIndicator = ({
           objectFit: 'contain',
           opacity: opacity,
         }}
+        color={color}
       />
     </div>
   );

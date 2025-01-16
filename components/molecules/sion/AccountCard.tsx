@@ -19,7 +19,7 @@ export const AccountCard = ({
 }) => {
   if (!account) return;
   return (
-    <button>
+    <button className='w-full'>
       <div
         className='overflow-hidden relative flex flex-col w-full justify-between rounded-[15px] py-5 px-6 h-28'
         style={{
