@@ -1,6 +1,7 @@
 'use client';
 
 import { motion, cubicBezier } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 import { AccountCard, Bank } from './AccountCard';
 
 type Account = {
@@ -20,6 +21,7 @@ export const AccountCardList = ({
   accounts,
   className,
 }: AccountCardListProps) => {
+  const router = useRouter();
   if (!accounts || accounts.length === 0) return null;
 
   const easeCustom = cubicBezier(0.4, 0, 0.2, 1);
@@ -65,7 +67,10 @@ export const AccountCardList = ({
           variants={item}
           className='w-full overflow-hidden'
         >
-          <AccountCard account={account} />
+          <AccountCard
+            account={account}
+            onClick={() => router.push(`/accounts/${account.account_id}`)}
+          />
         </motion.div>
       ))}
     </motion.div>

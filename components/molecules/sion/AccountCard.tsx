@@ -1,7 +1,7 @@
 import { IconIndicator } from '@/components/ui/IconIndicator';
 import { COLORS_MAP } from '@/constants/color';
 
-export type Bank = 'hana' | 'kb' | 'sinhan' | 'kakao' | 'woori';
+export type Bank = 'hana' | 'kb' | 'sinhan' | 'kakao' | 'woori' | 'union';
 type Account = {
   bank_name: Bank;
   account_id: number;
@@ -9,10 +9,16 @@ type Account = {
   account_number: string;
   balance: number;
 };
-export const AccountCard = ({ account }: { account: Account }) => {
+export const AccountCard = ({
+  account,
+  onClick,
+}: {
+  account: Account;
+  onClick: () => void;
+}) => {
   if (!account) return;
   return (
-    <button className='w-full'>
+    <button className='w-full' onClick={onClick}>
       <div
         className='overflow-hidden relative flex flex-col w-full justify-between rounded-[15px] py-5 px-6 h-28'
         style={{

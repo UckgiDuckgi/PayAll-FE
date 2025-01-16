@@ -27,8 +27,8 @@ export default function Sion() {
       <BenefitCard />
       <div className='mt-4'></div>
       <AccountDetailCard
-        index={0}
         account={{
+          account_id: 0,
           bank_name: 'woori',
           account_name: '신한 쌀쌀 통장',
           account_number: '123-12-1234567',
@@ -54,6 +54,7 @@ export default function Sion() {
             account_number: '123-12-1234567',
             balance: 1000000,
           }}
+          onClick={() => {}}
         />
         <AccountCard
           account={{
@@ -63,6 +64,7 @@ export default function Sion() {
             account_number: '123-12-1234567',
             balance: 1000000,
           }}
+          onClick={() => {}}
         />
         <AccountCard
           account={{
@@ -72,6 +74,7 @@ export default function Sion() {
             account_number: '123-12-1234567',
             balance: 1000000,
           }}
+          onClick={() => {}}
         />
         <AccountCard
           account={{
@@ -81,6 +84,7 @@ export default function Sion() {
             account_number: '123-12-1234567',
             balance: 1000000,
           }}
+          onClick={() => {}}
         />
         <AccountCard
           account={{
@@ -90,6 +94,7 @@ export default function Sion() {
             account_number: '123-12-1234567',
             balance: 1000000,
           }}
+          onClick={() => {}}
         />
       </div>
 
