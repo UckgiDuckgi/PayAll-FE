@@ -5,7 +5,6 @@ import { AccountDetailCard } from '@/components/molecules/sion/AccountDetailCard
 import { AdCarousel } from '@/components/molecules/sion/AdCarousel';
 import { BenefitCard } from '@/components/molecules/sion/BenefitCard';
 import { CartProductCard } from '@/components/molecules/sion/CartProductCard';
-import { LoginInput } from '@/components/molecules/sion/LoginInput';
 import { LowestProductCard } from '@/components/molecules/sion/LowestProductCard';
 import { ProductCard } from '@/components/molecules/sion/ProductCard';
 import { SearchInput } from '@/components/molecules/sion/SearchInput';
@@ -89,7 +88,7 @@ export default function Sion() {
           }}
         />
       </div>
-      <LoginInput type='아이디' />
+
       <CartProductCard
         imageUrl='/images/Logo.png'
         pid={1}
