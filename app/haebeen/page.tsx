@@ -116,7 +116,7 @@ export const MOCK_PAYMENT_DETAIL = {
     },
   ],
 };
-function page() {
+function Page() {
   const tabs = ['소비 분석', '소비 목표', '추천 혜택'];
   const [selectedIdx, setSelectedIdx] = useState(0);
   const handleSelectedIdx = (idx: number) => setSelectedIdx(idx);
