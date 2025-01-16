@@ -47,8 +47,8 @@ export default function Sion() {
       <div className='mt-4'></div>
       <div className='flex flex-col gap-4 mt-4'>
         <AccountCard
-          index={1}
           account={{
+            account_id: 1,
             bank_name: 'hana',
             account_name: '하나 달달 통장',
             account_number: '123-12-1234567',
@@ -56,8 +56,8 @@ export default function Sion() {
           }}
         />
         <AccountCard
-          index={3}
           account={{
+            account_id: 3,
             bank_name: 'woori',
             account_name: '우리 칼칼 통장',
             account_number: '123-12-1234567',
@@ -65,8 +65,8 @@ export default function Sion() {
           }}
         />
         <AccountCard
-          index={4}
           account={{
+            account_id: 4,
             bank_name: 'kb',
             account_name: '국민 깔깔 통장',
             account_number: '123-12-1234567',
@@ -74,8 +74,8 @@ export default function Sion() {
           }}
         />
         <AccountCard
-          index={0}
           account={{
+            account_id: 5,
             bank_name: 'sinhan',
             account_name: '신한 쌀쌀 통장',
             account_number: '123-12-1234567',
@@ -83,8 +83,8 @@ export default function Sion() {
           }}
         />
         <AccountCard
-          index={2}
           account={{
+            account_id: 2,
             bank_name: 'kakao',
             account_name: '카카오 팔팔 통장',
             account_number: '123-12-1234567',

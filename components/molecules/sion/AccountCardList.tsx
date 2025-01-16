@@ -5,6 +5,7 @@ import { AccountCard, Bank } from './AccountCard';
 
 type Account = {
   bank_name: Bank;
+  account_id: number;
   account_name: string;
   account_number: string;
   balance: number;
@@ -64,7 +65,7 @@ export const AccountCardList = ({
           variants={item}
           className='w-full overflow-hidden'
         >
-          <AccountCard index={index} account={account} />
+          <AccountCard account={account} />
         </motion.div>
       ))}
     </motion.div>

@@ -5,36 +5,42 @@ import dayjs from 'dayjs';
 
 const accounts: {
   bank_name: Bank;
+  account_id: number;
   account_name: string;
   account_number: string;
   balance: number;
 }[] = [
   {
     bank_name: 'sinhan',
+    account_id: 1,
     account_name: '신한 쌀쌀 통장',
     account_number: '123-12-1234567',
     balance: 1000000,
   },
   {
     bank_name: 'hana',
+    account_id: 2,
     account_name: '하나 달달 통장',
     account_number: '123-12-1234567',
     balance: 1000000,
   },
   {
     bank_name: 'woori',
+    account_id: 3,
     account_name: '우리 칼칼 통장',
     account_number: '123-12-1234567',
     balance: 1000000,
   },
   {
     bank_name: 'kb',
+    account_id: 4,
     account_name: '국민 깔깔 통장',
     account_number: '123-12-1234567',
     balance: 1000000,
   },
   {
     bank_name: 'kakao',
+    account_id: 5,
     account_name: '카카오 팔팔 통장',
     account_number: '123-12-1234567',
     balance: 1000000,

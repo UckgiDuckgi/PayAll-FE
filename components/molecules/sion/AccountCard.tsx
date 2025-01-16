@@ -1,22 +1,15 @@
 import { IconIndicator } from '@/components/ui/IconIndicator';
 import { COLORS_MAP } from '@/constants/color';
 
-//${GRADIENT_COLORS[index]}
-//${COLORS[index]}
-
 export type Bank = 'hana' | 'kb' | 'sinhan' | 'kakao' | 'woori';
 type Account = {
   bank_name: Bank;
+  account_id: number;
   account_name: string;
   account_number: string;
   balance: number;
 };
-export const AccountCard = ({
-  account,
-}: {
-  index: number;
-  account: Account;
-}) => {
+export const AccountCard = ({ account }: { account: Account }) => {
   if (!account) return;
   return (
     <button className='w-full'>
