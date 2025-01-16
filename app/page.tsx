@@ -6,7 +6,7 @@ import { ArcElement, Chart as ChartJS, Legend, Tooltip } from 'chart.js';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-type Goal = {
+export type Goal = {
   limit_amount: number;
   spent_amount: number;
   saved_amount: number;

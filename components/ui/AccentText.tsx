@@ -20,7 +20,7 @@ export function AccentText({
   className,
 }: AccentTextProps) {
   return (
-    <div className={cn('text-sm items-end font-regular flex', className)}>
+    <div className={cn('text-sm items-end font-regular space-x-2', className)}>
       <span>{prefix}</span>
       <span
         className={`${accentColor} ${accentSize} font-bold flex items-center gap-1`}

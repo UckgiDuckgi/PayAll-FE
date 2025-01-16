@@ -4,7 +4,7 @@ const CART_CTN = 1;
 
 function Header() {
   return (
-    <header className='z-50 mx-auto fixed top-0 w-full max-w-[512px] flex justify-between items-center pt-4 pb-2 px-8 bg-background'>
+    <header className='z-50 mx-auto fixed top-0 w-full max-w-[512px] flex justify-between items-center pt-4 pb-3 px-8 bg-background'>
       <Image src='/images/logo.png' alt='logo' width={50} height={15} />
       <HeaderCart />
     </header>

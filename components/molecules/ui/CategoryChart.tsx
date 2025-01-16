@@ -1,12 +1,6 @@
 import { CategoryExpense } from '@/app/haebeen/page';
 import { COLORS } from '@/constants/color';
-import {
-  ArcElement,
-  Chart as ChartJS,
-  Legend,
-  Tooltip,
-  TooltipItem,
-} from 'chart.js';
+import { ArcElement, Chart as ChartJS, Legend, Tooltip } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -19,46 +13,33 @@ function CategoryChart({
   totalSpent: number;
 }) {
   const data = {
-    labels: categoryExpenses.map((category) => category.category),
+    // labels: categoryExpenses.map((category) => category.category),
     datasets: [
       {
         data: categoryExpenses.map((category) => category.amount),
         backgroundColor: COLORS.slice(0, categoryExpenses.length ?? 0),
         borderWidth: 1,
-        datalabels: {
-          display: true,
-          align: 'center',
-          font: { size: 14 },
-          formatter: (
-            value: number,
-            context: {
-              dataIndex: number;
-              chart: { data: { labels: string[] } };
-            }
-          ) => {
-            const idx = context.dataIndex;
-            return `${context.chart.data.labels[idx]}: ${value}원`;
-          },
-        },
       },
     ],
-    weight: 100,
   };
 
   const options = {
     plugins: {
-      tooltip: {
-        titleFont: {
-          size: 14,
-        },
-        bodyFont: {
+      datalabels: {
+        display: true,
+        anchor: 'end',
+        align: 'end',
+        color: '#000',
+        font: {
           size: 12,
         },
+        formatter: (value: number) => {
+          return `${value.toLocaleString()}원`;
+        },
+      },
+      tooltip: {
         callbacks: {
-          title: (tooltipItems: TooltipItem<'doughnut'>[]) => {
-            return tooltipItems.length > 0 ? tooltipItems[0].label : '';
-          },
-          label: (tooltipItem: TooltipItem<'doughnut'>) => {
+          label: (tooltipItem: any) => {
             const count = tooltipItem.raw as number;
             return `${count.toLocaleString()}원`;
           },

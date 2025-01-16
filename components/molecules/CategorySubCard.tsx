@@ -14,7 +14,7 @@ function CategorySubCard({
   amount: number;
 }) {
   return (
-    <div className='w-full flex items-center justify-start gap-3'>
+    <div className='my-4 w-full flex items-center justify-start gap-3'>
       <Image
         src={img}
         alt='sub'
