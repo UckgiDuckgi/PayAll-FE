@@ -1,6 +1,12 @@
 import { CategoryExpense } from '@/app/(head)/haebeen/page';
 import { COLORS } from '@/constants/color';
-import { ArcElement, Chart as ChartJS, Legend, Tooltip } from 'chart.js';
+import {
+  ArcElement,
+  Chart as ChartJS,
+  Legend,
+  Tooltip,
+  TooltipItem,
+} from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -39,7 +45,7 @@ function CategoryChart({
       },
       tooltip: {
         callbacks: {
-          label: (tooltipItem: any) => {
+          label: (tooltipItem: TooltipItem<'doughnut'>) => {
             const count = tooltipItem.raw as number;
             return `${count.toLocaleString()}원`;
           },

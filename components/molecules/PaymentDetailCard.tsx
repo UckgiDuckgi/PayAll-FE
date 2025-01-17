@@ -1,3 +1,5 @@
+'use client';
+
 import Image from 'next/image';
 import { Counter } from '../ui/Counter';
 import { IconIndicator } from '../ui/IconIndicator';
@@ -24,7 +26,7 @@ function PaymentDetailCard({
       </div>
       <div className='flex items-center justify-between px-3 py-1 rounded-[5px] bg-deepDarkGrey'>
         <div className='py-1 flex flex-col items-start justify-center gap-1'>
-          <span className='font-bold text-[.625rem] text-darkGrey'>
+          <span className='font-bold text-[.625rem] text-[#828282]'>
             같은 상품의 최저가
           </span>
           <div className='flex items-center justify-between gap-2'>

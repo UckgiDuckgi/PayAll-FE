@@ -5,7 +5,7 @@ import { ReactNode, useState } from 'react';
 
 export type Tab = '소비 분석' | '소비 목표' | '추천 혜택';
 
-function layout({ children }: { children: ReactNode }) {
+function Layout({ children }: { children: ReactNode }) {
   const date = '2025-01';
   const tabs: Tab[] = ['소비 분석', '소비 목표', '추천 혜택'];
   const url = [
@@ -29,4 +29,4 @@ function layout({ children }: { children: ReactNode }) {
   );
 }
 
-export default layout;
+export default Layout;

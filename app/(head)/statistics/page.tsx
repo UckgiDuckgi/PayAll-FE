@@ -26,7 +26,7 @@ const TitleLine = ({ title }: { title: string }) => {
   );
 };
 
-function page() {
+function Page() {
   const searchParams = useSearchParams();
   const category = searchParams.get('category') as Category;
 
@@ -84,25 +84,21 @@ function page() {
           <TitleLine title='카테고리 별 지출' />
 
           <ul className='w-full overflow-x-scroll flex space-x-4 px-2 pb-6 pt-1 scrollbar-hide snap-x'>
-            {MOCK_STAT.category_expenses.map(
-              ({ category_id, category, amount }, idx) => (
-                <Link
-                  href={`/statistics?category=${category}`}
-                  key={idx}
-                  className='flex-shrink-0 snap-center'
-                >
-                  <CategoryCarouselItem
-                    percent={
-                      +((amount / MOCK_STAT.total_spent) * 100).toFixed(0)
-                    }
-                    color={COLORS[idx]}
-                    categoryName={CATEGORY[category][0]}
-                    categoryIconName={category}
-                    amount={amount}
-                  />
-                </Link>
-              )
-            )}
+            {MOCK_STAT.category_expenses.map(({ category, amount }, idx) => (
+              <Link
+                href={`/statistics?category=${category}`}
+                key={idx}
+                className='flex-shrink-0 snap-center'
+              >
+                <CategoryCarouselItem
+                  percent={+((amount / MOCK_STAT.total_spent) * 100).toFixed(0)}
+                  color={COLORS[idx]}
+                  categoryName={CATEGORY[category][0]}
+                  categoryIconName={category}
+                  amount={amount}
+                />
+              </Link>
+            ))}
           </ul>
 
           <BenefitCard />
@@ -193,4 +189,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;
