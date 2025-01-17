@@ -4,8 +4,10 @@
     "next/typescript",
     "prettier",
     "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
     "plugin:react/jsx-runtime",
     "plugin:react-hooks/recommended",
     "plugin:storybook/recommended"
-  ]
+  ],
+  "plugins": ["react", "react-hooks"]
 }
