@@ -1,23 +1,28 @@
 'use client';
 
+import { Counter } from '@/components/ui/Counter';
 import Image from 'next/image';
 import { useState } from 'react';
 import { IconIndicator } from '../../ui/IconIndicator';
 import { SquareImage } from '../../ui/SquareImage';
+import BottomSheet from '../ui/BottomSheet';
 import { VenderCard } from './VenderCard';
 
-type PriceShop = {
+type Store = {
+  shopName: string;
   price: number;
-  shop: string;
-  link: string;
-  image: string;
+  shopUrl: string;
+};
+type SearchResult = {
+  pcode: number;
+  productName: string;
+  productImage: string;
+  storeList: Store[];
 };
 export const ProductCard = ({
-  name,
-  priceShop,
+  searchResult,
 }: {
-  name: string;
-  priceShop: PriceShop[];
+  searchResult: SearchResult;
 }) => {
   const [seletedProduct, setSelectedProduct] = useState<number>(0);
   return (
@@ -25,23 +30,40 @@ export const ProductCard = ({
       <div className='flex gap-3'>
         <SquareImage src='/images/Logo.png' alt='Logo' size={120} />
         <div className='flex flex-col gap-1 w-7/12 text-left'>
-          <div className='text-white w-full text-xs font-medium'>{name}</div>
+          <div className='text-white w-full text-xs font-medium'>
+            {searchResult.productName}
+          </div>
           <div className='text-white w-full font-bold text-base flex gap-1 items-center'>
-            {priceShop[seletedProduct].price.toLocaleString()}원
+            {searchResult.storeList[seletedProduct].price.toLocaleString()}원
             <IconIndicator
-              src={`/images/${priceShop[seletedProduct].shop}.png`}
+              src={`/images/${searchResult.storeList[seletedProduct].shopName}.png`}
               height={16}
             />
           </div>
-          <div className='flex justify-end items-end'>
-            <div className='relative'>
-              <button
-                className='w-9 h-9 rounded-full bg-darkGrey flex items-center justify-center'
-                onClick={() => {
-                  setSelectedProduct((seletedProduct + 1) % 5);
-                  console.log('장바구니 모달 열기');
-                }}
-              >
+          <BottomSheet
+            title='해당 상품을 장바구니에 담으시겠습니까?'
+            description={searchResult.productName}
+            desciptionFooter={
+              <div className='flex items-center justify-between'>
+                <div className='flex items-center justify-between gap-2'>
+                  <span className='text-white font-bold'>
+                    {searchResult.storeList[
+                      seletedProduct
+                    ].price.toLocaleString()}
+                    원
+                  </span>
+                  <IconIndicator
+                    src={`/images/${searchResult.storeList[seletedProduct].shopName}.png`}
+                    height={13}
+                  />
+                </div>
+                <Counter />
+              </div>
+            }
+            btnTexts={['취소', '담기']}
+          >
+            <div className='relative cursor-pointer flex items-end justify-end w-full'>
+              <button className='w-9 h-9 rounded-full bg-darkGrey flex items-center justify-center'>
                 <Image
                   src='/icons/HeaderCart.svg'
                   alt='cart'
@@ -53,15 +75,15 @@ export const ProductCard = ({
                 +
               </div>
             </div>
-          </div>
+          </BottomSheet>
         </div>
       </div>
       <div className='flex gap-[0.3125rem] mt-6'>
-        {priceShop.map((price, index) => (
+        {searchResult.storeList.map((store, index) => (
           <VenderCard
             key={index}
-            shop={price.shop}
-            price={price.price}
+            shop={store.shopName}
+            price={store.price}
             onClick={() => setSelectedProduct(index)}
             selected={index === seletedProduct}
           />
