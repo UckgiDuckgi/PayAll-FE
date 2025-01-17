@@ -4,20 +4,20 @@ import { AccountCard } from '@/components/molecules/sion/AccountCard';
 import { AccountDetailCard } from '@/components/molecules/sion/AccountDetailCard';
 import { AdCarousel } from '@/components/molecules/sion/AdCarousel';
 import { BenefitCard } from '@/components/molecules/sion/BenefitCard';
-import { CartProductCard } from '@/components/molecules/sion/CartProductCard';
 import { LowestProductCard } from '@/components/molecules/sion/LowestProductCard';
-import { ProductCard } from '@/components/molecules/sion/ProductCard';
 import { SearchInput } from '@/components/molecules/sion/SearchInput';
 import { VenderCard } from '@/components/molecules/sion/VenderCard';
 import { WordChip } from '@/components/molecules/sion/WordChip';
 import { AccentText } from '@/components/ui/AccentText';
 import { Counter } from '@/components/ui/Counter';
 import { IconIndicator } from '@/components/ui/IconIndicator';
+import { PayAllLogo } from '@/components/ui/PayAllLogo';
 import { Checkbox } from '@/components/ui/checkbox';
 
 export default function Sion() {
   return (
     <div className='overflow-y-scroll min-h-screen'>
+      <PayAllLogo />
       <AdCarousel />
       <div className='mt-4'>
         <div className='font-bold'>가나다라끠끠끠</div>
@@ -37,7 +37,7 @@ export default function Sion() {
         expense={100000}
       />
       <div className='mt-4'></div>
-      <SearchInput placeholder='검색' submit={() => {}} />
+      <SearchInput placeholder='검색' />
       <div className='mt-1 flex gap-2'>
         <WordChip word='삼다수' />
         <WordChip word='코카콜라' />
@@ -98,13 +98,6 @@ export default function Sion() {
         />
       </div>
 
-      <CartProductCard
-        imageUrl='/images/Logo.png'
-        pid={1}
-        title='나드 리프레쉬 퍼퓸드 바디워시 본품,프레쉬라벤더향, 680ml, 1개입 '
-        price={8900}
-        shop='11st'
-      />
       <div className='flex gap-2 overflow-x-scroll'>
         <LowestProductCard
           imageUrl='/images/Logo.png'
@@ -131,17 +124,6 @@ export default function Sion() {
           price={500000}
         />
       </div>
-      <ProductCard
-        name='나드 리프레쉬 퍼퓸드 바디워시 본품,
-프레쉬라벤더향, 680ml, 1개입 '
-        priceShop={[
-          { price: 8900, shop: '11st', image: '/', link: '/' },
-          { price: 9160, shop: 'Gmarket', image: '/', link: '/' },
-          { price: 9270, shop: 'Coupang', image: '/', link: '/' },
-          //   { price: 9270, shop: 'SSG', image: '/', link: '/' },
-          //   { price: 9270, shop: 'Auction', image: '/', link: '/' },
-        ]}
-      />
       <div className='flex w-full justify-around'>
         <VenderCard
           shop='11st'
@@ -193,7 +175,12 @@ export default function Sion() {
       <IconIndicator src='/images/Coupang.png' height={16} />
       <IconIndicator src='/images/SSG.png' height={16} />
       <IconIndicator src='/images/Auction.png' height={16} />
-      <Counter className='mt-4' />
+      <Counter
+        pid={0}
+        initialCount={0}
+        onCountChange={() => {}}
+        className='mt-4'
+      />
     </div>
   );
 }

@@ -57,7 +57,11 @@ export const ProductCard = ({
                     height={13}
                   />
                 </div>
-                <Counter />
+                <Counter
+                  pid={searchResult.pcode}
+                  onCountChange={() => {}}
+                  className='w-10'
+                />
               </div>
             }
             btnTexts={['취소', '담기']}

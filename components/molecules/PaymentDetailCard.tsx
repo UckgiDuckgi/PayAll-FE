@@ -50,7 +50,12 @@ function PaymentDetailCard({
                 </span>
                 <IconIndicator src={`/images/${vendorName}.png`} height={13} />
               </div>
-              <Counter />
+              <Counter
+                pid={0}
+                initialCount={0}
+                onCountChange={() => {}}
+                className='w-10'
+              />
             </div>
           }
           btnTexts={['취소', '담기']}

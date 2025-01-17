@@ -10,7 +10,9 @@ function DeliveryFeeProgress({
   return (
     <div className='w-full space-y-3 text-left'>
       <span className='text-[.875rem] font-bold'>
-        {fee.toLocaleString()}원 추가 구매 시 배송비 무료
+        {fee >= totalFee
+          ? '배송비 무료!'
+          : `${(totalFee - fee).toLocaleString()}원 추가 구매 시 배송비 무료`}
       </span>
       <div className='space-y-1'>
         <Progress value={+((fee / totalFee) * 100).toFixed(0)} />
