@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // 외부 접근 허용을 위한 설정 추가
+  // 기존 설정 유지
   async headers() {
     return [
       {
@@ -8,6 +8,17 @@ const nextConfig = {
         headers: [{ key: 'Access-Control-Allow-Origin', value: '*' }],
       },
     ];
+  },
+
+  // 이미지 도메인 설정 추가
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'img.danawa.com',
+      },
+      // 필요한 다른 도메인들도 여기에 추가
+    ],
   },
 };
 
