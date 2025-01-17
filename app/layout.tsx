@@ -1,7 +1,5 @@
-import Header from '@/components/Header';
-import Nav from '@/components/Nav';
 import type { Metadata } from 'next';
-import { bmDohyeonFont, pretendardFont } from './fonts';
+import { pretendardFont } from './fonts';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -18,12 +16,8 @@ export default function RootLayout({
   return (
     <html lang='ko'>
       <body>
-        <div
-          className={`App ${pretendardFont.variable} ${bmDohyeonFont.variable} font-sans`}
-        >
-          <Header />
-          <div className='w-[90%] mx-auto pt-16 pb-24'>{children}</div>
-          <Nav />
+        <div className={`App ${pretendardFont.variable} font-sans`}>
+          {children}
         </div>
       </body>
     </html>

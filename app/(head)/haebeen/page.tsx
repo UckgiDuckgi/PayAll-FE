@@ -11,6 +11,7 @@ import { Modal } from '@/components/molecules/ui/Modal';
 import CartContainer from '@/components/ui/CartContainer';
 import { Category, CATEGORY } from '@/constants/category';
 import { COLORS } from '@/constants/color';
+import Image from 'next/image';
 
 export type CategoryExpense = {
   category_id: number;
@@ -117,19 +118,19 @@ export const MOCK_PAYMENT_DETAIL = {
 };
 function Page() {
   return (
-    <div className='w-full'>
+    <div className='w-full pb-20'>
       {/* <Tabs
         tabs={tabs}
         selectedIdx={selectedIdx}
         handleSelectedIdx={handleSelectedIdx}
-      /> */}
+        /> */}
 
       {/* <div className='mt-10'>
         <CategoryChart
-          categoryExpenses={MOCK_STAT.category_expenses}
-          totalSpent={MOCK_STAT.total_spent}
+        categoryExpenses={MOCK_STAT.category_expenses}
+        totalSpent={MOCK_STAT.total_spent}
         />
-      </div> */}
+        </div> */}
 
       <div>
         <div className='font-bold'>가나다라마바상앙앙앙</div>
@@ -138,6 +139,43 @@ function Page() {
       </div>
 
       <PaymentCard showAccount={true} paymentInfo={MOCK_PAYMENT} />
+
+      <Image
+        src='/images/animations/check.gif'
+        alt='check'
+        width={100}
+        height={100}
+      />
+
+      <Image
+        src='/images/animations/documentCheck.gif'
+        alt='documentCheck'
+        width={100}
+        height={100}
+      />
+
+      <Image
+        src='/images/animations/ReceiptLoading.gif'
+        alt='ReceiptLoading'
+        width={100}
+        height={100}
+      />
+
+      <Image
+        src='/images/documentList.svg'
+        alt='documentList'
+        width={100}
+        height={100}
+        className='float-animation'
+      />
+
+      <Image
+        src='/images/documentList1.svg'
+        alt='documentList1'
+        width={100}
+        height={100}
+        className='float-animation'
+      />
 
       <CardInfoCard
         cardImg='/images/Logo.png'
@@ -218,8 +256,6 @@ function Page() {
           </div>
         </div>
       </CartContainer>
-
-      {/* <Image src='/images/animations/' /> */}
     </div>
   );
 }
