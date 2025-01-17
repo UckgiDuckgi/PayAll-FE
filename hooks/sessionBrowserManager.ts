@@ -1,6 +1,13 @@
 import { Browser, chromium, Page } from 'playwright';
 
-export type BrowserStatus = 'NOT_SIGNIN' | 'PINCODE' | 'SIGNIN' | 'PAYMENT';
+export type BrowserStatus =
+  | 'NOT_SIGNIN'
+  | 'PINCODE'
+  | 'SIGNIN'
+  | 'PAYMENT'
+  | 'RECAPTCHA'
+  | 'RECAPTCHA_PROCESS'
+  | 'RECAPTCHA_SUCCESS';
 
 export type SessionBrowser = {
   browser: Browser;
@@ -50,6 +57,7 @@ class SessionBrowserManager {
           'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
         headless: false,
         args: [
+          // '--window-position=-10000,-10000',
           '--window-position=0,0',
           '--disable-quic',
           '--no-sandbox',

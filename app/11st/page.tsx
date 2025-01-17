@@ -1,44 +1,31 @@
 'use client';
 
-import { CoupangResponse, Item } from '@/app/api/coupang/route';
-import PasswordInputForm from '@/components/coupang/passwordInputForm';
+import { Item } from '@/app/api/coupang/route';
 import PincodeInputForm from '@/components/coupang/pincodeInputForm';
+import ReCaptchaInputForm from '@/components/coupang/reCaptchaInputForm';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
+import { ElevenStreetResponse } from '../api/11st/route';
 
 export type OnClick = ({
   itemList,
   pincode,
-  password,
+  selectedTileList,
+  isReCaptchaEnd,
 }: {
   itemList: Item[];
   pincode?: string;
-  password?: string;
+  selectedTileList?: string;
+  isReCaptchaEnd?: boolean;
 }) => Promise<void>;
 
-export default function Coupang() {
-  const [coupangResponse, setCoupangResponse] =
-    useState<CoupangResponse | null>(null);
+export default function ElevenStreet() {
+  const [response, setResponse] = useState<ElevenStreetResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const itemList: Item[] = [
     {
-      productId: '7666070794',
-      itemId: '90437044721',
-      quantity: 1,
-    },
-    {
-      productId: '7958974',
-      itemId: '91118401786',
-      quantity: 2,
-    },
-    {
-      productId: '2042132',
-      itemId: '86533230299',
-      quantity: 2,
-    },
-    {
-      productId: '7591951475',
+      productId: '7864138029',
       quantity: 1,
     },
   ];
@@ -46,28 +33,31 @@ export default function Coupang() {
   const handleOnClick = async ({
     itemList,
     pincode = '',
-    password = '',
+    selectedTileList = '',
+    isReCaptchaEnd = false,
   }: {
     itemList: Item[];
     pincode?: string;
-    password?: string;
+    selectedTileList?: string;
+    isReCaptchaEnd?: boolean;
   }) => {
     try {
       setIsLoading(true);
-      const response = await fetch('/api/coupang', {
+      const response = await fetch('/api/11st', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          selectedTileList,
+          isReCaptchaEnd,
           pincode,
-          password,
           itemList,
         }),
       });
 
-      const res = (await response.json()) as CoupangResponse;
-      setCoupangResponse(res ?? null);
+      const res = (await response.json()) as ElevenStreetResponse;
+      setResponse(res ?? null);
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
@@ -79,28 +69,31 @@ export default function Coupang() {
     return <div className='flex justify-center pt-10 text-3xl'>Loading...</div>;
   }
 
-  if (!coupangResponse) {
+  if (!response) {
     return (
       <div className='flex justify-center pt-10'>
         <Button
           variant={'secondary'}
           onClick={() => handleOnClick({ itemList })}
         >
-          쿠팡
+          11번가
         </Button>
       </div>
     );
   }
 
-  const { status, result } = coupangResponse;
+  const { status, result } = response;
+  const { base64Image, tableSize } = result;
+  console.log('🚀 ~ ElevenStreet ~ status:', status);
 
   return (
     <>
       {status === 'PINCODE' ? (
         <PincodeInputForm onClick={handleOnClick} itemList={itemList} />
-      ) : status === 'PASSWORD' ? (
-        <PasswordInputForm
-          base64Image={result}
+      ) : status === 'RECAPTCHA' ? (
+        <ReCaptchaInputForm
+          base64Image={base64Image}
+          tableSize={tableSize}
           onClick={handleOnClick}
           itemList={itemList}
         />

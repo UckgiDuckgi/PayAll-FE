@@ -1,155 +1,105 @@
-import SessionBrowserManager, {
-  BrowserStatus,
-} from '@/hooks/sessionBrowserManager';
-import { Page } from 'playwright';
+'use server';
 
-export type ActionType = 'GOTO' | 'FILL' | 'CLICK' | 'CHECK';
+import { Item } from '@/app/api/coupang/route';
+import SessionBrowserManager from '@/hooks/sessionBrowserManager';
 
-type PlaywrightGotoAction = {
-  actionType: 'GOTO';
-  url: string;
+export type PlaywrightElementSelector = {
+  //SignIn
+  inputIdSelector: string;
+  inputPwSelector: string;
+  buttonSignInSelector: string;
+  //AddCart
+  inputQuantitySelector: string;
+  buttonCartSelector: string;
 };
 
-type PlaywrightClickAction = {
-  actionType: 'CLICK';
-  selector: string;
-};
-
-type PlaywrightFillAction = {
-  actionType: 'FILL';
-  selector: string;
-  content: string;
-};
-
-type PlaywrightCheckAction = {
-  actionType: 'CHECK';
-  selector: string;
-};
-
-export type PlaywrightAction = {
-  action:
-    | PlaywrightGotoAction
-    | PlaywrightClickAction
-    | PlaywrightFillAction
-    | PlaywrightCheckAction;
-  time?: number;
-  range?: number;
-};
-
-const DELAY = 4000;
-const RANGE = 2000;
-
-function delay(ms: number): Promise<void> {
+export async function delay(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-export async function excutePlaywrightActions({
-  playwrightActions,
-  expectStatus,
-}: {
-  playwrightActions: PlaywrightAction[];
-  expectStatus?: BrowserStatus;
-}) {
-  const { page, status } = await SessionBrowserManager.getInstance();
-  if (expectStatus && status !== expectStatus) {
-    return;
-  }
+export type PlaywrightActionsProps<T> = {
+  SIGNIN_URL: string;
+  CART_URL: string;
+  DETAIL_BASE_URL: string;
+  DELAY?: number;
+  RANGE?: number;
+  elementSelector: T;
+};
 
-  for (const playwrightAction of playwrightActions) {
-    await excutePlaywrightAction(playwrightAction, page);
-  }
-}
+export const getPlaywrightActions = async ({
+  SIGNIN_URL,
+  DETAIL_BASE_URL,
+  DELAY = 2000,
+  RANGE = 2000,
+  elementSelector,
+}: PlaywrightActionsProps<PlaywrightElementSelector>) => {
+  const sessionBrowserManager = await SessionBrowserManager.getInstance();
 
-export async function excutePlaywrightAction(
-  { action, time = DELAY, range = RANGE }: PlaywrightAction,
-  page: Page
-) {
-  const { actionType } = action;
-  switch (actionType) {
-    case 'GOTO': {
-      const { url } = action;
+  return {
+    signIn: async ({
+      id,
+      pw,
+      dTime = DELAY,
+      rTime = RANGE,
+    }: {
+      id: string;
+      pw: string;
+      dTime?: number;
+      rTime?: number;
+    }) => {
+      const { page, status } = sessionBrowserManager;
+
+      if (status !== 'NOT_SIGNIN' && status !== 'RECAPTCHA_SUCCESS') {
+        return;
+      }
+
+      const { inputIdSelector, inputPwSelector, buttonSignInSelector } =
+        elementSelector;
+
+      if (status !== 'RECAPTCHA_SUCCESS') {
+        await page.goto(SIGNIN_URL);
+        console.log('Goto SignIn Page');
+        await delay(Math.random() * dTime + rTime);
+      }
+
+      await page.locator(inputIdSelector).fill(id);
+      console.log('Login ID Filled!');
+      await delay(Math.random() * dTime + rTime);
+
+      await page.locator(inputPwSelector).fill(pw);
+      console.log('Login PWD Filled!');
+      await delay(Math.random() * dTime + rTime);
+
+      await page.locator(buttonSignInSelector).click();
+      console.log('Login Button Clicked!');
+      await delay(Math.random() * (dTime + 2000) + rTime);
+
+      if (status === 'RECAPTCHA_SUCCESS') {
+        sessionBrowserManager.status = 'SIGNIN';
+      }
+    },
+    addCart: async ({ productId, itemId, quantity }: Item) => {
+      const { page, status } = sessionBrowserManager;
+
+      if (status !== 'SIGNIN') {
+        return;
+      }
+
+      const { inputQuantitySelector, buttonCartSelector } = elementSelector;
+      console.log('Add Cart Function!! ~ ', status);
+      const url = itemId
+        ? DETAIL_BASE_URL + productId + '?vendorItemId=' + itemId
+        : DETAIL_BASE_URL + productId;
       await page.goto(url);
-      await delay(Math.random() * time + range);
-      break;
-    }
-    case 'CLICK': {
-      const { selector } = action;
-      await page.locator(selector).click();
-      await delay(Math.random() * time + range);
-      break;
-    }
-    case 'FILL': {
-      const { selector, content } = action;
-      await page.locator(selector).fill(content);
-      await delay(Math.random() * time + range);
-      break;
-    }
-  }
-}
+      await delay(Math.random() * DELAY + RANGE);
 
-export async function playwrightGoto({
-  page,
-  url,
-  time = DELAY,
-  range = RANGE,
-}: {
-  page: Page;
-  url: string;
-  time?: number;
-  range?: number;
-}) {
-  await page.goto(url);
-  await delay(Math.random() * time + range);
-}
+      await page.locator(inputQuantitySelector).fill(quantity.toString());
+      console.log('Product Quantity Set');
+      await delay(Math.random() * DELAY + RANGE);
 
-export async function playwrightClick({
-  page,
-  selector,
-  time = DELAY,
-  range = RANGE,
-}: {
-  page: Page;
-  selector: string;
-  time?: number;
-  range?: number;
-}) {
-  await page.locator(selector).click();
-  await delay(Math.random() * time + range);
-}
-
-export async function playwrightFill({
-  page,
-  selector,
-  content,
-  time = DELAY,
-  range = RANGE,
-}: {
-  page: Page;
-  selector: string;
-  content: string;
-  time?: number;
-  range?: number;
-}) {
-  await page.locator(selector).fill(content);
-  await delay(Math.random() * time + range);
-}
-
-export async function playwrightCheck({
-  page,
-  selector,
-}: {
-  page: Page;
-  selector: string;
-}) {
-  return (await page.locator(selector).count()) > 0;
-}
-
-export async function playwrightScreenShot({
-  page,
-  selector,
-}: {
-  page: Page;
-  selector: string;
-}) {
-  return await page.locator(selector).screenshot();
-}
+      await page.locator(buttonCartSelector).click();
+      console.log('Product Cart Button Clicked!');
+      await delay(Math.random() * DELAY + RANGE);
+    },
+  };
+};

@@ -1,7 +1,7 @@
 'use client';
 
 import { Item } from '@/app/api/coupang/route';
-import { OnClick } from '@/app/coupang/test/page';
+import { OnClick } from '@/app/coupang/page';
 import { useState } from 'react';
 import { Button } from '../ui/button';
 

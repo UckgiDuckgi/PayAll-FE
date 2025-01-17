@@ -1,166 +1,141 @@
 'use server';
 
-import { Item } from '@/app/api/coupang/route';
 import SessionBrowserManager from '@/hooks/sessionBrowserManager';
+import {
+  delay,
+  getPlaywrightActions,
+  PlaywrightActionsProps,
+  PlaywrightElementSelector,
+} from '../playwrightActions';
 
-const BASE_URL = 'https://www.coupang.com/';
-const DETAIL_BASE_URL = 'https://www.coupang.com/vp/products/';
+export type CoupangElementSelector = PlaywrightElementSelector & {
+  // Payment
+  buttonOrderSelector: string;
+  buttonPaymentSelector: string;
+  modalPaymentSelector: string;
+  // Payment Password
+  frameSelector: string;
 
-const DELAY = 2000;
-const RANGE = 2000;
-
-function delay(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-export const coupangSignIn = async () => {
-  const { page, status } = await SessionBrowserManager.getInstance();
-
-  if (status !== 'NOT_SIGNIN') {
-    return;
-  }
-
-  await page.goto(BASE_URL);
-  console.log('Go to Main');
-  await delay(Math.random() * DELAY + RANGE);
-
-  await page.locator('.login').click();
-  console.log('Login Button Clicked!');
-  await delay(Math.random() * DELAY + RANGE);
-
-  const coupangId = process.env.COUPANG_ID;
-  const coupangPw = process.env.COUPANG_PW;
-  await page.locator('._loginIdInput').fill(coupangId ?? '');
-  console.log('Login ID Filled!');
-  await delay(Math.random() * DELAY + RANGE);
-
-  await page.locator('._loginPasswordInput').fill(coupangPw ?? '');
-  console.log('Login PWD Filled!');
-  await delay(Math.random() * DELAY + RANGE);
-
-  await page.locator('.login__button--submit').click();
-  console.log('Login Button Clicked!');
-  await delay(Math.random() * DELAY + RANGE);
+  buttonGetPincodeSelector: string;
+  inputPincodeSelector: string;
+  buttonSetPincodeSelector: string;
 };
 
-export const coupangGetPincode = async () => {
+export const getCoupangActions = async ({
+  SIGNIN_URL,
+  CART_URL,
+  DETAIL_BASE_URL,
+  DELAY = 2000,
+  RANGE = 2000,
+  elementSelector,
+}: PlaywrightActionsProps<CoupangElementSelector>) => {
   const sessionBrowserManager = await SessionBrowserManager.getInstance();
-  const { page, status } = sessionBrowserManager;
 
-  if (status !== 'NOT_SIGNIN') {
-    return false;
-  }
+  const playwrightAction = await getPlaywrightActions({
+    SIGNIN_URL,
+    CART_URL,
+    DETAIL_BASE_URL,
+    DELAY,
+    RANGE,
+    elementSelector,
+  });
+  return {
+    ...playwrightAction,
+    getPincode: async () => {
+      const { page, status } = sessionBrowserManager;
 
-  const isPresent =
-    (await page.locator('.pincode-content__button').count()) > 0;
+      if (status !== 'NOT_SIGNIN') {
+        return false;
+      }
 
-  if (!isPresent) {
-    return false;
-  }
+      const { buttonGetPincodeSelector } = elementSelector;
 
-  await page.locator('.pincode-content__button').click();
-  await delay(Math.random() * DELAY + RANGE);
+      const isPresent =
+        (await page.locator(buttonGetPincodeSelector).count()) > 0;
 
-  if (isPresent) {
-    sessionBrowserManager.status = 'PINCODE';
-    return true;
-  }
-};
+      if (!isPresent) {
+        return false;
+      }
 
-export const coupangSetPincode = async (pincode: string) => {
-  console.log('🚀 ~ coupangSetPincode ~ pincode:', pincode);
-  const sessionBrowserManager = await SessionBrowserManager.getInstance();
-  const { page, status } = sessionBrowserManager;
+      await page.locator(buttonGetPincodeSelector).click();
+      await delay(Math.random() * DELAY + RANGE);
 
-  if (status !== 'PINCODE') {
-    if (status === 'NOT_SIGNIN') {
+      if (isPresent) {
+        sessionBrowserManager.status = 'PINCODE';
+        return true;
+      }
+    },
+    setPincode: async (pincode: string) => {
+      const { page, status } = sessionBrowserManager;
+
+      if (status !== 'PINCODE') {
+        if (status === 'NOT_SIGNIN') {
+          sessionBrowserManager.status = 'SIGNIN';
+        }
+        return;
+      }
+
+      const { inputPincodeSelector, buttonSetPincodeSelector } =
+        elementSelector;
+      await page.locator(inputPincodeSelector).fill(pincode);
+      await delay(Math.random() * DELAY + RANGE);
+
+      await page.locator(buttonSetPincodeSelector).click();
+      await delay(Math.random() * DELAY + RANGE);
       sessionBrowserManager.status = 'SIGNIN';
-    }
-    return;
-  }
+    },
+    payment: async () => {
+      const { page, status } = sessionBrowserManager;
 
-  await page
-    .locator('.pincode-input__pincode-input-box__pincode')
-    .fill(pincode);
-  await delay(Math.random() * DELAY + RANGE);
+      if (status !== 'SIGNIN') {
+        return;
+      }
 
-  await page.locator('.pincode-input__button').click();
-  await delay(Math.random() * DELAY + RANGE);
-  sessionBrowserManager.status = 'SIGNIN';
-};
+      const {
+        buttonOrderSelector,
+        buttonPaymentSelector,
+        modalPaymentSelector,
+      } = elementSelector;
+      console.log('Pay All Function!!');
 
-export const coupangAddCart = async ({ productId, itemId, quantity }: Item) => {
-  const { page, status } = await SessionBrowserManager.getInstance();
+      await page.goto(CART_URL);
+      await delay(Math.random() * DELAY + RANGE);
 
-  if (status !== 'SIGNIN') {
-    return;
-  }
-  console.log('Add Cart Function!! ~ ', status);
-  const url = itemId
-    ? DETAIL_BASE_URL + productId + '?vendorItemId=' + itemId
-    : DETAIL_BASE_URL + productId;
-  await page.goto(url);
-  await delay(Math.random() * DELAY + RANGE);
+      await page.locator(buttonOrderSelector).click();
+      console.log('Order Button Clicked!');
+      await delay(Math.random() * DELAY + RANGE);
 
-  await page.locator('.prod-quantity__input').fill(quantity.toString());
-  console.log('Product Quantity Set');
-  await delay(Math.random() * DELAY + RANGE);
+      await page.locator(buttonPaymentSelector).click();
+      console.log('Payment Button Clicked!');
+      await delay(Math.random() * DELAY + RANGE);
 
-  await page.locator('.prod-cart-btn').click();
-  console.log('Product Cart Button Clicked!');
-  await delay(Math.random() * DELAY + RANGE);
-};
+      await delay(Math.random() * (DELAY + 2000) + RANGE);
+      const screenshotBuffer = await page
+        .locator(modalPaymentSelector)
+        .screenshot();
 
-export const coupangPayAll = async () => {
-  const sessionBrowserManager = await SessionBrowserManager.getInstance();
-  const { page, status } = sessionBrowserManager;
+      sessionBrowserManager.status = 'PAYMENT';
+      return screenshotBuffer;
+    },
+    setCoupangPayPassword: async (password: string) => {
+      const { page, status } = sessionBrowserManager;
 
-  if (status !== 'SIGNIN') {
-    return;
-  }
-  console.log('Pay All Function!!');
+      if (status !== 'PAYMENT') {
+        return;
+      }
 
-  await page.goto(BASE_URL);
-  await delay(Math.random() * DELAY + RANGE);
+      console.log('🚀 ~ coupangPayment ~ ', status);
+      const { frameSelector } = elementSelector;
 
-  await page.locator('.mycart-preview-module').click();
-  console.log('MyCart Button Clicked!');
-  await delay(Math.random() * DELAY + RANGE);
-
-  await page.locator('.order-buttons').click();
-  console.log('Order Button Clicked!');
-  await delay(Math.random() * DELAY + RANGE);
-
-  await page.locator('.paymentBtn-v2-style').click();
-  console.log('Payment Button Clicked!');
-  await delay(Math.random() * DELAY + RANGE);
-
-  await delay(Math.random() * (DELAY + 2000) + RANGE);
-  const screenshotBuffer = await page
-    .locator('#modal-callLGPayment')
-    .screenshot();
-
-  sessionBrowserManager.status = 'PAYMENT';
-  return screenshotBuffer;
-};
-
-export const coupangInsertPassword = async (password: string) => {
-  const sessionBrowserManager = await SessionBrowserManager.getInstance();
-  const { page, status } = sessionBrowserManager;
-
-  console.log('🚀 ~ coupangPayment ~ ', status);
-
-  if (status !== 'PAYMENT') {
-    return;
-  }
-
-  const iframe = page.frameLocator('#callLGPayment');
-  for (const numpad of password) {
-    await iframe.locator(`[data-key="${numpad}"]`).click();
-    console.log('numpad ', numpad, 'clicked!');
-    await delay(Math.random() * 1000 + RANGE);
-  }
-  return;
+      const iframe = page.frameLocator(frameSelector);
+      for (const numpad of password) {
+        await iframe.locator(`[data-key="${numpad}"]`).click();
+        console.log('numpad ', numpad, 'clicked!');
+        await delay(Math.random() * 1000 + RANGE);
+      }
+      return;
+    },
+  };
 };
 
 export const coupangClose = async () => {
