@@ -1,5 +1,10 @@
-import { CardCarousel } from '@/components/molecules/CardCarousel';
+import CardBenefitInfo from '@/components/molecules/CardBenefitInfo';
+import {
+  CardCarousel,
+  payment_detail,
+} from '@/components/molecules/CardCarousel';
 import CategorySubCard from '@/components/molecules/CategorySubCard';
+import SimpleBottomSheet from '@/components/molecules/ui/SimpleBottomSheet';
 import Link from 'next/link';
 
 function page() {
@@ -11,10 +16,12 @@ function page() {
             내 소비를 아는 카드
           </span>
         </div>
-        <CardCarousel />
+        <div className='h-[270px]'>
+          <CardCarousel />
+        </div>
       </div>
 
-      <div className='w-full absolute top-72'>
+      <div className='relative w-full'>
         <div className='flex items-center justify-end'>
           <Link
             href='/statistics/recommend/cards'
@@ -28,27 +35,23 @@ function page() {
             내 소비를 아는 구독 서비스
           </span>
         </div>
-        <CategorySubCard
-          img={'/images/subscribes/T.svg'}
-          category='외식'
-          color='#B77DF1'
-          paymentName='롯데리아'
-          amount={23870}
-        />
-        <CategorySubCard
-          img={'/images/subscribes/T.svg'}
-          category='외식'
-          color='#B77DF1'
-          paymentName='롯데리아'
-          amount={23870}
-        />
-        <CategorySubCard
-          img={'/images/subscribes/T.svg'}
-          category='외식'
-          color='#B77DF1'
-          paymentName='롯데리아'
-          amount={23870}
-        />
+        <SimpleBottomSheet
+          content={
+            <CardBenefitInfo
+              index={0}
+              cardName='샵 마이웨이 카드'
+              paymentDetails={payment_detail}
+            />
+          }
+        >
+          <CategorySubCard
+            img={'/images/subscribes/T.svg'}
+            category='외식'
+            color='#B77DF1'
+            paymentName='롯데리아'
+            amount={23870}
+          />
+        </SimpleBottomSheet>
 
         <div className='flex items-center justify-end'>
           <Link
