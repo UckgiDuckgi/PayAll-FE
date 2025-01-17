@@ -2,7 +2,6 @@
 
 import DeliveryFeeProgress from '@/components/molecules/DeliveryFeeProgress';
 import { CartProductCard } from '@/components/molecules/sion/CartProductCard';
-import CartContainer from '@/components/ui/CartContainer';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useState } from 'react';
@@ -111,7 +110,7 @@ export default function CartPage() {
   };
 
   const calculateSelectedItemsCount = () => {
-    return Array.from(itemStates.entries()).reduce((sum, [pid, state]) => {
+    return Array.from(itemStates.entries()).reduce((sum, [, state]) => {
       if (state.isChecked) {
         return sum + state.quantity;
       }
@@ -120,7 +119,7 @@ export default function CartPage() {
   };
 
   return (
-    <div className='flex flex-col gap-[0.625rem] pb-36'>
+    <div className='flex flex-col gap-[0.625rem] pb-24'>
       <DeliveryFeeProgress fee={calculateTotalPrice()} totalFee={19900} />
       <div className='flex items-center gap-2 my-3'>
         <Checkbox
