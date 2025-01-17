@@ -1,6 +1,7 @@
 'use client';
 
 import ProgressBar from '@/components/molecules/GoalProgress';
+import { LowestProductList } from '@/components/molecules/LowestProductList';
 import { AdCarousel } from '@/components/molecules/sion/AdCarousel';
 import { LowestProductCard } from '@/components/molecules/sion/LowestProductCard';
 import { AccentText } from '@/components/ui/AccentText';
@@ -149,17 +150,7 @@ export default function Home() {
         <span className='text-base font-bold text-grey mb-4'>
           최근 지출 품목의 최저가 상품
         </span>
-        <div className='flex space-x-4 overflow-x-hidden'>
-          {MOCK_LOWEST_PRODUCT.map((product) => (
-            <LowestProductCard
-              key={product.productId}
-              imageUrl={product.productImage}
-              title={product.productName}
-              discount={product.discountRate}
-              price={product.price}
-            />
-          ))}
-        </div>
+        <LowestProductList products={MOCK_LOWEST_PRODUCT} />
       </div>
     </div>
   );

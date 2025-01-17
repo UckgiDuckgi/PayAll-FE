@@ -1,6 +1,6 @@
 'use client';
 
-import { LinkedAccount } from '@/components/molecules/LinkedAccount';
+import { LinkedAccount } from '@/components/molecules/LinkedMembership';
 import { useRouter } from 'next/navigation';
 
 export default function Membership() {
