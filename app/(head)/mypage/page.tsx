@@ -3,6 +3,7 @@
 import { Modal } from '@/components/molecules/ui/Modal';
 import { ChevronRight } from 'lucide-react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 type UserData = {
   name: string;
@@ -12,6 +13,12 @@ type UserData = {
 };
 
 export default function MyPage() {
+  const router = useRouter();
+
+  const toMyAccountPage = () => {
+    router.push('/mypage/account');
+  };
+
   const MOCK_USER: UserData = {
     name: '문해빈',
     id: 'slrspdla',
@@ -22,7 +29,7 @@ export default function MyPage() {
 
   return (
     <>
-      <div className='bg-deepDarkGrey px-[1.875rem] py-[2.125rem]'>
+      <div className='bg-deepDarkGrey px-[1.875rem] py-[2.125rem] absolute left-1/2 transform -translate-x-1/2 w-screen max-w-[512px]'>
         <div className='flex items-center mb-[1.5625rem]'>
           <Image
             src='/images/User.png'
@@ -50,7 +57,7 @@ export default function MyPage() {
           </div>
         </div>
       </div>
-      <div className='p-[1.875rem] text-white'>
+      <div className='py-[1.875rem] text-white pt-72'>
         <div className='space-y-3'>
           <Modal title='배송지' description={MOCK_USER.address} btnText='확인'>
             <div className='flex justify-between items-center py-[0.34375rem]'>
@@ -61,7 +68,10 @@ export default function MyPage() {
 
           <div className='flex justify-between items-center py-[0.34375rem]'>
             <span>연동 계정 관리</span>
-            <ChevronRight className='text-[#999999]' />
+            <ChevronRight
+              className='text-[#999999]'
+              onClick={toMyAccountPage}
+            />
           </div>
           <hr className='border-t-1 border-[#D9D9D9]' />
           <div className='flex justify-between items-center py-[0.34375rem]'>
