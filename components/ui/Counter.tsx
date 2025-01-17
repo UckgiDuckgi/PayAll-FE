@@ -4,21 +4,32 @@ import { useState } from 'react';
 import { cn } from '@/lib/utils';
 
 export function Counter({
-  // pid,
+  pid,
+  initialCount = 1,
+  onCountChange,
   className,
 }: {
-  // pid: number; //상품id
+  pid: number;
+  initialCount?: number;
+  onCountChange: (pid: number, count: number) => void;
   className?: string;
 }) {
-  const [count, setCount] = useState(1);
+  const [count, setCount] = useState(initialCount);
+
   const plusCounter = () => {
-    setCount(count + 1);
+    const newCount = count + 1;
+    setCount(newCount);
+    onCountChange(pid, newCount);
   };
+
   const minusCounter = () => {
     if (count > 1) {
-      setCount(count - 1);
+      const newCount = count - 1;
+      setCount(newCount);
+      onCountChange(pid, newCount);
     }
   };
+
   return (
     <div
       className={cn(
