@@ -98,10 +98,10 @@ export default function Home() {
   ];
 
   return (
-    <div className='flex justify-center items-center'>
+    <div className='flex justify-center flex-col items-center w-full'>
       <AdCarousel />
 
-      <div className='m-8 flex flex-col gap-2'>
+      <div className='my-8 flex flex-col gap-2 w-full'>
         <span className='text-[0.8125rem]'>
           <a className='text-lg font-bold border-l-[0.1875rem] pl-[0.5625rem] border-main'>
             {MOCK_USER.name}
@@ -146,7 +146,7 @@ export default function Home() {
         end_date={MOCK_GOAL.end_date}
       />
 
-      <div className='flex flex-col mt-20'>
+      <div className='flex flex-col mt-20 w-full'>
         <span className='text-base font-bold text-grey mb-4'>
           최근 지출 품목의 최저가 상품
         </span>

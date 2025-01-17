@@ -16,7 +16,7 @@ type LowestProductListProps = {
 
 export const LowestProductList = ({ products }: LowestProductListProps) => {
   return (
-    <div className='flex space-x-4 overflow-x-hidden'>
+    <div className='flex space-x-4 overflow-x-scroll'>
       {products.map((product) => (
         <LowestProductCard
           key={product.productId}

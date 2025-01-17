@@ -30,7 +30,7 @@ function ProgressBar({
   }, [spentAmount, limitAmount]);
 
   return (
-    <div className='space-y-1'>
+    <div className='space-y-1 w-full'>
       <div className='w-full flex justify-between items-center gap-2'>
         <span
           className='w-full h-[1.5px]'
