@@ -40,11 +40,7 @@ const paymentDetail = [
   },
 ];
 
-export default function PaymentDetailPage({
-  params,
-}: {
-  params: { paymentId: string };
-}) {
+export default function PaymentDetailPage() {
   return (
     <div>
       <PaymentInfoCard paymentInfo={paymentInfo} />

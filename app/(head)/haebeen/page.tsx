@@ -11,7 +11,6 @@ import { Modal } from '@/components/molecules/ui/Modal';
 import CartContainer from '@/components/ui/CartContainer';
 import { Category, CATEGORY } from '@/constants/category';
 import { COLORS } from '@/constants/color';
-import { useState } from 'react';
 
 export type CategoryExpense = {
   category_id: number;
@@ -117,10 +116,6 @@ export const MOCK_PAYMENT_DETAIL = {
   ],
 };
 function Page() {
-  const tabs = ['소비 분석', '소비 목표', '추천 혜택'];
-  const [selectedIdx, setSelectedIdx] = useState(0);
-  const handleSelectedIdx = (idx: number) => setSelectedIdx(idx);
-
   return (
     <div className='w-full'>
       {/* <Tabs
@@ -167,19 +162,17 @@ function Page() {
 
       {/* 가로 스크롤 캐러셀 컴포넌트로 분리 */}
       <ul className='w-full overflow-x-scroll flex space-x-3 px-2 py-6 scrollbar-hide snap-x'>
-        {MOCK_STAT.category_expenses.map(
-          ({ category_id, category, amount }, idx) => (
-            <li key={idx} className='flex-shrink-0 snap-center'>
-              <CategoryCarouselItem
-                percent={+((amount / MOCK_STAT.total_spent) * 100).toFixed(0)}
-                color={COLORS[idx]}
-                categoryName={CATEGORY[category][0]}
-                categoryIconName={category}
-                amount={amount}
-              />
-            </li>
-          )
-        )}
+        {MOCK_STAT.category_expenses.map(({ category, amount }, idx) => (
+          <li key={idx} className='flex-shrink-0 snap-center'>
+            <CategoryCarouselItem
+              percent={+((amount / MOCK_STAT.total_spent) * 100).toFixed(0)}
+              color={COLORS[idx]}
+              categoryName={CATEGORY[category][0]}
+              categoryIconName={category}
+              amount={amount}
+            />
+          </li>
+        ))}
       </ul>
 
       <ul className='space-y-3 my-5'>
