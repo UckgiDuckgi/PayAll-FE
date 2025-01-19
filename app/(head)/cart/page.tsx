@@ -1,6 +1,7 @@
 'use client';
 
 import DeliveryFeeProgress from '@/components/molecules/DeliveryFeeProgress';
+import CardSlide from '@/components/molecules/sion/CardSlide';
 import { CartProductCard } from '@/components/molecules/sion/CartProductCard';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -49,6 +50,33 @@ const USER_INFO = {
   address:
     '서울 성동구 뚝섬로1가길 17 (성수동1가, 얼리브홈 서울숲), 503호 [04779]',
 };
+
+const MOCK_CARDS = [
+  {
+    id: 1,
+    bankName: '신한카드',
+    cardNumber: '1234-****-****-5678',
+    imageUrl: 'sinhan.svg',
+  },
+  {
+    id: 2,
+    bankName: '삼성카드',
+    cardNumber: '5678-****-****-1234',
+    imageUrl: 'samsung.svg',
+  },
+  {
+    id: 3,
+    bankName: '하나카드',
+    cardNumber: '9012-****-****-3456',
+    imageUrl: 'hana.svg',
+  },
+  {
+    id: 4,
+    bankName: '하나카드',
+    cardNumber: '9012-****-****-3456',
+    imageUrl: 'hana.svg',
+  },
+];
 
 const DELIVERY_FEE = 2000;
 
@@ -161,6 +189,7 @@ export default function CartPage() {
       <div className='w-[111.2%] bg-black -mx-[5.6%]'>
         <div className='flex flex-col gap-2 w-[90%] mx-auto py-[0.875rem]'>
           <div className='font-bold text-[0.9375rem]'>결제 수단</div>
+          <CardSlide cards={MOCK_CARDS} />
         </div>
       </div>
       <div className='w-[111.2%] bg-black -mx-[5.6%]'>

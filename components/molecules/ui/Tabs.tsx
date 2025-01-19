@@ -1,4 +1,4 @@
-import { Tab } from '@/app/statistics/layout';
+import { Tab } from '@/app/(head)/statistics/layout';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
