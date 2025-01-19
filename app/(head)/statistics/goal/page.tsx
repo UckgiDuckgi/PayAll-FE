@@ -33,7 +33,9 @@ const EmotionBox = ({ differ }: { differ: number }) => {
   );
 };
 
-function page() {
+function Page() {
+  const [isChecked, setIsChecked] = useState(false);
+  const toggleChecked = () => setIsChecked((prev) => !prev);
   const MOCK_GOAL = {
     limit_amount: 1500000,
     spent_amount: 1300000,
@@ -134,9 +136,6 @@ function page() {
     );
   }
 
-  const [isChecked, setIsChecked] = useState(false);
-  const toggleChecked = () => setIsChecked((prev) => !prev);
-
   return (
     <div className=' w-[90%] mx-auto z-50 flex flex-col justify-center items-center gap-10 pt-20 sm:pt-8'>
       <div className='mx-auto w-[150px] sm:w-[200px] h-auto'>
@@ -186,4 +185,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;

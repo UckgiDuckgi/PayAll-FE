@@ -3,7 +3,6 @@
 import ProgressBar from '@/components/molecules/GoalProgress';
 import { LowestProductList } from '@/components/molecules/LowestProductList';
 import { AdCarousel } from '@/components/molecules/sion/AdCarousel';
-import { LowestProductCard } from '@/components/molecules/sion/LowestProductCard';
 import { AccentText } from '@/components/ui/AccentText';
 import { Triangle } from '@/public/icons/Triangle';
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from 'chart.js';

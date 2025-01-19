@@ -13,7 +13,7 @@ function formatNumber(value: string | null): string {
   return numericValue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
-function page() {
+function Page() {
   const searchParams = useSearchParams();
   const avgSpent = searchParams.get('avgSpent');
   const complete = searchParams.get('complete');
@@ -112,4 +112,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;

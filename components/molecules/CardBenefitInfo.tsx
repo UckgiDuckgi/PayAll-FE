@@ -64,24 +64,26 @@ function CardBenefitInfo({ index, cardName, paymentDetails }: Params) {
           혜택 받을 수 있어요
         </span>
         <div className='space-y-4 my-8'>
-          {paymentDetails.map(({ payment_place, payment_count, benefit }) => (
-            <div className='flex items-center justify-between'>
-              <div className='space-x-2'>
-                <span className='text-[.875rem] text-grey font-bold'>
-                  {payment_place}
-                </span>
-                <Badge className='bg-deepDarkGrey px-2 rounded-full text-[.875rem] font-bold text-red'>
-                  {payment_count}번{' '}
-                  <span className='font-medium ml-1 text-[.6875rem] text-[#AAAAAA]'>
-                    방문
+          {paymentDetails.map(
+            ({ payment_place, payment_count, benefit }, index) => (
+              <div key={index} className='flex items-center justify-between'>
+                <div className='space-x-2'>
+                  <span className='text-[.875rem] text-grey font-bold'>
+                    {payment_place}
                   </span>
-                </Badge>
+                  <Badge className='bg-deepDarkGrey px-2 rounded-full text-[.875rem] font-bold text-red'>
+                    {payment_count}번{' '}
+                    <span className='font-medium ml-1 text-[.6875rem] text-[#AAAAAA]'>
+                      방문
+                    </span>
+                  </Badge>
+                </div>
+                <span className='text-[1.125rem] font-semibold text-grey'>
+                  {benefit.toLocaleString()}원
+                </span>
               </div>
-              <span className='text-[1.125rem] font-semibold text-grey'>
-                {benefit.toLocaleString()}원
-              </span>
-            </div>
-          ))}
+            )
+          )}
         </div>
       </div>
     </div>

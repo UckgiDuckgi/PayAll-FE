@@ -7,7 +7,7 @@ import { motion, useScroll } from 'framer-motion';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 
-function page() {
+function Page() {
   const { scrollYProgress } = useScroll();
   const searchParams = useSearchParams();
   const complete = searchParams.get('complete');
@@ -193,4 +193,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;

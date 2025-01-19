@@ -20,10 +20,7 @@ interface CardSlideProps {
 const CARD_OFFSET = 16;
 const SCALE_FACTOR = 0.05;
 
-export default function CardSlide({
-  cards: initialCards,
-  onSelect,
-}: CardSlideProps) {
+export default function CardSlide({ cards: initialCards }: CardSlideProps) {
   const [cards, setCards] = useState(initialCards);
 
   const moveToEnd = (from: number) => {
