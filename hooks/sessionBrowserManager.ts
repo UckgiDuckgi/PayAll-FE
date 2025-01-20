@@ -1,4 +1,4 @@
-import { Browser, chromium, Page } from 'playwright';
+import { Browser, BrowserContext, chromium, Page } from 'playwright';
 
 export type BrowserStatus =
   | 'NOT_SIGNIN'
@@ -11,6 +11,7 @@ export type BrowserStatus =
 
 export type SessionBrowser = {
   browser: Browser;
+  context: BrowserContext;
   page: Page;
   status: BrowserStatus;
 };
@@ -34,16 +35,18 @@ const setPageHeader = async (page: Page) =>
 class SessionBrowserManager {
   private static instance: SessionBrowserManager | null;
   public browser!: Browser;
+  public context!: BrowserContext;
   public page!: Page;
   public status: BrowserStatus = 'NOT_SIGNIN';
 
-  constructor({ browser, page, status }: SessionBrowser) {
+  constructor({ browser, context, page, status }: SessionBrowser) {
     if (SessionBrowserManager.instance) {
       console.log('Not Created!');
       return SessionBrowserManager.instance;
     }
     console.log('Created!');
     this.browser = browser;
+    this.context = context;
     this.page = page;
     this.status = status;
     SessionBrowserManager.instance = this;
@@ -57,8 +60,8 @@ class SessionBrowserManager {
           'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
         headless: false,
         args: [
-          // '--window-position=-10000,-10000',
-          '--window-position=0,0',
+          '--window-position=-10000,-10000',
+          // '--window-position=0,0',
           '--disable-quic',
           '--no-sandbox',
           '--disable-setuid-sandbox',
@@ -91,6 +94,7 @@ class SessionBrowserManager {
 
       this.instance = new this({
         browser,
+        context,
         page,
         status: 'NOT_SIGNIN',
       });
