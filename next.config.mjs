@@ -1,11 +1,17 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // 기존 설정 유지
   async headers() {
     return [
       {
-        source: '/:path*',
-        headers: [{ key: 'Access-Control-Allow-Origin', value: '*' }],
+        source: '/api/:path*',
+        headers: [
+          { key: 'Access-Control-Allow-Origin', value: '*' },
+          {
+            key: 'Access-Control-Allow-Methods',
+            value: 'GET,POST,PUT,DELETE,OPTIONS',
+          },
+          { key: 'Access-Control-Allow-Headers', value: 'Content-Type' },
+        ],
       },
     ];
   },

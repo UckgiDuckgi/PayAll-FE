@@ -1,29 +1,26 @@
-import axios, { AxiosError } from 'axios';
 import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
-  const formData = await request.formData();
-
   try {
-    const response = await axios.post(process.env.OCR_INVOKE_URL!, formData, {
+    const formData = await request.formData();
+    const response = await fetch('https://payall.topician.com/api/ocr', {
+      method: 'POST',
+      body: formData,
       headers: {
-        'X-OCR-SECRET': process.env.OCR_SECRET,
-        'Content-Type': 'multipart/form-data',
+        Origin: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000',
       },
     });
 
-    return NextResponse.json(response.data);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return NextResponse.json(data);
   } catch (error) {
-    const axiosError = error as AxiosError;
-    console.error(
-      'OCR API Error:',
-      axiosError.response?.data || axiosError.message
-    );
+    console.error('OCR API error:', error);
     return NextResponse.json(
-      {
-        error: 'OCR request failed',
-        details: axiosError.response?.data || axiosError.message,
-      },
+      { error: 'Failed to process OCR request' },
       { status: 500 }
     );
   }
