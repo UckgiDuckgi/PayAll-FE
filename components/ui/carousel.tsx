@@ -81,6 +81,7 @@ const Carousel = React.forwardRef<
 
       setCanScrollPrev(api.canScrollPrev());
       setCanScrollNext(api.canScrollNext());
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const scrollPrev = React.useCallback(() => {

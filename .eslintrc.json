@@ -4,8 +4,15 @@
     "next/typescript",
     "prettier",
     "plugin:react/recommended",
-    "plugin:react/jsx-runtime",
     "plugin:react-hooks/recommended",
-    "plugin:storybook/recommended"
-  ]
+    "plugin:react/jsx-runtime",
+    "plugin:storybook/recommended",
+    "plugin:prettier/recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "plugins": ["react", "react-hooks", "prettier"],
+  "rules": {
+    "no-param-reassign": ["error", { "props": false }],
+    "no-multiple-empty-lines": ["warn", { "max": 1, "maxEOF": 0 }]
+  }
 }

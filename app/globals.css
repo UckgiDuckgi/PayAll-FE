@@ -51,6 +51,18 @@
       font-size: 18px; /* 1024px 이상 */
     }
   }
+
+  .keypad {
+    @apply w-full h-full bg-opacity-0 bg-black hover:bg-opacity-30;
+  }
+
+  .keypad-selected {
+    @apply w-full h-full bg-opacity-70 bg-black hover:bg-opacity-70;
+  }
+
+  .not-keypad {
+    @apply hover:bg-opacity-0 cursor-default;
+  }
 }
 
 @layer base {
