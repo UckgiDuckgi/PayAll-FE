@@ -18,7 +18,14 @@ export function SquareImage({
       style={{ width: size, height: size }}
     >
       <a>
-        <Image src={src} alt={alt} width={size} height={size} />
+        <Image
+          src={src}
+          alt={alt}
+          width={size}
+          height={size}
+          unoptimized
+          priority
+        />
       </a>
     </div>
   );
