@@ -1,4 +1,4 @@
-import { Category } from './category';
+import { Category } from '@/types/table';
 
 export type CategoryExpense = {
   category_id: number;

@@ -12,7 +12,7 @@ export const formatCookies = (cookies: Cookie[]) => {
   }, '');
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any, react-refresh/only-export-components
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const showToast = (toast: any, description: string) => {
   toast({
     description,

@@ -8,9 +8,10 @@ import CategoryChart from '@/components/molecules/ui/CategoryChart';
 import { AccentText } from '@/components/ui/AccentText';
 import TitleBottomLine from '@/components/ui/TitleBottomLine';
 import { Badge } from '@/components/ui/badge';
-import { Category, CATEGORY } from '@/constants/category';
+import { CATEGORY } from '@/constants/category';
 import { COLORS } from '@/constants/color';
 import { MOCK_PAYMENT, MOCK_STAT } from '@/constants/mockdata';
+import { Category } from '@/types/table';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
@@ -94,7 +95,7 @@ function StatisticsContent() {
                 <CategoryCarouselItem
                   percent={+((amount / MOCK_STAT.total_spent) * 100).toFixed(0)}
                   color={COLORS[idx]}
-                  categoryName={CATEGORY[category][0]}
+                  categoryName={CATEGORY[category as Category][0]}
                   categoryIconName={category}
                   amount={amount}
                 />
