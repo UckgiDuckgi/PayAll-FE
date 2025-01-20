@@ -1,9 +1,10 @@
 'use client';
 
+import { LowestProductList } from '@/components/molecules/LowestProductList';
 import { ProductCard } from '@/components/molecules/sion/ProductCard';
 import RecentSearchWords from '@/components/molecules/sion/RecentSearchWords';
 import { SearchInput } from '@/components/molecules/sion/SearchInput';
-import SionSion from '@/components/molecules/sion/SionSion';
+import { MOCK_LOWEST_PRODUCT } from '@/constants/mockdata';
 import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 
@@ -83,7 +84,7 @@ function SearchContent() {
       <div className='pt-14'>
         {keyword ? (
           <>
-            <div className='flex flex-col gap-4 overflow-y-scroll h-[calc(100vh-14rem)]'>
+            <div className='flex flex-col gap-4 overflow-auto h-[calc(100vh-14rem)]'>
               {searchResult.map((result, idx) => (
                 <ProductCard key={idx} searchResult={result} />
               ))}
@@ -92,7 +93,12 @@ function SearchContent() {
         ) : (
           <>
             <RecentSearchWords recentSearch={recentSearch} />
-            <SionSion />
+            <div className='flex flex-col mt-10 w-full'>
+              <span className='text-base font-bold text-grey mb-4'>
+                최근 지출 품목의 최저가 상품
+              </span>
+              <LowestProductList products={MOCK_LOWEST_PRODUCT} />
+            </div>
           </>
         )}
       </div>

@@ -16,13 +16,13 @@ export const AdCarouselItem = ({
 }: AdCarouselItemProps) => {
   return (
     <div
-      className='w-full min-h-40 flex items-center pl-8 pr-5 justify-stretch rounded-lg font-dohyeon'
+      className='w-full min-h-40 flex items-center pl-8 pr-3 justify-between rounded-lg font-dohyeon'
       style={{
         background: `linear-gradient(to right, #131313 14%, #2C2C2C 50%, #131313 76%)`,
       }}
     >
       <div className='flex flex-col gap-2 '>
-        <div className='text-[1.625rem] flex-col flex items-start'>
+        <div className='text-[1.5rem] flex-col flex items-start'>
           <span>{title1}</span>
           <span className='-mt-2'>{title2}</span>
         </div>

@@ -111,8 +111,8 @@ function StatisticsContent() {
 
           <ul className='space-y-3 my-5'>
             {MOCK_STAT.fixed_expenses.map(
-              ({ fixed_name, amount, due_date }) => (
-                <li key={fixed_name}>
+              ({ fixed_name, amount, due_date }, idx) => (
+                <li key={fixed_name + idx}>
                   <FixedExpensesCard
                     expensesName={fixed_name}
                     expensesPrice={amount}
