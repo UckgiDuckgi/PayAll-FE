@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { CoupangOrderList } from '@/types/payment';
 import { useState } from 'react';
-import { formatCookies } from '../naverpay/page';
+import { formatCookies } from '@/lib/utils';
 
 export default function CoupangPayments() {
   const [serverData, setServerData] = useState<CoupangOrderList[] | null>(null);

@@ -1,7 +1,7 @@
 'use client';
 
-import Circle from '@/app/coupang/test/Circle.png';
 import { Button } from '@/components/ui/button';
+import Circle from '@/public/icons/Circle.png';
 import Image from 'next/image';
 import { useState } from 'react';
 import { CoupangInputFormProps } from './pincodeInputForm';

@@ -7,14 +7,8 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { Cookie } from '@/types/payment';
 import { useState } from 'react';
-
-export const formatCookies = (cookies: Cookie[]) => {
-  return cookies.reduce((acc, { name, value }) => {
-    return acc + (name + '=' + value + '; ');
-  }, '');
-};
+import { formatCookies } from '@/lib/utils';
 
 export default function NaverPayments() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);

@@ -4,9 +4,8 @@ import { OrderInfo } from '@/app/api/payment/11st/route';
 import { GetCookieResponse } from '@/app/api/payment/naverpay/route';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { CoupangOrderList } from '@/types/payment';
 import { useState } from 'react';
-import { formatCookies } from '../naverpay/page';
+import { formatCookies } from '@/lib/utils';
 
 export default function ElevenStreetPayments() {
   const [serverData, setServerData] = useState<OrderInfo[] | null>(null);
