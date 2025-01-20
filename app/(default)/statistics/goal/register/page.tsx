@@ -78,7 +78,7 @@ function GoalRegisterContent() {
           </div>
           <Button
             type='submit'
-            className='absolute bottom-8 w-[90%] max-w-[460px] bg-main hover:bg-[#476BE3]'
+            className='absolute bottom-8 left-1/2 transform -translate-x-1/2 w-[90%] max-w-[460px] bg-main hover:bg-[#476BE3]'
           >
             등록
           </Button>
