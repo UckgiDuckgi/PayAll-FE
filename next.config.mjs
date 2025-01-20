@@ -8,6 +8,7 @@ const nextConfig = {
         pathname: '/prod_img/**',
       },
     ],
+    formats: ['image/webp'],
   },
   async headers() {
     return [
