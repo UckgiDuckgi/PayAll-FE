@@ -90,7 +90,7 @@ export async function POST(request: Request) {
 
   await coupangActions.setCoupangPayPassword(password);
 
-  // await coupangClose();
+  await coupangActions.close();
 
   return NextResponse.json({
     success: true,
