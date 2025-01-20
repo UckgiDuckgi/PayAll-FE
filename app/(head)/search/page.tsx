@@ -77,7 +77,7 @@ function SearchContent() {
   const keyword = searchParams.get('keyword');
   return (
     <div className='h-full'>
-      <div className='fixed top-13 w-[90%] '>
+      <div className='fixed top-13 w-[90%] max-w-[460px]'>
         <SearchInput placeholder='검색' defaultValue={keyword ?? ''} />
       </div>
       <div className='pt-14'>
