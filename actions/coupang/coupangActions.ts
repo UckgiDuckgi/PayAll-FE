@@ -137,7 +137,3 @@ export const getCoupangActions = async ({
     },
   };
 };
-
-export const coupangClose = async () => {
-  await SessionBrowserManager.close();
-};

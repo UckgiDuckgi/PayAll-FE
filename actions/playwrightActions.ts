@@ -99,7 +99,10 @@ export const getPlaywrightActions = async ({
 
       await page.locator(buttonCartSelector).click();
       console.log('Product Cart Button Clicked!');
-      await delay(Math.random() * DELAY + RANGE);
+      await delay(Math.random() * (DELAY + 1000) + RANGE);
+    },
+    close: async () => {
+      await SessionBrowserManager.close();
     },
   };
 };
