@@ -1,4 +1,4 @@
-import { PaymentData } from '@/app/(head)/haebeen/page';
+import { PaymentData } from '@/constants/mockdata';
 
 export default function PaymentInfoCard({
   paymentInfo,
@@ -33,13 +33,16 @@ export default function PaymentInfoCard({
                 {payment_type} 결제
               </span>
               <span className='text-[.6875rem] text-grey font-regular'>
-                {new Date(payment_time).toLocaleTimeString('en-US', {
-                  month: '2-digit',
-                  day: '2-digit',
-                  hour: '2-digit',
-                  minute: '2-digit',
-                  hour12: true,
-                }).replace(',', '').replace('/', '.')}
+                {new Date(payment_time)
+                  .toLocaleTimeString('en-US', {
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true,
+                  })
+                  .replace(',', '')
+                  .replace('/', '.')}
               </span>
             </div>
             <span className='text-[.6875rem] text-[#C1C1C1] font-medium'>

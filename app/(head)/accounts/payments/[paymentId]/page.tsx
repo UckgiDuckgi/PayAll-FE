@@ -1,6 +1,6 @@
-import { PaymentData } from '@/app/(head)/haebeen/page';
 import PaymentDetailCard from '@/components/molecules/PaymentDetailCard';
 import PaymentInfoCard from '@/components/molecules/sion/PaymentInfoCard';
+import { PaymentData } from '@/constants/mockdata';
 
 const paymentInfo: PaymentData = {
   payment_id: 3,

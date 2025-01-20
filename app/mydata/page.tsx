@@ -4,9 +4,11 @@ import { PayAllLogo } from '@/components/ui/PayAllLogo';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { Suspense } from 'react';
 
-function Page() {
+function MyDataContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const complete = searchParams.get('complete');
@@ -47,4 +49,10 @@ function Page() {
   );
 }
 
-export default Page;
+export default function Page() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <MyDataContent />
+    </Suspense>
+  );
+}

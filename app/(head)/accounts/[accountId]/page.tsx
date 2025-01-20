@@ -69,7 +69,7 @@ const accounts: {
   },
 ];
 
-export const MOCK_PAYMENT: PaymentData[] = [
+const MOCK_PAYMENT: PaymentData[] = [
   {
     payment_id: 1,
     payment_place: '성수정찬',

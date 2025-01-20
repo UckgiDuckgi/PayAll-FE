@@ -1,4 +1,4 @@
-import { PaymentData } from '@/app/(head)/haebeen/page';
+import { PaymentData } from '@/constants/mockdata';
 import { ChevronRight } from 'lucide-react';
 import UploadButton from './ui/UploadButton';
 

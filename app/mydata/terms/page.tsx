@@ -6,8 +6,9 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { motion, useScroll } from 'framer-motion';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 
-function Page() {
+function TermsContent() {
   const { scrollYProgress } = useScroll();
   const searchParams = useSearchParams();
   const complete = searchParams.get('complete');
@@ -193,4 +194,10 @@ function Page() {
   );
 }
 
-export default Page;
+export default function Page() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <TermsContent />
+    </Suspense>
+  );
+}
