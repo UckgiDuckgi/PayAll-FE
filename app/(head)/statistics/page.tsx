@@ -10,10 +10,11 @@ import TitleBottomLine from '@/components/ui/TitleBottomLine';
 import { Badge } from '@/components/ui/badge';
 import { Category, CATEGORY } from '@/constants/category';
 import { COLORS } from '@/constants/color';
+import { MOCK_PAYMENT, MOCK_STAT } from '@/constants/mockdata';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { MOCK_PAYMENT, MOCK_STAT } from '../haebeen/page';
+import { Suspense } from 'react';
 
 const TitleLine = ({ title }: { title: string }) => {
   return (
@@ -26,7 +27,7 @@ const TitleLine = ({ title }: { title: string }) => {
   );
 };
 
-function Page() {
+function StatisticsContent() {
   const searchParams = useSearchParams();
   const category = searchParams.get('category') as Category;
 
@@ -189,4 +190,10 @@ function Page() {
   );
 }
 
-export default Page;
+export default function Page() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <StatisticsContent />
+    </Suspense>
+  );
+}

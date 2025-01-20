@@ -1,5 +1,5 @@
-import { CategoryExpense } from '@/app/(head)/haebeen/page';
 import { COLORS } from '@/constants/color';
+import { CategoryExpense } from '@/constants/mockdata';
 import {
   ArcElement,
   Chart as ChartJS,

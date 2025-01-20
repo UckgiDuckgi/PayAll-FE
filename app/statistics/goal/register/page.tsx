@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { FormEvent, useRef } from 'react';
+import { FormEvent, useRef, Suspense } from 'react';
 
 function formatNumber(value: string | null): string {
   if (!value) return '';
@@ -13,7 +13,7 @@ function formatNumber(value: string | null): string {
   return numericValue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
-function Page() {
+function GoalRegisterContent() {
   const searchParams = useSearchParams();
   const avgSpent = searchParams.get('avgSpent');
   const complete = searchParams.get('complete');
@@ -112,4 +112,10 @@ function Page() {
   );
 }
 
-export default Page;
+export default function Page() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <GoalRegisterContent />
+    </Suspense>
+  );
+}

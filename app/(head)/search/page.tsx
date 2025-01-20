@@ -5,6 +5,7 @@ import RecentSearchWords from '@/components/molecules/sion/RecentSearchWords';
 import { SearchInput } from '@/components/molecules/sion/SearchInput';
 import SionSion from '@/components/molecules/sion/SionSion';
 import { useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 
 const recentSearch = ['커튼', '사과', '오리엔탈소스', '워셔액', '몽키스패너'];
 const searchResult: SearchResult[] = [
@@ -71,7 +72,7 @@ type SearchResult = {
   storeList: Store[];
 };
 
-export default function Search() {
+function SearchContent() {
   const searchParams = useSearchParams();
   const keyword = searchParams.get('keyword');
   return (
@@ -96,5 +97,13 @@ export default function Search() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function Page() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SearchContent />
+    </Suspense>
   );
 }
