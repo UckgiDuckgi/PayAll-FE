@@ -1,8 +1,9 @@
 'use client';
 
 import { Item } from '@/app/api/coupang/route';
+import { PaymentInputForm } from '@/components/11st/paymentInputForm';
+import ReCaptchaInputForm from '@/components/11st/reCaptchaInputForm';
 import PincodeInputForm from '@/components/coupang/pincodeInputForm';
-import ReCaptchaInputForm from '@/components/coupang/reCaptchaInputForm';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { ElevenStreetResponse } from '../api/11st/route';
@@ -94,6 +95,12 @@ export default function ElevenStreet() {
         <ReCaptchaInputForm
           base64Image={base64Image}
           tableSize={tableSize}
+          onClick={handleOnClick}
+          itemList={itemList}
+        />
+      ) : status === 'PAYMENT' ? (
+        <PaymentInputForm
+          base64Image={base64Image}
           onClick={handleOnClick}
           itemList={itemList}
         />

@@ -9,9 +9,15 @@ import {
 } from '../playwrightActions';
 
 export type ElevenStreetElementSelector = PlaywrightElementSelector & {
+  // Kakao SignIn
+  buttonKakaoAuthSelector: string;
+  inputKakaoIdSelector: string;
+  inputKakaoPwSelector: string;
+  buttonKakaoSignInSelector: string;
   // Payment
   buttonOrderSelector: string;
   buttonPaymentSelector: string;
+  buttonKbPaySelector: string;
   // ReCAPTCHA
   iframeReCaptchaSelector: string;
   buttonReCaptchaStartSelector: string;
@@ -55,14 +61,68 @@ export const getElevenStreetActions = async ({
   });
   return {
     ...playwrightAction,
-    payment: async () => {
+    kakaoSignIn: async ({
+      id,
+      pw,
+      dTime = DELAY,
+      rTime = RANGE,
+    }: {
+      id: string;
+      pw: string;
+      dTime?: number;
+      rTime?: number;
+    }) => {
       const { page, status } = sessionBrowserManager;
+
+      if (status !== 'NOT_SIGNIN' && status !== 'RECAPTCHA_SUCCESS') {
+        return;
+      }
+
+      const {
+        buttonKakaoAuthSelector,
+        inputKakaoIdSelector,
+        inputKakaoPwSelector,
+        buttonKakaoSignInSelector,
+      } = elementSelector;
+
+      if (status !== 'RECAPTCHA_SUCCESS') {
+        await page.goto(SIGNIN_URL);
+        console.log('Goto SignIn Page');
+        await delay(Math.random() * dTime + rTime);
+      }
+
+      await page.locator(buttonKakaoAuthSelector).click();
+      console.log('Kakao Auth Button Clicked!');
+      await delay(Math.random() * dTime + rTime);
+
+      await page.locator(inputKakaoIdSelector).fill(id);
+      console.log('Login ID Filled!');
+      await delay(Math.random() * dTime + rTime);
+
+      await page.locator(inputKakaoPwSelector).fill(pw);
+      console.log('Login PWD Filled!');
+      await delay(Math.random() * dTime + rTime);
+
+      await page.locator(buttonKakaoSignInSelector).click();
+      console.log('Login Button Clicked!');
+      await delay(Math.random() * (dTime + 2000) + rTime);
+
+      sessionBrowserManager.status = 'SIGNIN';
+    },
+    payment: async () => {
+      const { context, page, status } = sessionBrowserManager;
 
       if (status !== 'SIGNIN') {
         return;
       }
 
-      const { buttonOrderSelector, buttonPaymentSelector } = elementSelector;
+      const popupPromise = context.waitForEvent('page');
+
+      const {
+        buttonOrderSelector,
+        buttonPaymentSelector,
+        buttonKbPaySelector,
+      } = elementSelector;
       console.log('Pay All Function!!');
 
       await page.goto(CART_URL);
@@ -70,11 +130,31 @@ export const getElevenStreetActions = async ({
 
       await page.locator(buttonOrderSelector).click();
       console.log('Order Button Clicked!');
-      await delay(Math.random() * DELAY + RANGE);
+      await delay(Math.random() * (DELAY + 1000) + RANGE);
+
+      await page.locator('#tabPayId5').click();
+      console.log('Pay Others Clicked!');
+      await delay(Math.random() * (DELAY + 1000) + RANGE);
 
       await page.locator(buttonPaymentSelector).click();
       console.log('Payment Button Clicked!');
-      await delay(Math.random() * DELAY + RANGE);
+      await delay(Math.random() * (DELAY + 1000) + RANGE);
+
+      const popup = await popupPromise;
+      await popup.waitForLoadState();
+      console.log('Popup URL:', popup.url());
+      console.log('Popup Title:', await popup.title());
+
+      await popup.frameLocator('#kbframe').locator(buttonKbPaySelector).click();
+
+      const screenshotBuffer = await popup
+        .frameLocator('#kbframe')
+        .locator('.appcardr_window_popup')
+        .screenshot();
+
+      sessionBrowserManager.status = 'PAYMENT';
+
+      return screenshotBuffer;
     },
     reCaptcha: async () => {
       const { page, status } = sessionBrowserManager;

@@ -19,13 +19,12 @@ export type ElevenStreetRequest = {
 
 export type ElevenStreetResponse = {
   success: boolean;
-  status: 'PINCODE' | 'RECAPTCHA' | 'COMPLETED';
+  status: 'PINCODE' | 'RECAPTCHA' | 'PAYMENT' | 'COMPLETED';
   result: { base64Image: string; tableSize: number };
 };
 
 export async function POST(request: Request) {
-  const { selectedTileList, isReCaptchaEnd, itemList } =
-    (await request.json()) as ElevenStreetRequest;
+  const { itemList } = (await request.json()) as ElevenStreetRequest;
 
   const playwrightActionsProps: PlaywrightActionsProps<ElevenStreetElementSelector> =
     {
@@ -35,16 +34,22 @@ export async function POST(request: Request) {
       DETAIL_BASE_URL: 'https://www.11st.co.kr/products/',
 
       elementSelector: {
-        //SignIn
+        // SignIn
         inputIdSelector: '#memId',
         inputPwSelector: '#memPwd',
         buttonSignInSelector: '#loginButton',
+        // KakaoSignIn
+        buttonKakaoAuthSelector: '.c-sns__link.c-sns__link--kakao',
+        inputKakaoIdSelector: '#loginId--1',
+        inputKakaoPwSelector: '#password--2',
+        buttonKakaoSignInSelector: '.btn_g.highlight.submit',
         // AddCart
         inputQuantitySelector: '[name="prdcAmount"]',
         buttonCartSelector: '.btn_cart',
         // Payment
         buttonOrderSelector: '#doOrderBt',
         buttonPaymentSelector: '.btn_order',
+        buttonKbPaySelector: '.btn-kbpay.btn-kbpay-list',
         // ReCaptcha
         iframeReCaptchaSelector: '[title="reCAPTCHA"]',
         buttonReCaptchaStartSelector: '.recaptcha-checkbox-border',
@@ -63,32 +68,36 @@ export async function POST(request: Request) {
     playwrightActionsProps
   );
 
-  const reCaptchaResponse = await elevenStreetActions.reCaptcha();
-  if (reCaptchaResponse) {
-    const { screenshotBuffer, tableSize } = reCaptchaResponse;
-    const base64Image = `data:image/png;base64,${screenshotBuffer.toString('base64')}`;
-    return NextResponse.json({
-      success: true,
-      status: 'RECAPTCHA',
-      result: { base64Image, tableSize },
-    });
-  }
+  // const reCaptchaResponse = await elevenStreetActions.reCaptcha();
+  // if (reCaptchaResponse) {
+  //   const { screenshotBuffer, tableSize } = reCaptchaResponse;
+  //   const base64Image = `data:image/png;base64,${screenshotBuffer.toString('base64')}`;
+  //   return NextResponse.json({
+  //     success: true,
+  //     status: 'RECAPTCHA',
+  //     result: { base64Image, tableSize },
+  //   });
+  // }
 
-  await elevenStreetActions.clickReCaptcha(selectedTileList, isReCaptchaEnd);
+  // await elevenStreetActions.clickReCaptcha(selectedTileList, isReCaptchaEnd);
 
-  const retryReCaptchaResponse = await elevenStreetActions.retryReCaptcha();
-  if (retryReCaptchaResponse) {
-    const { screenshotBuffer, tableSize } = retryReCaptchaResponse;
-    const base64Image = `data:image/png;base64,${screenshotBuffer.toString('base64')}`;
-    return NextResponse.json({
-      success: true,
-      status: 'RECAPTCHA ',
-      result: { base64Image, tableSize },
-    });
-  }
-  const id = process.env.ELEVEN_STREET_ID ?? '';
-  const pw = process.env.ELEVEN_STREET_PW ?? '';
-  await elevenStreetActions.signIn({ id, pw });
+  // const retryReCaptchaResponse = await elevenStreetActions.retryReCaptcha();
+  // if (retryReCaptchaResponse) {
+  //   const { screenshotBuffer, tableSize } = retryReCaptchaResponse;
+  //   const base64Image = `data:image/png;base64,${screenshotBuffer.toString('base64')}`;
+  //   return NextResponse.json({
+  //     success: true,
+  //     status: 'RECAPTCHA',
+  //     result: { base64Image, tableSize },
+  //   });
+  // }
+  // const id = process.env.ELEVEN_STREET_ID ?? '';
+  // const pw = process.env.ELEVEN_STREET_PW ?? '';
+  // await elevenStreetActions.signIn({ id, pw });
+
+  const id = process.env.KAKAO_ID ?? '';
+  const pw = process.env.KAKAO_PW ?? '';
+  await elevenStreetActions.kakaoSignIn({ id, pw });
 
   await elevenStreetActions.clickModal();
 
@@ -96,9 +105,17 @@ export async function POST(request: Request) {
     await elevenStreetActions.addCart(item);
   }
 
-  await elevenStreetActions.payment();
+  const paymentResponse = await elevenStreetActions.payment();
+  if (paymentResponse) {
+    const base64Image = `data:image/png;base64,${paymentResponse.toString('base64')}`;
+    return NextResponse.json({
+      success: true,
+      status: 'PAYMENT',
+      result: { base64Image },
+    });
+  }
 
-  // await coupangClose();
+  await elevenStreetActions.close();
 
   return NextResponse.json({
     success: true,

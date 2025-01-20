@@ -1,3 +1,14 @@
+export type Cookie = {
+  domain: string;
+  expires: number;
+  httpOnly: boolean;
+  name: string;
+  path: string;
+  sameSite: string;
+  secure: boolean;
+  value: string;
+};
+
 export type NaverPayProduct = {
   name: string;
   imgUrl: string;
@@ -38,4 +49,29 @@ export type NaverPayResponse = {
   code: number;
   message: string;
   result: NaverPayResult;
+};
+
+export type CoupangItem = {
+  vendorItemId: number;
+  vendorItemName: string;
+  quantity: number;
+  unitPrice: number;
+};
+
+type bundleRecipt = {
+  vendorItems: CoupangItem[];
+};
+
+export type CoupangOrderList = {
+  orderId: number;
+  title: string;
+  orderedAt: string;
+  totalProductPrice: number;
+  bundleReceiptList: bundleRecipt[];
+};
+
+export type CoupangPaymentResponse = {
+  pageIndex: number;
+  size: number;
+  orderList: CoupangOrderList[];
 };
