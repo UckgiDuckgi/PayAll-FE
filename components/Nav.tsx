@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 
 type NavItem = {
@@ -42,11 +42,9 @@ type NavItemProps = {
 
 const Item = ({ icon: Icon, name, route }: NavItemProps) => {
   const router = useRouter();
-  const selectedPath = '/';
-  // location.pathname === ''
-  //   ? location.pathname
-  //   : location.pathname.split('/').slice(1, 3).join('/');
-  const iconFill = selectedPath === route.split('?')[0] ? '#777777' : '#D9D9D9';
+  const pathname = usePathname();
+  const currentRoute = route.split('?')[0];
+  const isSelected = (pathname.split('/')[1] || '') === currentRoute;
 
   const handleRoute = () => {
     router.push(`/${route}`);
@@ -67,14 +65,18 @@ const Item = ({ icon: Icon, name, route }: NavItemProps) => {
           alt={name}
           width={20}
           height={20}
-          className={`${iconFill ? 'fill-border' : 'fill-[#777777]'}`} // 선택 상태에 따른 스타일
+          className={cn(
+            'transition-transform duration-200',
+            isSelected ? 'brightness-100 scale-110' : 'brightness-50'
+          )}
         />
         {name && (
           <span
             className={cn(
-              'text-[0.75rem]',
-              iconFill ? 'text-white' : 'text-[#D9D9D9]',
-              iconFill ? 'font-bold' : 'font-medium'
+              'text-[0.75rem] transition-transform duration-200',
+              isSelected
+                ? 'text-white font-bold scale-110'
+                : 'text-[#D9D9D9] font-medium'
             )}
           >
             {name}
