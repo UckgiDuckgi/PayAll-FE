@@ -52,9 +52,9 @@ function PaymentDetailCard({
               </div>
               <Counter
                 pid={0}
-                initialCount={0}
+                initialCount={1}
                 onCountChange={() => {}}
-                className='w-10'
+                className=''
               />
             </div>
           }

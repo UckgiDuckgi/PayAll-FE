@@ -84,7 +84,7 @@ function SearchContent() {
       <div className='pt-14'>
         {keyword ? (
           <>
-            <div className='flex flex-col gap-4 overflow-y-scroll h-[calc(100vh-14rem)]'>
+            <div className='flex flex-col gap-4 overflow-auto h-[calc(100vh-14rem)]'>
               {searchResult.map((result, idx) => (
                 <ProductCard key={idx} searchResult={result} />
               ))}
