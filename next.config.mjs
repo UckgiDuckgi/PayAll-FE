@@ -1,5 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'img.danawa.com',
+        pathname: '/prod_img/**',
+      },
+    ],
+  },
   async headers() {
     return [
       {
@@ -14,17 +23,6 @@ const nextConfig = {
         ],
       },
     ];
-  },
-
-  // 이미지 도메인 설정 추가
-  images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'img.danawa.com',
-      },
-      // 필요한 다른 도메인들도 여기에 추가
-    ],
   },
 };
 

@@ -13,7 +13,7 @@ type NavItem = {
 export const NavIcons: NavItem[] = [
   {
     name: '홈',
-    icon: '/icons/home.svg',
+    icon: '/icons/Home.svg',
     route: '',
   },
   {
