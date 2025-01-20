@@ -6,7 +6,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-function page() {
+function Page() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const complete = searchParams.get('complete');
@@ -47,4 +47,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;

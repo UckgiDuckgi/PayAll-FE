@@ -21,7 +21,7 @@ export const NavIcons: NavItem[] = [
     icon: '/icons/Search.svg',
     route: 'search',
   },
-  { name: '지출내역', icon: '/icons/List.svg', route: 'list' },
+  { name: '지출내역', icon: '/icons/List.svg', route: 'accounts' },
   {
     name: '소비분석',
     icon: '/icons/Chart.svg',
