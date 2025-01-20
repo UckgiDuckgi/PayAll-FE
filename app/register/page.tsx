@@ -2,9 +2,12 @@
 
 import { LoginInput } from '@/components/molecules/sion/LoginInput';
 import { Button } from '@/components/ui/button';
-import { useState, useEffect } from 'react';
+import { usePostSignUp } from '@/hooks/query/auth';
+import { FormEvent, useEffect, useState } from 'react';
 
 export default function RegisterPage() {
+  const { mutate } = usePostSignUp();
+
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [passwordCheck, setPasswordCheck] = useState('');
@@ -42,6 +45,12 @@ export default function RegisterPage() {
     setWarningMessage('');
   }, [id, password, passwordCheck, name, phone, address]);
 
+  const registerSignUp = (e: FormEvent) => {
+    e.preventDefault();
+    if (warningMessage !== '') return;
+    mutate({ name, authId: id, password, phone, address });
+  };
+
   return (
     <div>
       <form className='flex flex-col items-center gap-9 mt-21'>
@@ -74,6 +83,7 @@ export default function RegisterPage() {
             className='w-full bg-[#6A8DFF] rounded-xl text-white hover:none'
             type='submit'
             disabled={warningMessage !== ''}
+            onClick={registerSignUp}
           >
             확인
           </Button>

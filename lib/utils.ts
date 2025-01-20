@@ -11,3 +11,11 @@ export const formatCookies = (cookies: Cookie[]) => {
     return acc + (name + '=' + value + '; ');
   }, '');
 };
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any, react-refresh/only-export-components
+export const showToast = (toast: any, description: string) => {
+  toast({
+    description,
+    duration: 3000,
+  });
+};

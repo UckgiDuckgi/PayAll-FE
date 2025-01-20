@@ -1,13 +1,4 @@
-export type Category =
-  | 'SHOPPING'
-  | 'EDUCATION'
-  | 'LIVING'
-  | 'TRANSPORT'
-  | 'CULTURE'
-  | 'RESTAURANT'
-  | 'CAFE'
-  | 'HEALTH'
-  | 'OTHERS';
+import { Category } from '@/types/table';
 
 export const CATEGORY: Record<Category, string[]> = {
   SHOPPING: ['대형마트', '편의점'],
