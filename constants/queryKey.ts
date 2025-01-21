@@ -14,4 +14,10 @@ export const QUERY_KEYS: Record<string, string> = {
   UPDATE_CART: 'update-cart',
 
   POST_LIMIT: 'post-list',
+
+  RECOMMENDATIONS: 'recommendations',
+
+  PRODUCT_DETAIL: 'product-detail',
+  PRODUCT_CARDS: 'product-cards',
+  PRODUCT_subscriptions: 'product-subscriptions',
 };

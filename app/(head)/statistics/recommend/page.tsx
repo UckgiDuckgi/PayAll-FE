@@ -1,13 +1,37 @@
-import CardBenefitInfo from '@/components/molecules/CardBenefitInfo';
-import {
-  CardCarousel,
-  payment_detail,
-} from '@/components/molecules/CardCarousel';
+'use client';
+
+import { CardCarousel } from '@/components/molecules/CardCarousel';
 import CategorySubCard from '@/components/molecules/CategorySubCard';
 import SimpleBottomSheet from '@/components/molecules/ui/SimpleBottomSheet';
+import { QUERY_KEYS } from '@/constants/queryKey';
+import { useGenericQuery } from '@/hooks/query/globalQuery';
+import { ProductDetailType } from '@/types/productType';
+import { RecommendationsType } from '@/types/recommendationsType';
 import Link from 'next/link';
+import { Suspense, useState } from 'react';
+import { getProductDetail, getRecommendations } from '@/lib/api';
 
-function page() {
+function RecommendationContent() {
+  const [selectedIdx, setSelectedIdx] = useState(0);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleDialog = () => {
+    setIsOpen((prev) => !prev);
+  };
+
+  const { resData: recommendsData, isLoading } = useGenericQuery<
+    RecommendationsType[]
+  >([QUERY_KEYS.RECOMMENDATIONS], () => getRecommendations());
+
+  if (!recommendsData || !recommendsData.data || isLoading) return;
+
+  const cards = recommendsData.data.filter(
+    ({ productType }) => productType === 'CARD'
+  );
+  const subscribes = recommendsData.data.filter(
+    ({ productType }) => productType === 'SUBSCRIBE'
+  );
+
   return (
     <div className='relative'>
       <div className='pt-3'>
@@ -17,7 +41,7 @@ function page() {
           </span>
         </div>
         <div className='h-[270px]'>
-          <CardCarousel />
+          <CardCarousel cards={cards} />
         </div>
       </div>
 
@@ -35,23 +59,27 @@ function page() {
             내 소비를 아는 구독 서비스
           </span>
         </div>
-        <SimpleBottomSheet
-          content={
-            <CardBenefitInfo
-              index={0}
-              cardName='샵 마이웨이 카드'
-              paymentDetails={payment_detail}
-            />
-          }
-        >
-          <CategorySubCard
-            img={'/images/subscribes/T.svg'}
-            category='외식'
-            color='#B77DF1'
-            paymentName='롯데리아'
-            amount={23870}
-          />
-        </SimpleBottomSheet>
+        {subscribes.map(
+          ({ storeName, discountAmount, category, productId }, idx) => (
+            <div key={idx}>
+              <SimpleBottomSheet
+                isOpen={isOpen}
+                onOpenChange={toggleDialog}
+                content={<CardBenefitContent selectedIdx={selectedIdx} />}
+              >
+                <div onClick={() => setSelectedIdx(productId)}>
+                  <CategorySubCard
+                    img={'/images/subscribes/T.svg'}
+                    category={category}
+                    color='#B77DF1'
+                    paymentName={storeName}
+                    amount={discountAmount}
+                  />
+                </div>
+              </SimpleBottomSheet>
+            </div>
+          )
+        )}
 
         <div className='flex items-center justify-end'>
           <Link
@@ -66,4 +94,39 @@ function page() {
   );
 }
 
-export default page;
+function CardBenefitContent({ selectedIdx }: { selectedIdx: number }) {
+  const { resData: productData, isLoading } =
+    useGenericQuery<ProductDetailType>(
+      [QUERY_KEYS.PRODUCT_DETAIL, selectedIdx],
+      () => getProductDetail({ productId: selectedIdx })
+      // {!!enabled: 0,}
+    );
+
+  if (!productData || !productData.data || isLoading) return <></>;
+
+  console.log(productData.data);
+  // const {
+  //   productName,
+  //   benefitDescription,
+  //   category,
+  //   storeName,
+  //   discountAmount,
+  //   visitCount,
+  // } = productData.data;
+  return (
+    // <CardBenefitInfo
+    //   index={0}
+    //   cardName={productName}
+    //   paymentDetails={payment_detail}
+    // />
+    <></>
+  );
+}
+
+export default function Page() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <RecommendationContent />
+    </Suspense>
+  );
+}

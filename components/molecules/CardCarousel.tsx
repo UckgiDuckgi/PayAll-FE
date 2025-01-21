@@ -7,6 +7,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel';
+import { RecommendationsType } from '@/types/recommendationsType';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
@@ -33,9 +34,12 @@ export const payment_detail = [
   },
 ];
 
-export const CardCarousel = () => {
+export const CardCarousel = ({ cards }: { cards: RecommendationsType[] }) => {
   const [selectedIdx, setSelectedIdx] = useState(0);
+  console.log(cards);
 
+  const [isOpen, setIsOpen] = useState(false);
+  const onOpenChange = () => setIsOpen((prev) => !prev);
   const imageRef = useRef<HTMLImageElement>(null);
   const [showCard, setShowCard] = useState(false);
 
@@ -71,6 +75,8 @@ export const CardCarousel = () => {
               )}
             >
               <SimpleBottomSheet
+                isOpen={isOpen}
+                onOpenChange={onOpenChange}
                 content={
                   <CardBenefitInfo
                     index={index}
