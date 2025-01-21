@@ -83,16 +83,3 @@ export const postLimit = async ({ limitPrice }: { limitPrice: number }) => {
     limitPrice,
   });
 };
-
-export const getSearch = async ({ keyword }: { keyword: string }) => {
-  return await apiCall.get(BASE_URL + '/search', {
-    query: keyword,
-  });
-};
-
-export const postCart = async ({ productId, quantity = 1 }: Partial<Cart>) => {
-  return await apiCall.post(BASE_URL + '/cart', {
-    productId,
-    quantity,
-  });
-};
