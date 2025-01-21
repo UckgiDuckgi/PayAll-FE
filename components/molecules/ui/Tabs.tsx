@@ -2,24 +2,19 @@
 
 import { Tab } from '@/app/(head)/statistics/layout';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 
 function Tabs({
   tabs,
   url,
   selectedIdx,
-  handleSelectedIdx,
 }: {
   tabs: Tab[];
   url: string[];
   selectedIdx: number;
-  handleSelectedIdx: (idx: number) => void;
 }) {
-  const routeUrl = usePathname();
-  console.log(routeUrl);
-  const urlIdx = url.findIndex((u) => u === routeUrl) ?? 0;
-  handleSelectedIdx(urlIdx);
+  const router = useRouter();
   return (
     <div className='z-50 bg-background fixed top-20 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center font-bold justify-center w-screen max-w-[512px] border-b-[1px] border-darkGrey'>
       {tabs.map((tab: Tab, idx: number) => (
@@ -32,7 +27,7 @@ function Tabs({
               ? 'text-white border-b-[2px] border-white scale-105'
               : 'text-darkGrey border-none scale-100'
           )}
-          onClick={() => handleSelectedIdx(idx)}
+          onClick={() => router.push(url[idx])}
         >
           {tab}
         </Link>

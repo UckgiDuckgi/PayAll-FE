@@ -124,7 +124,7 @@ function StatisticsContent() {
                 <CategoryCarouselItem
                   percent={+((amount / MOCK_STAT.total_spent) * 100).toFixed(0)}
                   color={COLORS[id]}
-                  categoryName={CATEGORY[category as Category][0]}
+                  categoryName={CATEGORY[category as Category]}
                   categoryIconName={category}
                   amount={amount}
                 />

@@ -43,3 +43,10 @@ export const getLimit = async () => {
   // 목표 조회
   return await apiCall.get(BASE_URL + '/limit');
 };
+
+export const postLimit = async ({ limitPrice }: { limitPrice: number }) => {
+  // 목표 등록
+  return await apiCall.post(BASE_URL + '/limit', {
+    limitPrice,
+  });
+};
