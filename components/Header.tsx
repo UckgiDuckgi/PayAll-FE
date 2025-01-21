@@ -1,7 +1,11 @@
+'use client';
+
+import { QUERY_KEYS } from '@/constants/queryKey';
+import { useGenericQuery } from '@/hooks/query/globalQuery';
+import { Cart } from '@/types';
 import Image from 'next/image';
 import Link from 'next/link';
-
-const CART_CTN = 1;
+import { getCart } from '@/lib/api';
 
 function Header() {
   return (
@@ -15,12 +19,16 @@ function Header() {
 }
 
 const HeaderCart = () => {
+  const { resData: cartList } = useGenericQuery<Cart[]>(
+    [QUERY_KEYS.CART_LIST],
+    () => getCart()
+  );
   return (
     <div className='flex items-center'>
       <Link href='/cart'>
         <Image src='/icons/HeaderCart.svg' alt='cart' width={26} height={26} />
         <span className='text-black bg-white rounded-full w-[0.875rem] h-[0.875rem] flex justify-center items-center text-[0.625rem] font-bold absolute top-4 right-6'>
-          {CART_CTN}
+          {cartList?.data?.length}
         </span>
       </Link>
     </div>

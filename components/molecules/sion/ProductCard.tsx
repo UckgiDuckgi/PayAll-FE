@@ -4,6 +4,7 @@ import { Counter } from '@/components/ui/Counter';
 import { QUERY_KEYS } from '@/constants/queryKey';
 import { useGenericMutation } from '@/hooks/query/globalQuery';
 import { Search } from '@/types';
+import { useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useState } from 'react';
 import { postCart } from '@/lib/api';
@@ -15,8 +16,15 @@ import { VenderCard } from './VenderCard';
 export const ProductCard = ({ searchResult }: { searchResult: Search }) => {
   const [seletedProduct, setSelectedProduct] = useState<number>(0);
   const [quantity, setQuantity] = useState<number>(1);
-  const { mutate } = useGenericMutation([QUERY_KEYS.CART], () =>
-    postCart({ productId: searchResult.pcode, quantity: quantity })
+  const queryClient = useQueryClient();
+  const { mutate } = useGenericMutation(
+    [QUERY_KEYS.CART],
+    (data: { productId: number; quantity: number }) => postCart(data),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CART_LIST] });
+      },
+    }
   );
 
   const onCountChange = (pid: number, count: number) => {
