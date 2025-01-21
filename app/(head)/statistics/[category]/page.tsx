@@ -11,9 +11,12 @@ import { useGenericQuery } from '@/hooks/query/globalQuery';
 import { AccountsPayment, AccountsPayments } from '@/types/paymentType';
 import { Category } from '@/types/table';
 import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
 import Image from 'next/image';
 import { Suspense } from 'react';
 import { getPaymentsCategory } from '@/lib/api';
+
+dayjs.locale('ko');
 
 function PaymentCategoryContent({ category }: { category: Category }) {
   const { resData: paymentsData, isLoading } =
@@ -22,16 +25,9 @@ function PaymentCategoryContent({ category }: { category: Category }) {
       () => getPaymentsCategory({ category })
     );
 
-  const MOCK_CATEGORY_INFO = {
-    category_id: 1,
-    category: '외식',
-    total_spent: 103200,
-    count: 6,
-  };
-
   if (!paymentsData || !paymentsData.data || isLoading) return <>Loading...</>;
 
-  const { paymentCount, paymentList } = paymentsData.data;
+  const { paymentCount, monthPaymentPrice, paymentList } = paymentsData.data;
 
   return (
     <div className='space-y-6 mt-3'>
@@ -54,14 +50,14 @@ function PaymentCategoryContent({ category }: { category: Category }) {
               className='ml-1 text-[1.0625rem] font-bold'
               style={{ color: COLORS[0] }}
             >
-              {CATEGORY[category as Category][0]}
+              {CATEGORY[category as Category]}
             </span>{' '}
             지출액
           </span>
         </div>
         <div className='space-x-2'>
           <span className='font-bold text-[1.5rem]'>
-            {MOCK_CATEGORY_INFO.total_spent.toLocaleString()}원
+            {monthPaymentPrice.toLocaleString()}원
           </span>
           <Badge className='bg-deepDarkGrey px-2 py-1 rounded-full text-grey font-medium text-[.6875rem]'>
             총 {paymentCount}회
@@ -73,10 +69,10 @@ function PaymentCategoryContent({ category }: { category: Category }) {
         ({ dayPaymentPrice, paymentDate, paymentDatail }: AccountsPayment) => (
           <div className='mt-4 w-full' key={`${paymentDate}${dayPaymentPrice}`}>
             <TitleBottomLine
-              left={`${dayjs(paymentDate).format('MM-DD (i)')}`}
+              left={`${dayjs(paymentDate).format('MM월 DD일 (ddd)')}`}
               right={`${dayPaymentPrice?.toLocaleString() ?? 0}원`}
             >
-              {paymentDatail.map((pd) => (
+              {paymentDatail?.map((pd) => (
                 <div key={pd.paymentId}>
                   <PaymentCard showAccount={true} paymentInfo={pd} />
                 </div>

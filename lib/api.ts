@@ -76,3 +76,10 @@ export const updateCart = async ({
     quantity,
   });
 };
+
+export const postLimit = async ({ limitPrice }: { limitPrice: number }) => {
+  // 목표 등록
+  return await apiCall.post(BASE_URL + '/limit', {
+    limitPrice,
+  });
+};
