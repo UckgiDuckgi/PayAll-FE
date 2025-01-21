@@ -34,7 +34,7 @@ function CategoryCarouselItem({
           </span>
         </span>
         <span className='tracking-wide text-[.9325rem] font-bold'>
-          {amount.toLocaleString()}원
+          {amount?.toLocaleString() ?? 0}원
         </span>
       </div>
     </div>
