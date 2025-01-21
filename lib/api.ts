@@ -44,6 +44,7 @@ export const getLimit = async () => {
   return await apiCall.get(BASE_URL + '/limit');
 };
 
+
 export const getSearch = async ({ keyword }: { keyword: string }) => {
   return await apiCall.get(BASE_URL + '/search', {
     query: keyword,
