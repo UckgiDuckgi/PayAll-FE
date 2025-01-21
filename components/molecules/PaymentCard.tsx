@@ -1,5 +1,6 @@
 import { AccountsPaymentsDetail } from '@/types/paymentType';
 import { ChevronRight } from 'lucide-react';
+import { parseCategory, parsePaymentType } from '@/lib/utils';
 import UploadButton from './ui/UploadButton';
 
 function PaymentCard({
@@ -27,7 +28,9 @@ function PaymentCard({
       <div className='flex items-center justify-between'>
         <div className='space-x-2'>
           <span className='text-[.8125rem]'>{paymentPlace}</span>
-          <span className='text-[.6875rem] text-[#858585]'>{category}</span>
+          <span className='text-[.6875rem] text-[#858585]'>
+            {parseCategory(category)}
+          </span>
         </div>
         <span className='text-[.9375rem] font-bold'>
           - {paymentPrice.toLocaleString()}원
@@ -37,7 +40,7 @@ function PaymentCard({
         <div className='space-y-1'>
           <div className='flex items-center gap-1'>
             <span className='text-[.6875rem] text-main font-regular'>
-              {paymentType} 결제
+              {parsePaymentType(paymentType)} 결제
             </span>
             <span className='text-[.6875rem] text-grey font-regular'>
               {new Date(paymentTime).toLocaleTimeString('en-US', {

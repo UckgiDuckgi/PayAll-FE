@@ -1,16 +1,9 @@
 'use client';
 
+import { Account } from '@/types';
 import { motion, cubicBezier } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { AccountCard, Bank } from './AccountCard';
-
-type Account = {
-  bank_name: Bank;
-  account_id: number;
-  account_name: string;
-  account_number: string;
-  balance: number;
-};
+import { AccountCard } from './AccountCard';
 
 interface AccountCardListProps {
   accounts: Account[];
@@ -69,7 +62,7 @@ export const AccountCardList = ({
         >
           <AccountCard
             account={account}
-            onClick={() => router.push(`/accounts/${account.account_id}`)}
+            onClick={() => router.push(`/accounts/${account.accountId}`)}
           />
         </motion.div>
       ))}

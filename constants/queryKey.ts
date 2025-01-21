@@ -15,6 +15,9 @@ export const QUERY_KEYS: Record<string, string> = {
 
   POST_LIMIT: 'post-list',
 
+  ACCOUNTS: 'accounts',
+  ACCOUNTS_DETAIL: 'accounts-detail',
+
   RECOMMENDATIONS: 'recommendations',
 
   PRODUCT_DETAIL: 'product-detail',

@@ -84,6 +84,20 @@ export const postLimit = async ({ limitPrice }: { limitPrice: number }) => {
   });
 };
 
+export const getAccounts = async () => {
+  return await apiCall.get(BASE_URL + '/accounts');
+};
+
+export const getAccountsDetail = async ({
+  accountId,
+}: {
+  accountId?: number;
+}) => {
+  return await apiCall.get(BASE_URL + '/accounts/payments', {
+    accountId: accountId ?? '',
+  });
+};
+
 // recommendations
 export const getRecommendations = async () => {
   return await apiCall.get(BASE_URL + '/recommendations');
