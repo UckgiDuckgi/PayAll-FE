@@ -16,6 +16,7 @@ export default function AccountUnionCard({
   difference: number;
 }) {
   const router = useRouter();
+
   return (
     <button
       className='w-full h-32 bg-gradient-to-r from-[#333333] to-[#8A8A8A] rounded-2xl p-5 pr-3 pb-3 flex items-center justify-stretch'

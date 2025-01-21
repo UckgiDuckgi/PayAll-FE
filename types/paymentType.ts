@@ -14,14 +14,15 @@ export type AccountsPaymentsDetail = {
 export type AccountsPayment = {
   dayPaymentPrice: number;
   paymentDate: string;
-  paymentDatail: AccountsPaymentsDetail[];
+  paymentDetail: AccountsPaymentsDetail[];
 };
 
 export type AccountsPayments = {
+  userName: string;
   totalBalance: number;
   monthPaymentPrice: number;
   bankName: string;
-  accountNam: string;
+  accountName: string;
   accountNumber: string;
   paymentCount: number;
   category: string;

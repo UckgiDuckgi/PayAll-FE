@@ -66,13 +66,13 @@ function PaymentCategoryContent({ category }: { category: Category }) {
       </div>
 
       {paymentList?.map(
-        ({ dayPaymentPrice, paymentDate, paymentDatail }: AccountsPayment) => (
+        ({ dayPaymentPrice, paymentDate, paymentDetail }: AccountsPayment) => (
           <div className='mt-4 w-full' key={`${paymentDate}${dayPaymentPrice}`}>
             <TitleBottomLine
               left={`${dayjs(paymentDate).format('MM월 DD일 (ddd)')}`}
               right={`${dayPaymentPrice?.toLocaleString() ?? 0}원`}
             >
-              {paymentDatail?.map((pd) => (
+              {paymentDetail?.map((pd) => (
                 <div key={pd.paymentId}>
                   <PaymentCard showAccount={true} paymentInfo={pd} />
                 </div>
