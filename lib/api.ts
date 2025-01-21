@@ -84,3 +84,25 @@ export const postLimit = async ({ limitPrice }: { limitPrice: number }) => {
     limitPrice,
   });
 };
+
+// recommendations
+export const getRecommendations = async () => {
+  return await apiCall.get(BASE_URL + '/recommendations');
+};
+
+// product
+export const getProductDetail = async ({
+  productId,
+}: {
+  productId: number;
+}) => {
+  return await apiCall.get(BASE_URL + '/product/' + productId);
+};
+
+export const getProductCards = async () => {
+  return await apiCall.get(BASE_URL + '/product/cards');
+};
+
+export const getProductSubscribs = async () => {
+  return await apiCall.get(BASE_URL + '/product/subscribs');
+};

@@ -7,24 +7,23 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer';
-import { ReactNode, useState } from 'react';
+import { ReactNode } from 'react';
 
 function SimpleBottomSheet({
+  isOpen,
+  onOpenChange,
   content,
   children,
 }: {
+  isOpen: boolean;
+  onOpenChange: () => void;
   content: ReactNode;
   children: ReactNode;
 }) {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleDialog = () => {
-    setIsOpen((prev) => !prev);
-  };
   return (
-    <Drawer open={isOpen} onOpenChange={setIsOpen}>
+    <Drawer open={isOpen} onOpenChange={onOpenChange}>
       <DrawerTrigger asChild>
-        <div onClick={toggleDialog}>{children}</div>
+        <div onClick={onOpenChange}>{children}</div>
       </DrawerTrigger>
       <DrawerContent className='pb-24 pt-6 mx-auto max-w-[512px] px-2 w-full flex flex-col items-start justify-center border-none bg-black text-white'>
         <DrawerHeader>
