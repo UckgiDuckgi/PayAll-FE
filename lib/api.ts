@@ -56,3 +56,23 @@ export const postCart = async ({ productId, quantity = 1 }: Partial<Cart>) => {
     quantity,
   });
 };
+
+export const getCart = async () => {
+  return await apiCall.get(BASE_URL + '/cart');
+};
+
+export const deleteCart = async ({ cartId }: { cartId: number }) => {
+  return await apiCall.delete(BASE_URL + '/cart/' + cartId);
+};
+
+export const updateCart = async ({
+  cartId,
+  quantity,
+}: {
+  cartId: number;
+  quantity: number;
+}) => {
+  return await apiCall.patch(BASE_URL + '/cart/' + cartId, {
+    quantity,
+  });
+};

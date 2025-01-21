@@ -5,44 +5,17 @@ import CardSlide from '@/components/molecules/sion/CardSlide';
 import { CartProductCard } from '@/components/molecules/sion/CartProductCard';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
+import { QUERY_KEYS } from '@/constants/queryKey';
+import { useGenericMutation, useGenericQuery } from '@/hooks/query/globalQuery';
+import { Cart } from '@/types';
+import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
-
-type CartItem = {
-  pid: number;
-  imageUrl: string;
-  title: string;
-  price: number;
-  shop: string;
-};
+import { deleteCart, getCart, updateCart } from '@/lib/api';
 
 type CartItemState = {
   isChecked: boolean;
   quantity: number;
 };
-
-const MOCK_CART_ITEMS: CartItem[] = [
-  {
-    pid: 1,
-    imageUrl: '/images/Logo.png',
-    title: '나드 리프레쉬 퍼퓸드 바디워시 본품,프레쉬라벤더향, 680ml, 1개입 ',
-    price: 8900,
-    shop: '11st',
-  },
-  {
-    pid: 2,
-    imageUrl: '/images/Logo.png',
-    title: '나드 리프레쉬 퍼퓸드 바디워시 본품,프레쉬라벤더향, 680ml, 1개입 ',
-    price: 8900,
-    shop: '11st',
-  },
-  {
-    pid: 3,
-    imageUrl: '/images/Logo.png',
-    title: '나드 리프레쉬 퍼퓸드 바디워시 본품,프레쉬라벤더향, 680ml, 1개입 ',
-    price: 8900,
-    shop: '11st',
-  },
-];
 
 const USER_INFO = {
   name: '문해빈',
@@ -78,57 +51,86 @@ const MOCK_CARDS = [
   },
 ];
 
-const DELIVERY_FEE = 2000;
+const DELIVERY_FEE = 19900;
 
 export default function CartPage() {
-  const [cartItems] = useState<CartItem[]>(MOCK_CART_ITEMS);
+  const { resData: cartList } = useGenericQuery<Cart[]>(
+    [QUERY_KEYS.CART_LIST],
+    () => getCart()
+  );
+  const queryClient = useQueryClient();
+  const { mutate } = useGenericMutation(
+    [QUERY_KEYS.DELETE_CART],
+    (cartId: number) => deleteCart({ cartId }),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CART_LIST] });
+      },
+    }
+  );
+  const { mutate: updateCartMutate } = useGenericMutation(
+    [QUERY_KEYS.UPDATE_CART],
+    (data: { cartId: number; quantity: number }) => updateCart(data)
+  );
+
   const [itemStates, setItemStates] = useState<Map<number, CartItemState>>(
     () => {
       const initialMap = new Map();
-      MOCK_CART_ITEMS.forEach((item) => {
-        initialMap.set(item.pid, { isChecked: false, quantity: 1 });
+      cartList?.data?.forEach((item) => {
+        initialMap.set(item.productId, { isChecked: false, quantity: 1 });
       });
       return initialMap;
     }
   );
 
-  const handleCheckChange = (pid: number, checked: boolean) => {
+  const handleCheckChange = (productId: number, checked: boolean) => {
     setItemStates((prev) => {
       const newMap = new Map(prev);
-      const currentState = newMap.get(pid) || { quantity: 1 };
-      newMap.set(pid, { ...currentState, isChecked: checked });
+      const currentState = newMap.get(productId) || { quantity: 1 };
+      newMap.set(productId, { ...currentState, isChecked: checked });
       return newMap;
     });
   };
 
-  const handleQuantityChange = (pid: number, count: number) => {
+  const handleQuantityChange = (
+    cartId: number,
+    productId: number,
+    count: number
+  ) => {
     setItemStates((prev) => {
       const newMap = new Map(prev);
-      const currentState = newMap.get(pid) || { isChecked: false };
-      newMap.set(pid, { ...currentState, quantity: count });
+      const currentState = newMap.get(productId) || { isChecked: false };
+      newMap.set(productId, { ...currentState, quantity: count });
       return newMap;
     });
+    updateCartMutate({ cartId: cartId, quantity: count });
   };
 
   const handleSelectAll = (checked: boolean) => {
     setItemStates((prev) => {
       const newMap = new Map(prev);
-      cartItems.forEach((item) => {
-        const currentState = newMap.get(item.pid) || { quantity: 1 };
-        newMap.set(item.pid, { ...currentState, isChecked: checked });
+      cartList?.data?.forEach((item) => {
+        const currentState = newMap.get(item.productId) || { quantity: 1 };
+        newMap.set(item.productId, { ...currentState, isChecked: checked });
       });
       return newMap;
     });
   };
 
+  const handleDelete = (cartId: number) => {
+    mutate(cartId);
+  };
+
   const calculateTotalPrice = () => {
-    return cartItems.reduce((sum, item) => {
-      const state = itemStates.get(item.pid);
-      if (state?.isChecked) {
-        return sum + item.price * (state.quantity || 1);
-      }
-      return sum;
-    }, 0);
+    return (
+      cartList?.data?.reduce((sum, item) => {
+        const state = itemStates.get(item.productId);
+        if (state?.isChecked) {
+          return sum + item.productPrice * (state.quantity || 1);
+        }
+        return sum;
+      }, 0) ?? 0
+    );
   };
 
   const calculateDeliveryFee = () => {
@@ -151,27 +153,33 @@ export default function CartPage() {
       <DeliveryFeeProgress fee={calculateTotalPrice()} totalFee={19900} />
       <div className='flex items-center gap-2 my-3'>
         <Checkbox
-          checked={cartItems.every(
-            (item) => itemStates.get(item.pid)?.isChecked
+          checked={cartList?.data?.every(
+            (item) => itemStates.get(item.productId)?.isChecked
           )}
           onCheckedChange={handleSelectAll}
         />
         <span className='text-white text-[0.6875rem]'>전체 선택</span>
       </div>
 
-      {cartItems.map((item) => {
-        const state = itemStates.get(item.pid) || {
+      {cartList?.data?.map((item) => {
+        const state = itemStates.get(item.productId) || {
           isChecked: false,
           quantity: 1,
         };
         return (
           <CartProductCard
-            key={item.pid}
-            {...item}
+            key={item.productId}
+            cartId={item.cartId}
+            imageUrl={item.image}
+            productId={item.productId}
+            title={item.productName}
+            price={item.productPrice}
+            shop={item.storeName}
+            quantity={item.quantity}
             isChecked={state.isChecked}
-            quantity={state.quantity}
             onCheckChange={handleCheckChange}
             onQuantityChange={handleQuantityChange}
+            onDelete={handleDelete}
           />
         );
       })}

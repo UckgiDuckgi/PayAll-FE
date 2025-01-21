@@ -1,7 +1,6 @@
 'use client';
 
 import { Search } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 import { useRef } from 'react';
 
 export const SearchInput = ({
@@ -13,7 +12,6 @@ export const SearchInput = ({
   defaultValue?: string;
   onClick: (keyword: string) => void;
 }) => {
-  const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
   return (
     <div className='relative w-full py-2 bg-transparent'>

@@ -15,10 +15,8 @@ import { VenderCard } from './VenderCard';
 export const ProductCard = ({ searchResult }: { searchResult: Search }) => {
   const [seletedProduct, setSelectedProduct] = useState<number>(0);
   const [quantity, setQuantity] = useState<number>(1);
-  const { mutate } = useGenericMutation(
-    [QUERY_KEYS.CART],
-    async () =>
-      await postCart({ productId: searchResult.pcode, quantity: quantity })
+  const { mutate } = useGenericMutation([QUERY_KEYS.CART], () =>
+    postCart({ productId: searchResult.pcode, quantity: quantity })
   );
 
   const onCountChange = (pid: number, count: number) => {
