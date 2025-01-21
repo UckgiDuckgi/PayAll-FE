@@ -1,6 +1,11 @@
 'use client';
 
+import { QUERY_KEYS } from '@/constants/queryKey';
+import { useGenericMutation } from '@/hooks/query/globalQuery';
+import { useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
+import { useState } from 'react';
+import { postCart } from '@/lib/api';
 import { Counter } from '../ui/Counter';
 import { IconIndicator } from '../ui/IconIndicator';
 import BottomSheet from './ui/BottomSheet';
@@ -16,6 +21,26 @@ function PaymentDetailCard({
   lowestPrice: number;
   vendorName: string;
 }) {
+  const queryClient = useQueryClient();
+  const [quantity, setQuantity] = useState<number>(1);
+  const { mutate } = useGenericMutation(
+    [QUERY_KEYS.CART],
+    (data: { productId: number; quantity: number }) => postCart(data),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CART_LIST] });
+      },
+    }
+  );
+
+  const handleAddCart = () => {
+    mutate({ productId: 0, quantity: quantity });
+  };
+
+  const onCountChange = (pid: number, count: number) => {
+    setQuantity(count);
+  };
+
   return (
     <div className='w-full px-2 py-4 space-y-1 border-b-[1px] border-darkGrey'>
       <div className='flex items-center justify-between'>
@@ -52,13 +77,13 @@ function PaymentDetailCard({
               </div>
               <Counter
                 pid={0}
-                initialCount={1}
-                onCountChange={() => {}}
-                className=''
+                initialCount={quantity}
+                onCountChange={onCountChange}
               />
             </div>
           }
           btnTexts={['취소', '담기']}
+          onClick={handleAddCart}
         >
           <div className='relative cursor-pointer'>
             <button

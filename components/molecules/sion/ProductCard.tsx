@@ -1,34 +1,44 @@
 'use client';
 
 import { Counter } from '@/components/ui/Counter';
+import { QUERY_KEYS } from '@/constants/queryKey';
+import { useGenericMutation } from '@/hooks/query/globalQuery';
+import { Search } from '@/types';
+import { useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useState } from 'react';
+import { postCart } from '@/lib/api';
 import { IconIndicator } from '../../ui/IconIndicator';
 import { SquareImage } from '../../ui/SquareImage';
 import BottomSheet from '../ui/BottomSheet';
 import { VenderCard } from './VenderCard';
 
-type Store = {
-  shopName: string;
-  price: number;
-  shopUrl: string;
-};
-type SearchResult = {
-  pcode: number;
-  productName: string;
-  productImage: string;
-  storeList: Store[];
-};
-export const ProductCard = ({
-  searchResult,
-}: {
-  searchResult: SearchResult;
-}) => {
+export const ProductCard = ({ searchResult }: { searchResult: Search }) => {
   const [seletedProduct, setSelectedProduct] = useState<number>(0);
+  const [quantity, setQuantity] = useState<number>(1);
+  const queryClient = useQueryClient();
+  const { mutate } = useGenericMutation(
+    [QUERY_KEYS.CART],
+    (data: { productId: number; quantity: number }) => postCart(data),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CART_LIST] });
+      },
+    }
+  );
+
+  const onCountChange = (pid: number, count: number) => {
+    setQuantity(count);
+  };
+
+  const handleAddCart = () => {
+    mutate({ productId: searchResult.pcode, quantity: quantity });
+  };
+
   return (
     <div className='flex flex-col bg-black p-4 w-full'>
       <div className='flex gap-3'>
-        <SquareImage src='/images/Logo.png' alt='Logo' size={120} />
+        <SquareImage src={searchResult.productImage} alt='Logo' size={120} />
         <div className='flex flex-col gap-1 w-7/12 text-left'>
           <div className='text-white w-full text-xs font-medium'>
             {searchResult.productName}
@@ -60,12 +70,12 @@ export const ProductCard = ({
                 <Counter
                   pid={searchResult.pcode}
                   initialCount={1}
-                  onCountChange={() => {}}
-                  className=''
+                  onCountChange={onCountChange}
                 />
               </div>
             }
             btnTexts={['취소', '담기']}
+            onClick={handleAddCart}
           >
             <div className='relative cursor-pointer flex items-end justify-end w-full'>
               <button className='w-9 h-9 rounded-full bg-darkGrey flex items-center justify-center'>

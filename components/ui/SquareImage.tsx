@@ -14,7 +14,7 @@ export function SquareImage({
 }) {
   return (
     <div
-      className={cn('rounded-lg bg-white p-2', className)}
+      className={cn('rounded-lg bg-white p-1', className)}
       style={{ width: size, height: size }}
     >
       <a>
@@ -23,6 +23,7 @@ export function SquareImage({
           alt={alt}
           width={size}
           height={size}
+          className='rounded-lg'
           unoptimized
           priority
         />
