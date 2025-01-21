@@ -7,10 +7,10 @@ import SimpleBottomSheet from '@/components/molecules/ui/SimpleBottomSheet';
 import { QUERY_KEYS } from '@/constants/queryKey';
 import { useGenericQuery } from '@/hooks/query/globalQuery';
 import { ProductCardsType } from '@/types/productType';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { getProductCards } from '@/lib/api';
 
-function page() {
+function RecommendationCardsContent() {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleDialog = () => {
@@ -51,4 +51,10 @@ function page() {
   );
 }
 
-export default page;
+export default function Page() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <RecommendationCardsContent />
+    </Suspense>
+  );
+}
