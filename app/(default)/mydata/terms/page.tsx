@@ -170,9 +170,9 @@ function TermsContent() {
               </label>
             </div>
           </div>
-          <Button className='w-full bg-main hover:bg-[#476BE3]'>
-            <Link href={`/mydata?complete=${true}`}>동의</Link>
-          </Button>
+          <Link href={`/mydata?complete=${true}`} className='w-full'>
+            <Button className='w-full bg-main hover:bg-[#476BE3]'>동의</Button>
+          </Link>
         </div>
       </>
     );
@@ -186,9 +186,11 @@ function TermsContent() {
         <p>더 많은 기능을 이용하러 가볼까요?</p>
       </div>
       <div className='fixed bottom-8 w-[90%] max-w-[460px]'>
-        <Button className='w-full bg-main text-white hover:bg-[#476BE3]'>
-          <Link href='/'>확인</Link>
-        </Button>
+        <Link href='/' className='w-full'>
+          <Button className='w-full bg-main text-white hover:bg-[#476BE3]'>
+            확인
+          </Button>
+        </Link>
       </div>
     </div>
   );

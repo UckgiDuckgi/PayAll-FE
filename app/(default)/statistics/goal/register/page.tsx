@@ -2,10 +2,13 @@
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { QUERY_KEYS } from '@/constants/queryKey';
+import { useGenericMutation } from '@/hooks/query/globalQuery';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { FormEvent, useRef, Suspense } from 'react';
+import { FormEvent, Suspense, useState } from 'react';
+import { postLimit } from '@/lib/api';
 
 function formatNumber(value: string | null): string {
   if (!value) return '';
@@ -17,21 +20,31 @@ function GoalRegisterContent() {
   const searchParams = useSearchParams();
   const avgSpent = searchParams.get('avgSpent');
   const complete = searchParams.get('complete');
-  const goalRef = useRef<HTMLInputElement>(null);
+  const [goal, setGoal] = useState<string>(avgSpent?.toString() ?? '0');
   const router = useRouter();
 
-  const handleInput = () => {
-    if (goalRef.current) {
-      const formattedValue = formatNumber(goalRef.current.value);
-      goalRef.current.value = formattedValue;
+  const { mutate } = useGenericMutation(
+    [QUERY_KEYS.POST_LIMIT],
+    (limitPrice: number) => postLimit({ limitPrice }),
+    {
+      onSuccess: (data) => {
+        if (data.code === 200)
+          router.push(
+            `/statistics/goal/register?avgSpent=${avgSpent}&complete=${true}`
+          );
+      },
     }
+  );
+
+  const handleInput = () => {
+    setGoal(formatNumber(goal.toString()));
   };
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    const value = goalRef.current?.value.replace(/,/g, '');
-    if (value) {
-      console.log(`Submitted Goal: ${value}`);
+    if (goal) {
+      mutate(+goal.replace(/\D/g, ''));
+      console.log(goal);
       router.push(
         `/statistics/goal/register?avgSpent=${avgSpent}&complete=${true}`
       );
@@ -42,7 +55,7 @@ function GoalRegisterContent() {
 
   if (!complete) {
     return (
-      <div className='h-screen w-[90%] mx-auto z-50 flex flex-col justify-start items-start gap-10'>
+      <div className='w-[90%] mx-auto z-50 flex flex-col justify-start items-start gap-10'>
         <form
           className='w-full flex flex-col items-start justify-start gap-4 pt-40 sm:pt-24'
           onSubmit={handleSubmit}
@@ -68,8 +81,8 @@ function GoalRegisterContent() {
           </div>
           <div className='flex items-end gap-2'>
             <Input
-              ref={goalRef}
-              defaultValue={formatNumber(avgSpent)}
+              value={formatNumber(goal)}
+              onChange={(e) => setGoal(e.target.value)}
               onInput={handleInput}
               type='text'
               className='bg-darkGrey border-none outline-none focus:outline-none focus:bg-[#515151]'
@@ -88,7 +101,7 @@ function GoalRegisterContent() {
   }
 
   return (
-    <div className='h-screen w-[90%] mx-auto z-50 flex flex-col justify-center items-center gap-10 pb-12'>
+    <div className='w-full mx-auto z-50 flex flex-col justify-center items-center gap-10 pb-12'>
       <div className='mx-auto w-[150px] sm:w-[200px] h-auto'>
         <Image
           src='/images/glasses.svg'
@@ -102,12 +115,14 @@ function GoalRegisterContent() {
         <span>목표 설정이 완료되었어요.</span>
         <span>목표를 달성하러 가볼까요?</span>
       </div>
-      <Button
-        type='submit'
-        className='absolute bottom-8 w-[90%] max-w-[460px] bg-main hover:bg-[#476BE3]'
-      >
-        <Link href='/statistics/goal'>목표 달성하러 가기</Link>
-      </Button>
+      <Link href='/statistics/goal' className='w-full'>
+        <Button
+          type='submit'
+          className='absolute bottom-8 w-[90%] max-w-[460px] bg-main hover:bg-[#476BE3]'
+        >
+          목표 달성하러 가기
+        </Button>
+      </Link>
     </div>
   );
 }

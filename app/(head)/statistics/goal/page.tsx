@@ -98,7 +98,7 @@ function StatisticsGoalContent() {
                 하루 평균 <span className='text-[1rem]'>쓸 돈</span>
               </span>
               <span className='font-bold text-[1.125rem] text-white'>
-                {(+willDo).toLocaleString()}원
+                {(+willDo < 0 ? -1 * +willDo : +willDo).toLocaleString()}원
               </span>
             </div>
           </div>
@@ -106,7 +106,7 @@ function StatisticsGoalContent() {
           <div className='py-3'>
             <AccentText
               prefix='목표 달성을 위해서는 하루 평균'
-              accent={`${(+did - +willDo).toLocaleString()}원`}
+              accent={`${(+did - (+willDo < 0 ? -1 * +willDo : +willDo)).toLocaleString()}원`}
               suffix='을 아껴야해요.'
               accentColor='text-main'
               accentSize='text-[1.125rem]'
@@ -136,7 +136,7 @@ function StatisticsGoalContent() {
   }
 
   return (
-    <div className='mx-auto flex flex-col justify-center items-center gap-10 pt-20 sm:pt-8'>
+    <div className='flex flex-col justify-center items-center gap-10 pt-20 sm:pt-8 w-[90%] mx-auto'>
       <div className='mx-auto w-[150px] sm:w-[200px] h-auto'>
         <Image
           src='/images/glasses.svg'
@@ -166,18 +166,18 @@ function StatisticsGoalContent() {
           </span>
         </div>
       )}
-      <Button
-        type='submit'
-        className='absolute bottom-24 w-[90%] max-w-[512px] bg-main hover:bg-[#476BE3]'
+      <Link
+        href={`/statistics/goal/register?avgSpent=${averageSpent}`}
+        className='absolute bottom-24 w-[90%] max-w-[460px]'
       >
-        {isChecked ? (
-          <span onClick={submitGoal}>목표 설정하기</span>
-        ) : (
-          <Link href={`/statistics/goal/register?avgSpent=${averageSpent}`}>
-            목표 설정하기
-          </Link>
-        )}
-      </Button>
+        <Button type='submit' className='w-full bg-main hover:bg-[#476BE3]'>
+          {isChecked ? (
+            <span onClick={submitGoal}>목표 설정하기</span>
+          ) : (
+            <span>목표 설정하기</span>
+          )}
+        </Button>
+      </Link>
     </div>
   );
 }
