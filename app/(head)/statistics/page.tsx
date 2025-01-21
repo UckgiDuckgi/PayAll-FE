@@ -11,11 +11,12 @@ import { Badge } from '@/components/ui/badge';
 import { CATEGORY } from '@/constants/category';
 import { COLORS } from '@/constants/color';
 import { MOCK_PAYMENT, MOCK_STAT } from '@/constants/mockdata';
+import { useStatisticsQuery } from '@/hooks/query/statistics';
 import { Category } from '@/types/table';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { Suspense } from 'react';
+import { Suspense, useMemo } from 'react';
 
 const TitleLine = ({ title }: { title: string }) => {
   return (
@@ -30,10 +31,19 @@ const TitleLine = ({ title }: { title: string }) => {
 
 function StatisticsContent() {
   const searchParams = useSearchParams();
-  const category = searchParams.get('category') as Category;
+  const category = useMemo(
+    () => searchParams.get('category') as Category,
+    [searchParams]
+  );
+  const date = useMemo(() => searchParams.get('date'), [searchParams]);
 
-  const date = '2025년 1월';
+  const { data: statisticsData } = useStatisticsQuery(date as string);
 
+  // if (!statisticsData || isLoading) {
+  //   return <>Loading...</>;
+  // }
+
+  console.log(statisticsData);
   if (!category) {
     return (
       <div className='w-full mx-auto'>

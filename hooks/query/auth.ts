@@ -26,7 +26,9 @@ export const usePostSignIn = () => {
 
   return useGenericMutation<SignIn, Partial<User>>(
     [QUERY_KEYS.SIGN_IN],
-    ({ authId, password }: SignIn) => postSignIn({ authId, password }),
+    async ({ authId, password }: SignIn) => {
+      return postSignIn({ authId, password });
+    },
     {
       onSuccess: () => {
         showToast(toast, '로그인에 성공하였습니다!');

@@ -1,52 +1,55 @@
-'use client';
-
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { showToast } from '@/lib/utils';
 import { useToast } from '../use-toast';
 
+type MutationKey = string[] | readonly unknown[];
+type QueryKey =
+  | string[]
+  | readonly (string | { [key: string]: string | number })[]
+  | readonly unknown[];
+
+type MutationFn<TVariables, TData> = (variables: TVariables) => Promise<TData>;
+type QueryFn<TData> = (context: { queryKey: QueryKey }) => Promise<TData>;
+
 export const useGenericMutation = <TVariables, TData>(
-  mutationKey: any,
-  mutationFn: (variables: TVariables) => Promise<TData>,
+  mutationKey: MutationKey,
+  mutationFn: MutationFn<TVariables, TData>,
   options?: {
     onSuccess?: (data: TData) => void;
-    onError?: (error: any) => void;
+    onError?: (error: Error) => void;
   }
 ) => {
   const { toast } = useToast();
-  // const router = useRouter();
 
-  return useMutation<TData, any, TVariables>({
+  return useMutation<TData, Error, TVariables>({
     mutationKey,
     mutationFn,
     onSuccess: (data) => {
       if (options?.onSuccess) {
         options.onSuccess(data);
       }
-      showToast(toast, '작업이 성공적으로 완료되었습니다!');
     },
     onError: (error) => {
       if (options?.onError) {
         options.onError(error);
       } else {
-        showToast(toast, error.message || '에러가 발생했습니다.');
+        showToast(toast, error.message || 'An error occurred.');
       }
     },
   });
 };
 
-// export const useGenericQuery = (
-//   queryKey: any[],
-//   queryFn: () => any,
-//   options = {}
-// ) => {
-//   const { toast } = useToast();
-
-//   return useQuery({
-//     queryKey,
-//     queryFn,
-//     onError: (error) => {
-//       showToast(toast, error.message || '데이터 로드 중 에러가 발생했습니다.');
-//     },
-//     ...options,
-//   });
-// };
+export const useGenericQuery = <TData>(
+  queryKey: QueryKey,
+  queryFn: QueryFn<TData>,
+  options?: UseQueryOptions<TData, Error>
+) => {
+  return useQuery<TData, Error>({
+    queryKey,
+    queryFn,
+    retry: false,
+    staleTime: Infinity,
+    refetchOnWindowFocus: false,
+    ...options,
+  });
+};
