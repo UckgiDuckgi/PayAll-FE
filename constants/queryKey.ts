@@ -6,4 +6,6 @@ export const QUERY_KEYS: Record<string, string> = {
   STATISTICS_CATEGORY: 'statistics-category',
 
   LIMIT: 'limit',
+
+  SEARCH: 'search',
 };

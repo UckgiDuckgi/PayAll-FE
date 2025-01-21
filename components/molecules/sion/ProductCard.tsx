@@ -1,6 +1,7 @@
 'use client';
 
 import { Counter } from '@/components/ui/Counter';
+import { Search } from '@/types';
 import Image from 'next/image';
 import { useState } from 'react';
 import { IconIndicator } from '../../ui/IconIndicator';
@@ -8,27 +9,12 @@ import { SquareImage } from '../../ui/SquareImage';
 import BottomSheet from '../ui/BottomSheet';
 import { VenderCard } from './VenderCard';
 
-type Store = {
-  shopName: string;
-  price: number;
-  shopUrl: string;
-};
-type SearchResult = {
-  pcode: number;
-  productName: string;
-  productImage: string;
-  storeList: Store[];
-};
-export const ProductCard = ({
-  searchResult,
-}: {
-  searchResult: SearchResult;
-}) => {
+export const ProductCard = ({ searchResult }: { searchResult: Search }) => {
   const [seletedProduct, setSelectedProduct] = useState<number>(0);
   return (
     <div className='flex flex-col bg-black p-4 w-full'>
       <div className='flex gap-3'>
-        <SquareImage src='/images/Logo.png' alt='Logo' size={120} />
+        <SquareImage src={searchResult.productImage} alt='Logo' size={120} />
         <div className='flex flex-col gap-1 w-7/12 text-left'>
           <div className='text-white w-full text-xs font-medium'>
             {searchResult.productName}
