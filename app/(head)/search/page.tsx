@@ -5,10 +5,11 @@ import { ProductCard } from '@/components/molecules/sion/ProductCard';
 import RecentSearchWords from '@/components/molecules/sion/RecentSearchWords';
 import { SearchInput } from '@/components/molecules/sion/SearchInput';
 import { MOCK_LOWEST_PRODUCT } from '@/constants/mockdata';
-import { useSearchParams } from 'next/navigation';
+import { recentSearchAtom } from '@/stores/atom';
+import { useAtom } from 'jotai';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 
-const recentSearch = ['커튼', '사과', '오리엔탈소스', '워셔액', '몽키스패너'];
 const searchResult: SearchResult[] = [
   {
     pcode: 12345,
@@ -74,12 +75,33 @@ type SearchResult = {
 };
 
 function SearchContent() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const keyword = searchParams.get('keyword');
+  const [recentSearch, setRecentSearch] = useAtom(recentSearchAtom);
+
+  const handleSearch = (keyword: string) => {
+    if (!recentSearch.includes(keyword) && keyword !== '')
+      setRecentSearch([...recentSearch, keyword]);
+    router.push(`/search?keyword=${keyword}`);
+  };
+
+  const handleDeleteWord = (word: string) => {
+    if (word === '') {
+      setRecentSearch([]);
+      return;
+    }
+    setRecentSearch(recentSearch.filter((w) => w !== word));
+  };
+
   return (
     <div className='h-full'>
       <div className='fixed top-13 w-[90%] max-w-[460px]'>
-        <SearchInput placeholder='검색' defaultValue={keyword ?? ''} />
+        <SearchInput
+          placeholder='검색'
+          defaultValue={keyword ?? ''}
+          onClick={handleSearch}
+        />
       </div>
       <div className='pt-14'>
         {keyword ? (
@@ -92,7 +114,10 @@ function SearchContent() {
           </>
         ) : (
           <>
-            <RecentSearchWords recentSearch={recentSearch} />
+            <RecentSearchWords
+              recentSearch={recentSearch}
+              deleteWord={handleDeleteWord}
+            />
             <div className='flex flex-col mt-10 w-full'>
               <span className='text-base font-bold text-grey mb-4'>
                 최근 지출 품목의 최저가 상품
