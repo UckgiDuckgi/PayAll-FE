@@ -55,8 +55,9 @@ class SessionBrowserManager {
   public static async getInstance() {
     if (!this.instance) {
       console.log('New Browser Created!');
+      process.env.DISPLAY = ':99';
       const browser = await chromium.launch({
-        executablePath: process.env.CHROME_PATH,
+        executablePath: '/opt/google/chrome/chrome',
         headless: false,
         args: [
           // '--window-position=-10000,-10000',
