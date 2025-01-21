@@ -56,16 +56,19 @@ class SessionBrowserManager {
     if (!this.instance) {
       console.log('New Browser Created!');
       const browser = await chromium.launch({
-        executablePath:
-          'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
+        executablePath: process.env.CHROME_PATH,
         headless: false,
         args: [
-          '--window-position=-10000,-10000',
-          // '--window-position=0,0',
+          // '--window-position=-10000,-10000',
+          '--window-position=0,0',
           '--disable-quic',
           '--no-sandbox',
           '--disable-setuid-sandbox',
           '--disable-blink-features=AutomationControlled',
+          '--disable-machine-learning',
+          '--disable-speech-api',
+          '--disable-voice-input',
+          '--disable-translate',
           '--start-minimized',
           '--log-level=3',
         ],

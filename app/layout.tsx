@@ -1,3 +1,4 @@
+import { Providers } from '@/components/Provider';
 import type { Metadata } from 'next';
 import { pretendardFont } from './fonts';
 import './globals.css';
@@ -17,7 +18,7 @@ export default function RootLayout({
     <html lang='ko'>
       <body>
         <div className={`App ${pretendardFont.variable} font-sans`}>
-          {children}
+          <Providers>{children}</Providers>
         </div>
       </body>
     </html>

@@ -137,7 +137,7 @@ function Page() {
   }
 
   return (
-    <div className=' w-[90%] mx-auto z-50 flex flex-col justify-center items-center gap-10 pt-20 sm:pt-8'>
+    <div className='mx-auto flex flex-col justify-center items-center gap-10 pt-20 sm:pt-8'>
       <div className='mx-auto w-[150px] sm:w-[200px] h-auto'>
         <Image
           src='/images/glasses.svg'
@@ -156,7 +156,7 @@ function Page() {
         <span>목표를 설정하러 갈까요?</span>
       </div>
       {goalData.last_month_limit && (
-        <div className='w-[90%] max-w-[406px] flex items-center justify-start gap-2 absolute bottom-40'>
+        <div className='w-[90%] max-w-[512px] flex items-center justify-start gap-2 absolute bottom-40'>
           <Checkbox
             className='rounded-full'
             checked={isChecked}
@@ -169,7 +169,7 @@ function Page() {
       )}
       <Button
         type='submit'
-        className='absolute bottom-24 w-[90%] max-w-[460px] bg-main hover:bg-[#476BE3]'
+        className='absolute bottom-24 w-[90%] max-w-[512px] bg-main hover:bg-[#476BE3]'
       >
         {isChecked ? (
           <span onClick={submitGoal}>목표 설정하기</span>

@@ -72,7 +72,7 @@ export const getPlaywrightActions = async ({
 
       await page.locator(buttonSignInSelector).click();
       console.log('Login Button Clicked!');
-      await delay(Math.random() * (dTime + 2000) + rTime);
+      await delay(Math.random() * (dTime + 3000) + rTime);
 
       if (status === 'RECAPTCHA_SUCCESS') {
         sessionBrowserManager.status = 'SIGNIN';

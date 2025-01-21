@@ -59,8 +59,9 @@ export const ProductCard = ({
                 </div>
                 <Counter
                   pid={searchResult.pcode}
+                  initialCount={1}
                   onCountChange={() => {}}
-                  className='w-10'
+                  className=''
                 />
               </div>
             }

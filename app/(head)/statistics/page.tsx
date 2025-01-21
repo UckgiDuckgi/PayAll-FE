@@ -8,13 +8,15 @@ import CategoryChart from '@/components/molecules/ui/CategoryChart';
 import { AccentText } from '@/components/ui/AccentText';
 import TitleBottomLine from '@/components/ui/TitleBottomLine';
 import { Badge } from '@/components/ui/badge';
-import { Category, CATEGORY } from '@/constants/category';
+import { CATEGORY } from '@/constants/category';
 import { COLORS } from '@/constants/color';
 import { MOCK_PAYMENT, MOCK_STAT } from '@/constants/mockdata';
+import { useStatisticsQuery } from '@/hooks/query/statistics';
+import { Category } from '@/types/table';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { Suspense } from 'react';
+import { Suspense, useMemo } from 'react';
 
 const TitleLine = ({ title }: { title: string }) => {
   return (
@@ -29,10 +31,19 @@ const TitleLine = ({ title }: { title: string }) => {
 
 function StatisticsContent() {
   const searchParams = useSearchParams();
-  const category = searchParams.get('category') as Category;
+  const category = useMemo(
+    () => searchParams.get('category') as Category,
+    [searchParams]
+  );
+  const date = useMemo(() => searchParams.get('date'), [searchParams]);
 
-  const date = '2025년 1월';
+  const { data: statisticsData } = useStatisticsQuery(date as string);
 
+  // if (!statisticsData || isLoading) {
+  //   return <>Loading...</>;
+  // }
+
+  console.log(statisticsData);
   if (!category) {
     return (
       <div className='w-full mx-auto'>
@@ -94,7 +105,7 @@ function StatisticsContent() {
                 <CategoryCarouselItem
                   percent={+((amount / MOCK_STAT.total_spent) * 100).toFixed(0)}
                   color={COLORS[idx]}
-                  categoryName={CATEGORY[category][0]}
+                  categoryName={CATEGORY[category as Category][0]}
                   categoryIconName={category}
                   amount={amount}
                 />
@@ -110,8 +121,8 @@ function StatisticsContent() {
 
           <ul className='space-y-3 my-5'>
             {MOCK_STAT.fixed_expenses.map(
-              ({ fixed_name, amount, due_date }) => (
-                <li key={fixed_name}>
+              ({ fixed_name, amount, due_date }, idx) => (
+                <li key={fixed_name + idx}>
                   <FixedExpensesCard
                     expensesName={fixed_name}
                     expensesPrice={amount}

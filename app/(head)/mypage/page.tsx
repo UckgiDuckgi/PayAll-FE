@@ -15,8 +15,8 @@ type UserData = {
 export default function MyPage() {
   const router = useRouter();
 
-  const toMyAccountPage = () => {
-    router.push('/mypage/account');
+  const toMembershipPage = () => {
+    router.push('/mypage/membership');
   };
 
   const MOCK_USER: UserData = {
@@ -70,7 +70,7 @@ export default function MyPage() {
             <span>연동 계정 관리</span>
             <ChevronRight
               className='text-[#999999]'
-              onClick={toMyAccountPage}
+              onClick={toMembershipPage}
             />
           </div>
           <hr className='border-t-1 border-[#D9D9D9]' />

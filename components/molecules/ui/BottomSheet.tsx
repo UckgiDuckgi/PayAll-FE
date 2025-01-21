@@ -37,10 +37,11 @@ function BottomSheet({
       <DrawerContent className='mx-auto max-w-[512px] px-2 pb-6 w-full flex flex-col items-start justify-center border-none bg-deepDarkGrey'>
         <DrawerHeader className='space-y-2 w-full '>
           <DrawerTitle className='text-white text-left'>{title}</DrawerTitle>
-          <DrawerDescription className='space-y-2'>
-            <div className='text-grey text-left'>{description}</div>
-            <div className='w-full'>{desciptionFooter}</div>
+          <DrawerDescription className='text-grey text-left'>
+            {description}
           </DrawerDescription>
+
+          <div className='w-full'>{desciptionFooter}</div>
         </DrawerHeader>
         <div className='w-full flex items-center justify-center gap-3'>
           <Button
