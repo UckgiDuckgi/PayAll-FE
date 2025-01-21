@@ -5,17 +5,12 @@ import CategoryCarouselItem from '@/components/molecules/CategoryCarouselItem';
 import CategorySubCard from '@/components/molecules/CategorySubCard';
 import DeliveryFeeProgress from '@/components/molecules/DeliveryFeeProgress';
 import FixedExpensesCard from '@/components/molecules/FixedExpensesCard';
-import PaymentCard from '@/components/molecules/PaymentCard';
 import PaymentDetailCard from '@/components/molecules/PaymentDetailCard';
 import { Modal } from '@/components/molecules/ui/Modal';
 import CartContainer from '@/components/ui/CartContainer';
 import { CATEGORY } from '@/constants/category';
 import { COLORS } from '@/constants/color';
-import {
-  MOCK_PAYMENT,
-  MOCK_PAYMENT_DETAIL,
-  MOCK_STAT,
-} from '@/constants/mockdata';
+import { MOCK_PAYMENT_DETAIL, MOCK_STAT } from '@/constants/mockdata';
 import { Category } from '@/types/table';
 import Image from 'next/image';
 
@@ -41,7 +36,7 @@ function Page() {
         <div className='font-medium'>가나다라마바상앙앙앙</div>
       </div>
 
-      <PaymentCard showAccount={true} paymentInfo={MOCK_PAYMENT} />
+      {/* <PaymentCard showAccount={true} paymentInfo={MOCK_PAYMENT} /> */}
 
       <Image
         src='/images/animations/check.gif'

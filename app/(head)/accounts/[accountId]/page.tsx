@@ -2,6 +2,7 @@ import PaymentCard from '@/components/molecules/PaymentCard';
 import { Bank } from '@/components/molecules/sion/AccountCard';
 import { AccountDetailCard } from '@/components/molecules/sion/AccountDetailCard';
 import TitleBottomLine from '@/components/ui/TitleBottomLine';
+import { AccountsPaymentsDetail } from '@/types/paymentType';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 
@@ -69,36 +70,36 @@ const accounts: {
   },
 ];
 
-const MOCK_PAYMENT: PaymentData[] = [
+const MOCK_PAYMENT: AccountsPaymentsDetail[] = [
   {
-    payment_id: 1,
-    payment_place: '성수정찬',
-    category: '외식',
-    payment_price: 8000,
-    payment_type: '오프라인',
-    payment_time: '2025-01-06T19:48:12',
-    bank_name: 'hana',
-    account_name: '하나 달달 통장',
+    paymentId: 1,
+    paymentPlace: '성수정찬',
+    category: 'RESTAURANT',
+    paymentPrice: 8000,
+    paymentType: 'OFFLINE',
+    paymentTime: '2025-01-06T19:48:12',
+    bankName: 'hana',
+    accountName: '하나 달달 통장',
   },
   {
-    payment_id: 2,
-    payment_place: '밥플러스 성수에이팩센터점',
-    category: '외식',
-    payment_price: 8000,
-    payment_type: '오프라인',
-    payment_time: '2025-01-07T19:48:12',
-    bank_name: 'hana',
-    account_name: '하나 달달 통장',
+    paymentId: 2,
+    paymentPlace: '밥플러스 성수에이팩센터점',
+    category: 'RESTAURANT',
+    paymentPrice: 8000,
+    paymentType: 'OFFLINE',
+    paymentTime: '2025-01-07T19:48:12',
+    bankName: 'hana',
+    accountName: '하나 달달 통장',
   },
   {
-    payment_id: 3,
-    payment_place: '쿠팡',
-    category: '쇼핑',
-    payment_price: 104000,
-    payment_type: '온라인',
-    payment_time: '2025-01-07T22:48:12',
-    bank_name: 'hana',
-    account_name: '하나 달달 통장',
+    paymentId: 3,
+    paymentPlace: '쿠팡',
+    category: 'SHOPPING',
+    paymentPrice: 104000,
+    paymentType: 'ONLINE',
+    paymentTime: '2025-01-07T22:48:12',
+    bankName: 'hana',
+    accountName: '하나 달달 통장',
   },
 ];
 
@@ -109,17 +110,17 @@ export default function AccountDetail({
 }) {
   const listPerDate = MOCK_PAYMENT.reduce(
     (acc, payment) => {
-      const date = dayjs(payment.payment_time).format('MM.DD (ddd)');
+      const date = dayjs(payment.paymentTime).format('MM.DD (ddd)');
 
       const existingGroup = acc.find((group) => group.date === date);
 
       if (existingGroup) {
         existingGroup.payments.push(payment);
-        existingGroup.totalPayment += payment.payment_price;
+        existingGroup.totalPayment += payment.paymentPrice;
       } else {
         acc.push({
           date,
-          totalPayment: payment.payment_price,
+          totalPayment: payment.paymentPrice,
           payments: [payment],
         });
       }
@@ -129,7 +130,7 @@ export default function AccountDetail({
     [] as {
       date: string;
       totalPayment: number;
-      payments: PaymentData[];
+      payments: AccountsPaymentsDetail[];
     }[]
   );
   return (
@@ -149,7 +150,7 @@ export default function AccountDetail({
               right={'-' + item.totalPayment.toLocaleString() + '원'}
             >
               {item.payments.map((payment) => (
-                <div key={payment.payment_id}>
+                <div key={payment.paymentId}>
                   <PaymentCard
                     showAccount={params.accountId === '0'}
                     paymentInfo={payment}

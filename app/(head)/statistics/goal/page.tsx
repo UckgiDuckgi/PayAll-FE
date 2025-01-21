@@ -6,10 +6,14 @@ import { AccentText } from '@/components/ui/AccentText';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Separator } from '@/components/ui/separator';
+import { QUERY_KEYS } from '@/constants/queryKey';
+import { useGenericQuery } from '@/hooks/query/globalQuery';
+import { StatisticsLimitType } from '@/types/statisticsType';
 import dayjs from 'dayjs';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
+import { getLimit } from '@/lib/api';
 
 const EmotionBox = ({ differ }: { differ: number }) => {
   if (differ < 0) {
@@ -33,49 +37,44 @@ const EmotionBox = ({ differ }: { differ: number }) => {
   );
 };
 
-function Page() {
+function StatisticsGoalContent() {
+  const { resData: goalData, isLoading } = useGenericQuery<StatisticsLimitType>(
+    [QUERY_KEYS.LIMIT],
+    () => getLimit()
+  );
   const [isChecked, setIsChecked] = useState(false);
   const toggleChecked = () => setIsChecked((prev) => !prev);
-  const MOCK_GOAL = {
-    limit_amount: 1500000,
-    spent_amount: 1300000,
-    saved_amount: 31010,
-    average_spent: null,
-    last_month_limit: null,
-    start_date: '2025-01-01',
-    end_date: '2025-01-31',
-  };
 
-  const MOCK_NO_GOAL = {
-    limit_amount: null,
-    spent_amount: null,
-    saved_amount: null,
-    average_spent: 123000,
-    last_month_limit: 1330935,
-    start_date: '2025-01-01',
-    end_date: '2025-01-31',
-  };
+  if (!goalData || !goalData.data || isLoading) return <></>;
 
-  const goalData = MOCK_NO_GOAL;
+  const {
+    limitPrice,
+    spentAmount,
+    savedAmount,
+    averageSpent,
+    lastMonthLimit,
+    startDate,
+    endDate,
+  } = goalData.data;
 
   const submitGoal = () => {
     console.log('goal 셋팅');
   };
 
-  if (goalData.limit_amount) {
-    const did = (MOCK_GOAL.spent_amount / +dayjs().get('D')).toFixed(0);
+  if (limitPrice) {
+    const did = (spentAmount / +dayjs().get('D')).toFixed(0);
     const willDo = (
-      (MOCK_GOAL.limit_amount - MOCK_GOAL.spent_amount) /
+      (limitPrice - spentAmount) /
       +(dayjs().daysInMonth() - dayjs().date())
     ).toFixed(0);
 
     return (
       <>
         <ProgressBar
-          spentAmount={MOCK_GOAL.spent_amount}
-          limitAmount={MOCK_GOAL.limit_amount}
-          start_date={MOCK_GOAL.start_date}
-          end_date={MOCK_GOAL.end_date}
+          spentAmount={spentAmount}
+          limitAmount={limitPrice}
+          start_date={startDate ?? dayjs().toString()}
+          end_date={endDate ?? dayjs().toString()}
         />
 
         <div className='mt-16 space-y-6'>
@@ -122,7 +121,7 @@ function Page() {
               <span className='text-[1.125rem]'>로 절약한 금액</span>
             </div>
             <span className='font-bold'>
-              {(goalData?.saved_amount ?? 0).toLocaleString()}원
+              {(savedAmount ?? 0).toLocaleString()}원
             </span>
           </div>
 
@@ -148,14 +147,14 @@ function Page() {
         />
       </div>
       <div className='flex flex-col gap-1 text-[1rem] items-center font-semibold'>
-        {goalData.last_month_limit ? (
+        {lastMonthLimit ? (
           <span>이번 달 목표를 새로 설정해야해요</span>
         ) : (
           <span>아직 설정된 소비 목표가 없어요</span>
         )}
         <span>목표를 설정하러 갈까요?</span>
       </div>
-      {goalData.last_month_limit && (
+      {lastMonthLimit && (
         <div className='w-[90%] max-w-[512px] flex items-center justify-start gap-2 absolute bottom-40'>
           <Checkbox
             className='rounded-full'
@@ -174,9 +173,7 @@ function Page() {
         {isChecked ? (
           <span onClick={submitGoal}>목표 설정하기</span>
         ) : (
-          <Link
-            href={`/statistics/goal/register?avgSpent=${goalData.last_month_limit}`}
-          >
+          <Link href={`/statistics/goal/register?avgSpent=${averageSpent}`}>
             목표 설정하기
           </Link>
         )}
@@ -185,4 +182,10 @@ function Page() {
   );
 }
 
-export default Page;
+export default function Page() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <StatisticsGoalContent />
+    </Suspense>
+  );
+}

@@ -1,5 +1,5 @@
 import { COLORS } from '@/constants/color';
-import { CategoryExpense } from '@/constants/mockdata';
+import { CategoryExpensesType } from '@/types/statisticsType';
 import {
   ArcElement,
   Chart as ChartJS,
@@ -15,15 +15,15 @@ function CategoryChart({
   categoryExpenses,
   totalSpent,
 }: {
-  categoryExpenses: CategoryExpense[];
+  categoryExpenses: CategoryExpensesType[];
   totalSpent: number;
 }) {
   const data = {
     // labels: categoryExpenses.map((category) => category.category),
     datasets: [
       {
-        data: categoryExpenses.map((category) => category.amount),
-        backgroundColor: COLORS.slice(0, categoryExpenses.length ?? 0),
+        data: categoryExpenses?.map((category) => category.amount),
+        backgroundColor: COLORS.slice(0, categoryExpenses?.length ?? 0),
         borderWidth: 1,
       },
     ],
@@ -40,14 +40,14 @@ function CategoryChart({
           size: 12,
         },
         formatter: (value: number) => {
-          return `${value.toLocaleString()}원`;
+          return `${value?.toLocaleString() ?? 0}원`;
         },
       },
       tooltip: {
         callbacks: {
           label: (tooltipItem: TooltipItem<'doughnut'>) => {
             const count = tooltipItem.raw as number;
-            return `${count.toLocaleString()}원`;
+            return `${count?.toLocaleString() ?? 0}원`;
           },
         },
       },
@@ -58,7 +58,9 @@ function CategoryChart({
       <Doughnut data={data} options={options} />
       <div className='flex flex-col items-center justify-center gap-2 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/4 text-center'>
         <span className='text-[0.75rem]'>이번달 총 지출</span>
-        <span className='text-[1.125rem]'>{totalSpent.toLocaleString()}원</span>
+        <span className='text-[1.125rem]'>
+          {totalSpent?.toLocaleString() ?? 0}원
+        </span>
       </div>
     </div>
   );
