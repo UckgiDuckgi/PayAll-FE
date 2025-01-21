@@ -53,8 +53,9 @@ class SessionBrowserManager {
   }
 
   public static async getInstance() {
-    if (!this.instance) {
+    if (!this.instance || !this.instance.page) {
       console.log('New Browser Created!');
+
       const browser = await chromium.launch({
         executablePath: process.env.CHROME_PATH,
         headless: false,
@@ -73,12 +74,15 @@ class SessionBrowserManager {
           '--log-level=3',
         ],
       });
+
+      console.log('New Context Created!');
       const context = await browser.newContext({
         javaScriptEnabled: true,
         viewport: { width: 1280, height: 720 },
         deviceScaleFactor: 1, // 기본 스케일 설정
       });
 
+      console.log('Add Init Script!!');
       await context.addInitScript(() => {
         Object.defineProperty(navigator, 'plugins', {
           get: () => [1, 2, 3], // 임의의 플러그인 값 추가
@@ -92,6 +96,7 @@ class SessionBrowserManager {
         });
       });
 
+      console.log('New Page Created!');
       const page = await context.newPage();
       await setPageHeader(page);
 
