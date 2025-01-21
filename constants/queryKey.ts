@@ -8,4 +8,5 @@ export const QUERY_KEYS: Record<string, string> = {
   LIMIT: 'limit',
 
   SEARCH: 'search',
+  CART: 'cart',
 };

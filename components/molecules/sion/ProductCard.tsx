@@ -1,9 +1,12 @@
 'use client';
 
 import { Counter } from '@/components/ui/Counter';
+import { QUERY_KEYS } from '@/constants/queryKey';
+import { useGenericMutation } from '@/hooks/query/globalQuery';
 import { Search } from '@/types';
 import Image from 'next/image';
 import { useState } from 'react';
+import { postCart } from '@/lib/api';
 import { IconIndicator } from '../../ui/IconIndicator';
 import { SquareImage } from '../../ui/SquareImage';
 import BottomSheet from '../ui/BottomSheet';
@@ -11,6 +14,21 @@ import { VenderCard } from './VenderCard';
 
 export const ProductCard = ({ searchResult }: { searchResult: Search }) => {
   const [seletedProduct, setSelectedProduct] = useState<number>(0);
+  const [quantity, setQuantity] = useState<number>(1);
+  const { mutate } = useGenericMutation(
+    [QUERY_KEYS.CART],
+    async () =>
+      await postCart({ productId: searchResult.pcode, quantity: quantity })
+  );
+
+  const onCountChange = (pid: number, count: number) => {
+    setQuantity(count);
+  };
+
+  const handleAddCart = () => {
+    mutate({ productId: searchResult.pcode, quantity: quantity });
+  };
+
   return (
     <div className='flex flex-col bg-black p-4 w-full'>
       <div className='flex gap-3'>
@@ -46,12 +64,12 @@ export const ProductCard = ({ searchResult }: { searchResult: Search }) => {
                 <Counter
                   pid={searchResult.pcode}
                   initialCount={1}
-                  onCountChange={() => {}}
-                  className=''
+                  onCountChange={onCountChange}
                 />
               </div>
             }
             btnTexts={['취소', '담기']}
+            onClick={handleAddCart}
           >
             <div className='relative cursor-pointer flex items-end justify-end w-full'>
               <button className='w-9 h-9 rounded-full bg-darkGrey flex items-center justify-center'>
