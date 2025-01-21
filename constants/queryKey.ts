@@ -13,4 +13,6 @@ export const QUERY_KEYS: Record<string, string> = {
   DELETE_CART: 'delete-cart',
   UPDATE_CART: 'update-cart',
   POST_LIMIT: 'post-list',
+
+  SEARCH: 'search',
 };
