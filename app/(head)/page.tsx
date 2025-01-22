@@ -20,12 +20,6 @@ export type Goal = {
   end_date: string;
 };
 
-type UserData = {
-  name: string;
-  saved_amount: number;
-  spent_amount: number;
-};
-
 export default function Home() {
   const {
     resData: recommendationsProduct,
@@ -43,13 +37,6 @@ export default function Home() {
     saved_amount: 31010,
     start_date: '2025-01-01',
     end_date: '2025-01-31',
-  };
-
-  // todo. api 명세서 response 형식 생기면 수정 필요
-  const MOCK_USER: UserData = {
-    name: '김인선',
-    saved_amount: 18320,
-    spent_amount: -31710,
   };
 
   return (
@@ -78,7 +65,7 @@ export default function Home() {
               accentSize='text-[1.375rem]'
             />
 
-            {MOCK_USER.spent_amount < 0 ? (
+            {statisticsDiff?.data.monthlyPaymentDifference < 0 ? (
               <AccentText
                 prefix='지난달 대비'
                 accent={Math.abs(
@@ -92,7 +79,7 @@ export default function Home() {
             ) : (
               <AccentText
                 prefix='지난달 대비'
-                accent={MOCK_USER.spent_amount.toLocaleString()}
+                accent={statisticsDiff?.data.monthlyPaymentDifference.toLocaleString()}
                 suffix='원 지출하셨습니다.'
                 icon={<Triangle className='rotate-180' color='#FF6A6A' />}
                 accentColor='text-red'
