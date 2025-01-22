@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useRef } from 'react';
 
-function UploadButton() {
+function UploadButton({ paymentId }: { paymentId: number }) {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [, setFile] = useAtom(fileAtom);
@@ -26,7 +26,7 @@ function UploadButton() {
         return;
       }
       setFile(file);
-      router.push('/details/receipt');
+      router.push(`/accounts/receipt?paymentId=${paymentId}`);
     }
   };
   return (

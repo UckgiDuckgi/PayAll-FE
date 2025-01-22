@@ -50,3 +50,14 @@ export type PaymentDetail = {
   bankName: string;
   paymentDetailList: PaymentDetailList[];
 };
+
+export type ProductReceipt = {
+  productName: string;
+  quantity: number;
+  price: number;
+};
+
+export type ReceiptList = {
+  paymentId: number;
+  productList: ProductReceipt[];
+};

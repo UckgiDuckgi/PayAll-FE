@@ -57,7 +57,7 @@ function PaymentCard({
           ) : null}
         </div>
         {paymentType === 'OFFLINE' ? (
-          <UploadButton />
+          <UploadButton paymentId={paymentId} />
         ) : (
           <a
             href={`/accounts/payments/${paymentId}`}
