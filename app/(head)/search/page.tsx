@@ -4,7 +4,6 @@ import { LowestProductList } from '@/components/molecules/LowestProductList';
 import { ProductCard } from '@/components/molecules/sion/ProductCard';
 import RecentSearchWords from '@/components/molecules/sion/RecentSearchWords';
 import { SearchInput } from '@/components/molecules/sion/SearchInput';
-import { MOCK_LOWEST_PRODUCT } from '@/constants/mockdata';
 import { QUERY_KEYS } from '@/constants/queryKey';
 import { useGenericQuery } from '@/hooks/query/globalQuery';
 import { recentSearchAtom } from '@/stores/atom';
@@ -12,7 +11,7 @@ import { Search } from '@/types';
 import { useAtom } from 'jotai';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
-import { getSearch } from '@/lib/api';
+import { getRecommendationsProduct, getSearch } from '@/lib/api';
 
 function SearchContent() {
   const router = useRouter();
@@ -20,9 +19,14 @@ function SearchContent() {
   const keyword = searchParams.get('keyword');
   const [recentSearch, setRecentSearch] = useAtom(recentSearchAtom);
 
-  const { resData: searchData, isLoading } = useGenericQuery<Search[]>(
-    [QUERY_KEYS.SEARCH, keyword],
-    () => getSearch({ keyword: keyword ?? '' })
+  const { resData: searchData, isLoading: searchLoading } = useGenericQuery<
+    Search[]
+  >([QUERY_KEYS.SEARCH, keyword], () => getSearch({ keyword: keyword ?? '' }));
+  const {
+    resData: recommendationsProduct,
+    isLoading: recommendationsProductLoading,
+  } = useGenericQuery([QUERY_KEYS.RECOMMENDATIONS_PRODUCT], () =>
+    getRecommendationsProduct()
   );
 
   const handleSearch = (keyword: string) => {
@@ -48,7 +52,7 @@ function SearchContent() {
           onClick={handleSearch}
         />
       </div>
-      {!searchData || isLoading ? (
+      {searchLoading || recommendationsProductLoading ? (
         <div className='pt-14'>Loading...</div>
       ) : (
         <div className='pt-14'>
@@ -76,7 +80,7 @@ function SearchContent() {
                 <span className='text-base font-bold text-grey mb-4'>
                   최근 지출 품목의 최저가 상품
                 </span>
-                <LowestProductList products={MOCK_LOWEST_PRODUCT} />
+                <LowestProductList products={recommendationsProduct?.data} />
               </div>
             </>
           )}
