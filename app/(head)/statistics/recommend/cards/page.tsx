@@ -1,7 +1,5 @@
 'use client';
 
-import CardBenefitInfo from '@/components/molecules/CardBenefitInfo';
-import { payment_detail } from '@/components/molecules/CardCarousel';
 import CardInfoCard from '@/components/molecules/CardInfoCard';
 import SimpleBottomSheet from '@/components/molecules/ui/SimpleBottomSheet';
 import { QUERY_KEYS } from '@/constants/queryKey';
@@ -9,13 +7,11 @@ import { useGenericQuery } from '@/hooks/query/globalQuery';
 import { ProductType } from '@/types/productType';
 import { Suspense, useState } from 'react';
 import { getProductCards } from '@/lib/api';
+import { CardBenefitContent } from '../page';
 
 function RecommendationCardsContent() {
+  const [selectedIdx, setSelectedIdx] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
-
-  const toggleDialog = () => {
-    setIsOpen((prev) => !prev);
-  };
 
   const { resData: cardsData, isLoading } = useGenericQuery<ProductType[]>(
     [QUERY_KEYS.PRODUCT_CARDS],
@@ -24,30 +20,25 @@ function RecommendationCardsContent() {
 
   if (!cardsData || !cardsData.data || isLoading) return <></>;
 
-  console.log(cardsData.data);
   return (
     <div className='space-y-3 my-2'>
       <span className='font-bold text-[1.125rem]'>카드 둘러보기</span>
       <ul className='space-y-4'>
         {cardsData?.data?.map(
-          ({ productName, productDescription }: ProductType, idx) => (
-            <li key={`${productName}${idx}`}>
+          ({ productId, productName, productDescription }: ProductType) => (
+            <li key={productId}>
               <SimpleBottomSheet
                 isOpen={isOpen}
-                onOpenChange={toggleDialog}
-                content={
-                  <CardBenefitInfo
-                    index={0}
-                    cardName='샵 마이웨이 카드'
-                    paymentDetails={payment_detail}
-                  />
-                }
+                onOpenChange={setIsOpen}
+                content={<CardBenefitContent selectedIdx={selectedIdx} />}
               >
-                <CardInfoCard
-                  cardImg='/images/cards/samsung.svg'
-                  cardName={productName}
-                  cardDescription={productDescription}
-                />
+                <div onClick={() => setSelectedIdx(productId)}>
+                  <CardInfoCard
+                    cardImg='/images/cards/samsung.svg'
+                    cardName={productName}
+                    cardDescription={productDescription}
+                  />
+                </div>
               </SimpleBottomSheet>
             </li>
           )

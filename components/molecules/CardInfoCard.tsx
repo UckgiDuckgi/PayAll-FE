@@ -9,10 +9,11 @@ function CardInfoCard({
   cardName: string;
   cardDescription: string;
 }) {
+  console.log(cardImg, cardName, cardDescription);
   return (
     <div className='flex items-center justify-start gap-5 py-5 px-3'>
       <Image src={cardImg} alt='card' width={75} height={47} />
-      <div className='flex flex-col justify-center items-start gap-1'>
+      <div className='w-full flex flex-col justify-center items-start gap-1'>
         <span className='text-grey font-bold text-[.875rem]'>
           {cardDescription}
         </span>
