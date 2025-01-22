@@ -47,10 +47,12 @@ export default function Coupang() {
     itemList,
     pincode = '',
     password = '',
+    init = false,
   }: {
     itemList: Item[];
     pincode?: string;
     password?: string;
+    init?: boolean;
   }) => {
     try {
       setIsLoading(true);
@@ -63,6 +65,7 @@ export default function Coupang() {
           pincode,
           password,
           itemList,
+          init,
         }),
       });
 
@@ -84,7 +87,7 @@ export default function Coupang() {
       <div className='flex justify-center pt-10'>
         <Button
           variant={'secondary'}
-          onClick={() => handleOnClick({ itemList })}
+          onClick={() => handleOnClick({ itemList, init: true })}
         >
           쿠팡
         </Button>
@@ -104,6 +107,10 @@ export default function Coupang() {
           onClick={handleOnClick}
           itemList={itemList}
         />
+      ) : status === 'ERROR' ? (
+        <div className='flex justify-center pt-10 text-3xl'>
+          에러가 발생했습니다. 새로고침해주세요.
+        </div>
       ) : (
         <div className='flex justify-center pt-10 text-3xl'>
           Payment Success!

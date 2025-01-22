@@ -17,8 +17,10 @@ export default function PasswordInputForm({
 
   console.log('🚀 ~ PasswordInputForm ~ input:', input);
 
-  const handleSubmit = () => {
-    // URL에 입력값을 추가해 페이지 새로고침
+  const handleSubmit = (cancel = false) => {
+    if (cancel) {
+      onClick({ itemList, password: '' });
+    }
     if (input.length === 6) {
       onClick({ itemList, password: input.join('') });
     }
@@ -46,6 +48,13 @@ export default function PasswordInputForm({
           unoptimized
           className='absolute'
         />
+
+        <div className='absolute top-[20px] w-full h-[35px] flex justify-end pr-[20px] z-10'>
+          <button
+            className='w-[35px]'
+            onClick={() => handleSubmit(true)}
+          ></button>
+        </div>
 
         <div className='absolute top-0 w-full h-[290px]  flex flex-col justify-end items-center'>
           <div className='flex w-full h-[30px] px-[110px] justify-start gap-5'>
@@ -84,7 +93,7 @@ export default function PasswordInputForm({
         <div className='px-2 py-1 rounded-md text-black bg-white w-[100px] h-8 text-center'>
           {input.join('')}
         </div>
-        <Button onClick={handleSubmit} variant='secondary'>
+        <Button onClick={() => handleSubmit} variant='secondary'>
           입력
         </Button>
       </div>
