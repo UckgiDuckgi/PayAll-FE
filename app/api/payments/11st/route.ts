@@ -19,7 +19,12 @@ export type ElevenStreetRequest = {
 
 export type ElevenStreetResponse = {
   success: boolean;
-  status: 'PINCODE' | 'RECAPTCHA' | 'PAYMENT' | 'COMPLETED' | 'ERROR';
+  status:
+    | '11_PINCODE'
+    | '11_RECAPTCHA'
+    | '11_PAYMENT'
+    | '11_COMPLETED'
+    | '11_ERROR';
   result: { base64Image: string; tableSize: number };
 };
 
@@ -76,9 +81,9 @@ export async function POST(request: Request) {
     //   const base64Image = `data:image/png;base64,${screenshotBuffer.toString('base64')}`;
     //   return NextResponse.json({
     //     success: true,
-    //     status: 'RECAPTCHA',
+    //     status: '11_RECAPTCHA',
     //     result: { base64Image, tableSize },
-    //   });
+    //   } as ElevenStreetResponse);
     // }
 
     // await elevenStreetActions.clickReCaptcha(selectedTileList, isReCaptchaEnd);
@@ -89,9 +94,9 @@ export async function POST(request: Request) {
     //   const base64Image = `data:image/png;base64,${screenshotBuffer.toString('base64')}`;
     //   return NextResponse.json({
     //     success: true,
-    //     status: 'RECAPTCHA',
+    //     status: '11_RECAPTCHA',
     //     result: { base64Image, tableSize },
-    //   });
+    //   } as ElevenStreetResponse);
     // }
     // const id = process.env.ELEVEN_STREET_ID ?? '';
     // const pw = process.env.ELEVEN_STREET_PW ?? '';
@@ -112,23 +117,23 @@ export async function POST(request: Request) {
       const base64Image = `data:image/png;base64,${paymentResponse.toString('base64')}`;
       return NextResponse.json({
         success: true,
-        status: 'PAYMENT',
+        status: '11_PAYMENT',
         result: { base64Image },
-      });
+      } as ElevenStreetResponse);
     }
 
     await elevenStreetActions.close();
 
     return NextResponse.json({
       success: true,
-      status: 'COMPLETED',
+      status: '11_COMPLETED',
       result: {},
-    });
+    } as ElevenStreetResponse);
   } catch {
     return NextResponse.json({
       success: false,
-      status: 'ERROR',
+      status: '11_ERROR',
       result: {},
-    });
+    } as ElevenStreetResponse);
   }
 }

@@ -1,9 +1,10 @@
 'use client';
 
-import { CoupangResponse, Item } from '@/app/api/coupang/route';
+import { CoupangResponse, Item } from '@/app/api/payments/coupang/route';
 import PasswordInputForm from '@/components/coupang/passwordInputForm';
 import PincodeInputForm from '@/components/coupang/pincodeInputForm';
 import { Button } from '@/components/ui/button';
+import { API_ROUTE } from '@/constants/route';
 import { useState } from 'react';
 
 export type OnClick = ({
@@ -56,7 +57,7 @@ export default function Coupang() {
   }) => {
     try {
       setIsLoading(true);
-      const response = await fetch('/api/coupang', {
+      const response = await fetch(API_ROUTE.payments.coupang, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -99,15 +100,15 @@ export default function Coupang() {
 
   return (
     <>
-      {status === 'PINCODE' ? (
+      {status === 'C_PINCODE' ? (
         <PincodeInputForm onClick={handleOnClick} itemList={itemList} />
-      ) : status === 'PASSWORD' ? (
+      ) : status === 'C_PASSWORD' ? (
         <PasswordInputForm
           base64Image={result}
           onClick={handleOnClick}
           itemList={itemList}
         />
-      ) : status === 'ERROR' ? (
+      ) : status === 'C_ERROR' ? (
         <div className='flex justify-center pt-10 text-3xl'>
           에러가 발생했습니다. 새로고침해주세요.
         </div>
