@@ -38,6 +38,10 @@ export const getStatistics = async ({ date }: { date: string }) => {
   });
 };
 
+export const getStatisticsDiff = async () => {
+  return await apiCall.get(BASE_URL + '/statistics/diff');
+};
+
 // limit
 export const getLimit = async () => {
   // 목표 조회

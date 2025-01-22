@@ -4,6 +4,7 @@ export const QUERY_KEYS: Record<string, string> = {
 
   STATISTICS: 'statistics',
   STATISTICS_CATEGORY: 'statistics-category',
+  STATISTICS_DIFF: 'statistics-diff',
 
   LIMIT: 'limit',
 

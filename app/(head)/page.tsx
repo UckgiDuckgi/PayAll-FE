@@ -8,7 +8,7 @@ import { QUERY_KEYS } from '@/constants/queryKey';
 import { useGenericQuery } from '@/hooks/query/globalQuery';
 import { Triangle } from '@/public/icons/Triangle';
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from 'chart.js';
-import { getRecommendationsProduct } from '@/lib/api';
+import { getRecommendationsProduct, getStatisticsDiff } from '@/lib/api';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -27,10 +27,15 @@ type UserData = {
 };
 
 export default function Home() {
-  const { resData: recommendationsProduct, isLoading } = useGenericQuery(
-    [QUERY_KEYS.RECOMMENDATIONS_PRODUCT],
-    () => getRecommendationsProduct()
+  const {
+    resData: recommendationsProduct,
+    isLoading: recommendationsProductLoading,
+  } = useGenericQuery([QUERY_KEYS.RECOMMENDATIONS_PRODUCT], () =>
+    getRecommendationsProduct()
   );
+
+  const { resData: statisticsDiff, isLoading: statisticsDiffLoading } =
+    useGenericQuery([QUERY_KEYS.STATISTICS_DIFF], () => getStatisticsDiff());
 
   const MOCK_GOAL: Goal = {
     limit_amount: 1500000,
@@ -49,7 +54,7 @@ export default function Home() {
 
   return (
     <>
-      {isLoading ? (
+      {statisticsDiffLoading || recommendationsProductLoading ? (
         <div>Loading...</div>
       ) : (
         <div className='flex justify-center flex-col items-center w-full'>
@@ -58,13 +63,15 @@ export default function Home() {
           <div className='my-8 flex flex-col gap-2 w-full'>
             <span className='text-[0.8125rem]'>
               <a className='text-lg font-bold border-l-[0.1875rem] pl-[0.5625rem] border-main'>
-                {MOCK_USER.name}
+                {statisticsDiff?.data.userName}
               </a>
               님
             </span>
             <AccentText
               prefix='연간'
-              accent={Math.abs(MOCK_USER.saved_amount).toLocaleString()}
+              accent={Math.abs(
+                statisticsDiff?.data.yearlySavingAmount
+              ).toLocaleString()}
               suffix='원 절약중'
               accentColor='text-white'
               className='text-[0.8125rem]'
@@ -74,7 +81,9 @@ export default function Home() {
             {MOCK_USER.spent_amount < 0 ? (
               <AccentText
                 prefix='지난달 대비'
-                accent={Math.abs(MOCK_USER.spent_amount).toLocaleString()}
+                accent={Math.abs(
+                  statisticsDiff?.data.monthlyPaymentDifference
+                ).toLocaleString()}
                 suffix='원 지출하셨습니다.'
                 icon={<Triangle color='#6A8DFF' />}
                 className='text-[0.8125rem]'

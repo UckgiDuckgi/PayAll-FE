@@ -33,3 +33,9 @@ export type StatisticsLimitType = {
   startDate?: string;
   endDate?: string;
 };
+
+export type StatisticsDiffType = {
+  userName: string;
+  yearlySavingAmount: number;
+  monthlyPaymentDifference: number;
+};
