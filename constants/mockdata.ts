@@ -1,5 +1,4 @@
-import { PaymentDetailList } from '@/types';
-import { ApiResponse, Category } from '@/types/table';
+import { Category } from '@/types/table';
 
 export type CategoryExpense = {
   category_id: number;
@@ -113,41 +112,6 @@ export const MOCK_PAYMENT_DETAIL = {
       link: 'www.gmarket.~~~',
     },
   ],
-};
-
-export const MOCK_PAYMENT_DETAIL_RES: ApiResponse<PaymentDetailList> = {
-  code: 200,
-  status: 'OK',
-  message: '결제 상세 내역 조회 성공',
-  data: {
-    accountName: 'KB국민 통장',
-    price: 83200,
-    category: 'SHOPPING',
-    paymentTime: '2025-01-07T17:30:12',
-    paymentPlace: '쿠팡',
-    paymentType: 'ONLINE',
-    bankName: 'KB국민',
-    paymentDetail: [
-      {
-        paymentDetailId: 1,
-        productName: '나드 리프레쉬 퍼퓸드 바디워시',
-        price: 8900,
-        amount: 1,
-        lowestPrice: 8750,
-        lowestPricePlace: '11st',
-        link: 'https://www.11st.co.kr/products/123456',
-      },
-      {
-        paymentDetailId: 2,
-        productName: '행복한 나라 휴지롤 30개입',
-        price: 8900,
-        amount: 2,
-        lowestPrice: 8750,
-        lowestPricePlace: 'Gmarket',
-        link: 'https://www.gmarket.co.kr/products/789012',
-      },
-    ],
-  },
 };
 
 export const MOCK_LOWEST_PRODUCT: LowestProduct[] = [

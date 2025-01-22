@@ -1,14 +1,14 @@
-import { PaymentDetailList } from '@/types';
+import { PaymentDetail } from '@/types';
 
 export default function PaymentInfoCard({
   paymentInfo,
 }: {
-  paymentInfo: PaymentDetailList;
+  paymentInfo: PaymentDetail;
 }) {
   const {
     paymentPlace,
     category,
-    price,
+    paymentPrice,
     paymentType,
     paymentTime,
     bankName,
@@ -23,7 +23,7 @@ export default function PaymentInfoCard({
             <span className='text-[.6875rem] text-[#858585]'>{category}</span>
           </div>
           <span className='text-[.9375rem] font-bold'>
-            - {price.toLocaleString()}원
+            - {paymentPrice.toLocaleString()}원
           </span>
         </div>
         <div className='flex items-center justify-between'>

@@ -51,10 +51,10 @@ const MOCK_CARDS = [
   },
 ];
 
-const DELIVERY_FEE = 19900;
+const DELIVERY_FEE = 2000;
 
 export default function CartPage() {
-  const { resData: cartList } = useGenericQuery<Cart[]>(
+  const { resData: cartList, isLoading } = useGenericQuery<Cart[]>(
     [QUERY_KEYS.CART_LIST],
     () => getCart()
   );
@@ -121,6 +121,10 @@ export default function CartPage() {
     mutate(cartId);
   };
 
+  const handlePurchase = () => {
+    console.log('할인금액', calculateTotalSavings());
+  };
+
   const calculateTotalPrice = () => {
     return (
       cartList?.data?.reduce((sum, item) => {
@@ -148,105 +152,127 @@ export default function CartPage() {
     }, 0);
   };
 
-  return (
-    <div className='flex flex-col gap-[0.625rem] pb-24'>
-      <DeliveryFeeProgress fee={calculateTotalPrice()} totalFee={19900} />
-      <div className='flex items-center gap-2 my-3'>
-        <Checkbox
-          checked={cartList?.data?.every(
-            (item) => itemStates.get(item.productId)?.isChecked
-          )}
-          onCheckedChange={handleSelectAll}
-        />
-        <span className='text-white text-[0.6875rem]'>전체 선택</span>
-      </div>
+  const calculateTotalSavings = () => {
+    return (
+      cartList?.data?.reduce((sum, item) => {
+        const state = itemStates.get(item.productId);
+        if (state?.isChecked) {
+          const priceDiff =
+            item.prevPrice > item.productPrice
+              ? (item.prevPrice - item.productPrice) * (state.quantity || 1)
+              : 0;
+          return sum + priceDiff;
+        }
+        return sum;
+      }, 0) ?? 0
+    );
+  };
 
-      {cartList?.data?.map((item) => {
-        const state = itemStates.get(item.productId) || {
-          isChecked: false,
-          quantity: 1,
-        };
-        return (
-          <CartProductCard
-            key={item.productId}
-            cartId={item.cartId}
-            imageUrl={item.image}
-            productId={item.productId}
-            title={item.productName}
-            price={item.productPrice}
-            shop={item.storeName}
-            quantity={item.quantity}
-            isChecked={state.isChecked}
-            onCheckChange={handleCheckChange}
-            onQuantityChange={handleQuantityChange}
-            onDelete={handleDelete}
-          />
-        );
-      })}
-      <div className='w-[111.2%] bg-black -mx-[5.6%]'>
-        <div className='flex flex-col gap-2 w-[90%] mx-auto py-[0.875rem]'>
-          <div className='font-bold text-[0.9375rem]'>배송 정보</div>
-          <div className='text-grey  text-xs'>
-            <span className=''>{USER_INFO.name}</span>
-            <span className='mx-2'>·</span>
-            <span className=''>{USER_INFO.phone}</span>
+  return (
+    <>
+      {isLoading ? (
+        <div>로딩중</div>
+      ) : (
+        <div className='flex flex-col gap-[0.625rem] pb-24'>
+          <DeliveryFeeProgress fee={calculateTotalPrice()} totalFee={19900} />
+          <div className='flex items-center gap-2 my-3'>
+            <Checkbox
+              checked={cartList?.data?.every(
+                (item) => itemStates.get(item.productId)?.isChecked
+              )}
+              onCheckedChange={handleSelectAll}
+            />
+            <span className='text-white text-[0.6875rem]'>전체 선택</span>
           </div>
-          <div className='text-white text-xs'>{USER_INFO.address}</div>
-        </div>
-      </div>
-      <div className='w-[111.2%] bg-black -mx-[5.6%]'>
-        <div className='flex flex-col gap-2 w-[90%] mx-auto py-[0.875rem]'>
-          <div className='font-bold text-[0.9375rem]'>결제 수단</div>
-          <CardSlide cards={MOCK_CARDS} />
-        </div>
-      </div>
-      <div className='w-[111.2%] bg-black -mx-[5.6%]'>
-        <div className='flex flex-col gap-2 w-[90%] mx-auto py-[0.875rem]'>
-          <div className='font-bold text-[0.9375rem]'>결제 예상 금액</div>
-          <div className='flex flex-col gap-1 mt-1 border-b border-[#D9D9D9] pb-3'>
-            <div className='text-grey text-xs w-full flex justify-between '>
-              <span>상품 금액</span>
-              <span className=''>
-                {calculateTotalPrice().toLocaleString()}원
-              </span>
-            </div>
-            <div className='text-grey text-xs w-full flex justify-between '>
-              <span>배송비</span>
-              <span className=''>
-                {calculateDeliveryFee().toLocaleString()}원
-              </span>
+
+          {cartList?.data?.map((item) => {
+            const state = itemStates.get(item.productId) || {
+              isChecked: false,
+              quantity: 1,
+            };
+            return (
+              <CartProductCard
+                key={item.productId}
+                cartId={item.cartId}
+                imageUrl={item.image}
+                productId={item.productId}
+                title={item.productName}
+                price={item.productPrice}
+                shop={item.storeName}
+                quantity={item.quantity}
+                isChecked={state.isChecked}
+                onCheckChange={handleCheckChange}
+                onQuantityChange={handleQuantityChange}
+                onDelete={handleDelete}
+              />
+            );
+          })}
+          <div className='w-[111.2%] bg-black -mx-[5.6%]'>
+            <div className='flex flex-col gap-2 w-[90%] mx-auto py-[0.875rem]'>
+              <div className='font-bold text-[0.9375rem]'>배송 정보</div>
+              <div className='text-grey  text-xs'>
+                <span className=''>{USER_INFO.name}</span>
+                <span className='mx-2'>·</span>
+                <span className=''>{USER_INFO.phone}</span>
+              </div>
+              <div className='text-white text-xs'>{USER_INFO.address}</div>
             </div>
           </div>
-          <div className='text-white font-bold flex justify-between w-full'>
-            <span className='text-sm'>총 금액</span>
-            <span className='text-main'>
-              {(
-                calculateTotalPrice() + calculateDeliveryFee()
-              ).toLocaleString()}
-              원
-            </span>
+          <div className='w-[111.2%] bg-black -mx-[5.6%]'>
+            <div className='flex flex-col gap-2 w-[90%] mx-auto py-[0.875rem]'>
+              <div className='font-bold text-[0.9375rem]'>결제 수단</div>
+              <CardSlide cards={MOCK_CARDS} />
+            </div>
+          </div>
+          <div className='w-[111.2%] bg-black -mx-[5.6%]'>
+            <div className='flex flex-col gap-2 w-[90%] mx-auto py-[0.875rem]'>
+              <div className='font-bold text-[0.9375rem]'>결제 예상 금액</div>
+              <div className='flex flex-col gap-1 mt-1 border-b border-[#D9D9D9] pb-3'>
+                <div className='text-grey text-xs w-full flex justify-between '>
+                  <span>상품 금액</span>
+                  <span className=''>
+                    {calculateTotalPrice().toLocaleString()}원
+                  </span>
+                </div>
+                <div className='text-grey text-xs w-full flex justify-between '>
+                  <span>배송비</span>
+                  <span className=''>
+                    {calculateDeliveryFee().toLocaleString()}원
+                  </span>
+                </div>
+              </div>
+              <div className='text-white font-bold flex justify-between w-full'>
+                <span className='text-sm'>총 금액</span>
+                <span className='text-main'>
+                  {(
+                    calculateTotalPrice() + calculateDeliveryFee()
+                  ).toLocaleString()}
+                  원
+                </span>
+              </div>
+            </div>
+          </div>
+          <div className='fixed bottom-24 w-[90%] max-w-[460px] mx-auto items-center z-50'>
+            <Button
+              className='w-full bg-[#6A8DFF] rounded-xl hover:none'
+              onClick={handlePurchase}
+            >
+              <div className='flex items-center justify-between'>
+                <span className='text-main font-bold text-[0.9375rem] rounded-full bg-white w-6 h-6 flex items-center justify-center mr-1'>
+                  {calculateSelectedItemsCount()}
+                </span>
+                <span>
+                  {' 개 '}
+                  {(
+                    calculateTotalPrice() + calculateDeliveryFee()
+                  ).toLocaleString()}
+                  원 구매하기
+                </span>
+              </div>
+            </Button>
           </div>
         </div>
-      </div>
-      <div className='fixed bottom-24 w-[90%] max-w-[460px] mx-auto items-center z-50'>
-        <Button
-          className='w-full bg-[#6A8DFF] rounded-xl hover:none'
-          onClick={() => {}}
-        >
-          <div className='flex items-center justify-between'>
-            <span className='text-main font-bold text-[0.9375rem] rounded-full bg-white w-6 h-6 flex items-center justify-center mr-1'>
-              {calculateSelectedItemsCount()}
-            </span>
-            <span>
-              {' 개 '}
-              {(
-                calculateTotalPrice() + calculateDeliveryFee()
-              ).toLocaleString()}
-              원 구매하기
-            </span>
-          </div>
-        </Button>
-      </div>
-    </div>
+      )}
+    </>
   );
 }
