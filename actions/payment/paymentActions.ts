@@ -45,7 +45,7 @@ export async function getCookies({
   await delay(Math.random() * 1000 + 500);
 
   await page.locator(buttonSelector).click();
-  await delay(Math.random() * 3000 + 500);
+  await delay(Math.random() * 5000 + 500);
 
   return await context.cookies();
 }
@@ -76,11 +76,11 @@ export async function getCookiesWithKakaoAuth({
   await delay(Math.random() * 1000 + 500);
 
   await page.locator(buttonKakaoSignInSelector).click();
-  await delay(Math.random() * 3000 + 500);
+  await delay(Math.random() * 5000 + 500);
 
   return await context.cookies();
 }
 
-export async function paymentClose() {
-  await SessionBrowserManager.close('ELEVENSTREET');
+export async function paymentClose(key: MapKey) {
+  await SessionBrowserManager.close(key);
 }

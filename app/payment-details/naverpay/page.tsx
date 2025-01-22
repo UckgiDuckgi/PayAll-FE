@@ -3,10 +3,11 @@
 import {
   GetCookieResponse,
   NaverPaymentList,
-} from '@/app/api/payment/naverpay/route';
+} from '@/app/api/payment-details/naverpay/route';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { API_ROUTE } from '@/constants/route';
 import { useState } from 'react';
 import { formatCookies } from '@/lib/utils';
 
@@ -44,31 +45,12 @@ export default function NaverPayments() {
 
     // 텍스트 파일로 읽기
     reader.readAsText(selectedFile);
-
-    // const formData = new FormData();
-    // formData.append('file', selectedFile);
-
-    // try {
-    //   const response = await fetch('/api/upload', {
-    //     method: 'POST',
-    //     body: formData,
-    //   });
-
-    //   if (response.ok) {
-    //     setUploadStatus('업로드 성공!');
-    //   } else {
-    //     setUploadStatus('업로드 실패!');
-    //   }
-    // } catch (error) {
-    //   console.error('Error uploading file:', error);
-    //   setUploadStatus('업로드 중 오류 발생!');
-    // }
   };
 
   const handleOnClick = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch('/api/payment/naverpay', {
+      const response = await fetch(API_ROUTE.cookies.naverpay, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -87,7 +69,7 @@ export default function NaverPayments() {
   const handleInput = async () => {
     try {
       // 클라이언트 데이터를 서버 API로 POST 요청
-      const response = await fetch('/api/payment/naverpay', {
+      const response = await fetch(API_ROUTE.payment_details.naverpay, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
