@@ -1,9 +1,13 @@
 'use client';
 
 import { Modal } from '@/components/molecules/ui/Modal';
+import { QUERY_KEYS } from '@/constants/queryKey';
+import { useGenericQuery } from '@/hooks/query/globalQuery';
+import { User } from '@/types';
 import { ChevronRight } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { getUserInfo } from '@/lib/api';
 
 type UserData = {
   name: string;
@@ -15,17 +19,18 @@ type UserData = {
 export default function MyPage() {
   const router = useRouter();
 
+  const { resData: userData, isLoading } = useGenericQuery<Partial<User>>(
+    [QUERY_KEYS.User],
+    () => getUserInfo()
+  );
+
   const toMembershipPage = () => {
     router.push('/mypage/membership');
   };
 
-  const MOCK_USER: UserData = {
-    name: '문해빈',
-    id: 'slrspdla',
-    phone: '010-2222-1111',
-    address:
-      '서울 성동구 뚝섬로1가길 17 (성수동1가, 얼리브홈 서울숲), 503호 [04779]',
-  };
+  if (!userData || !userData.data || isLoading) return <></>;
+
+  const { name, authId, phone, address } = userData.data;
 
   return (
     <>
@@ -39,7 +44,7 @@ export default function MyPage() {
           />
           <span className='text-base ml-[1.125rem]'>
             <a className='text-2xl font-semibold  border-main mr-[0.375rem]'>
-              {MOCK_USER.name}
+              {name}
             </a>
             님
           </span>
@@ -48,18 +53,18 @@ export default function MyPage() {
           <div className='w-[25rem] h-[5.8125rem] rounded-lg bg-white px-[1.6875rem] py-5'>
             <div className='flex justify-between mb-3'>
               <span className='text-[#2B2B2B] text-sm'>아이디</span>
-              <span className='text-[#666666] text-sm'>{MOCK_USER.id}</span>
+              <span className='text-[#666666] text-sm'>{authId}</span>
             </div>
             <div className='flex justify-between'>
               <span className='text-[#2B2B2B] text-sm'>휴대폰 번호</span>
-              <span className='text-[#666666] text-sm'>{MOCK_USER.phone}</span>
+              <span className='text-[#666666] text-sm'>{phone}</span>
             </div>
           </div>
         </div>
       </div>
       <div className='py-[1.875rem] text-white pt-72'>
         <div className='space-y-3'>
-          <Modal title='배송지' description={MOCK_USER.address} btnText='확인'>
+          <Modal title='배송지' description={address} btnText='확인'>
             <div className='flex justify-between items-center py-[0.34375rem]'>
               <span>배송지 정보</span>
               <ChevronRight className='text-[#999999]' />

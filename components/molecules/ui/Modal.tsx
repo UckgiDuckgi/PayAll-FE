@@ -19,7 +19,7 @@ export function Modal({
   children,
 }: {
   title: string;
-  description: string;
+  description?: string;
   btnText: string;
   children: ReactNode;
 }) {
