@@ -4,17 +4,14 @@ import { IconIndicator } from '../ui/IconIndicator';
 type AccountProps = {
   shop: string;
   isLinked: boolean;
-  accountInfo?: {
-    id: string;
-    password: string;
-  };
+  id?: string;
   onLinkClick: () => void;
 };
 
 export const LinkedAccount = ({
   shop,
   isLinked,
-  accountInfo,
+  id,
   onLinkClick,
 }: AccountProps) => {
   return (
@@ -43,7 +40,7 @@ export const LinkedAccount = ({
               아이디
             </div>
             <div className='text-base outline-none font-bold'>
-              {isLinked ? accountInfo?.id : '입력 필요'}
+              {isLinked ? id : '입력 필요'}
             </div>
           </div>
           <div>
@@ -51,7 +48,7 @@ export const LinkedAccount = ({
               비밀번호
             </div>
             <div className='text-base outline-none font-bold'>
-              {isLinked ? accountInfo?.password : '입력 필요'}
+              {isLinked ? '**********' : '입력 필요'}
             </div>
           </div>
         </div>

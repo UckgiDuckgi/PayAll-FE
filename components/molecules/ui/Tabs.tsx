@@ -6,8 +6,6 @@ import { usePathname, useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 import { cn } from '@/lib/utils';
 
-export const dynamic = 'force-dynamic';
-
 export type Tab = '소비 분석' | '소비 목표' | '추천 혜택';
 
 function TabsContent() {
