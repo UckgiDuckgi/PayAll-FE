@@ -29,7 +29,8 @@ export const getCoupangActions = async ({
   RANGE = 2000,
   elementSelector,
 }: PlaywrightActionsProps<CoupangElementSelector>) => {
-  const sessionBrowserManager = await SessionBrowserManager.getInstance();
+  const sessionBrowserManager =
+    await SessionBrowserManager.getInstance('COUPANG');
 
   const playwrightAction = await getPlaywrightActions({
     SIGNIN_URL,
@@ -38,6 +39,7 @@ export const getCoupangActions = async ({
     DELAY,
     RANGE,
     elementSelector,
+    key: 'COUPANG',
   });
   return {
     ...playwrightAction,
@@ -50,6 +52,7 @@ export const getCoupangActions = async ({
 
       const { buttonGetPincodeSelector } = elementSelector;
 
+      await delay(Math.random() * (DELAY + 1000) + RANGE);
       const isPresent =
         (await page.locator(buttonGetPincodeSelector).count()) > 0;
 

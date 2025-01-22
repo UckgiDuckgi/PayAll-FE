@@ -28,6 +28,7 @@ export async function GET() {
     buttonSelector: '#submit_btn',
     id: process.env.NAVER_ID ?? '',
     pw: process.env.NAVER_PW ?? '',
+    key: 'NAVERPAY',
   });
 
   await paymentClose();

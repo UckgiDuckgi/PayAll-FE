@@ -15,11 +15,12 @@ export type CoupangRequest = {
   pincode: string;
   password: string;
   itemList: Item[];
+  init: boolean;
 };
 
 export type CoupangResponse = {
   success: boolean;
-  status: 'PINCODE' | 'PASSWORD' | 'COMPLETED';
+  status: 'PINCODE' | 'PASSWORD' | 'COMPLETED' | 'ERROR';
   result: string;
 };
 
@@ -53,48 +54,59 @@ export async function POST(request: Request) {
         inputPincodeSelector: '.pincode-input__pincode-input-box__pincode',
         buttonSetPincodeSelector: '.pincode-input__button',
       },
+      key: 'COUPANG',
     };
 
-  const coupangActions = await getCoupangActions(playwrightActionsProps);
+  try {
+    const coupangActions = await getCoupangActions(playwrightActionsProps);
 
-  const id = process.env.COUPANG_ID ?? '';
-  const pw = process.env.COUPANG_PW ?? '';
-  await coupangActions.signIn({ id, pw });
-  // await coupangSignIn();
+    const id = process.env.COUPANG_ID ?? '';
+    const pw = process.env.COUPANG_PW ?? '';
 
-  const isPincodePage = await coupangActions.getPincode();
-  if (isPincodePage) {
+    await coupangActions.signIn({ id, pw });
+    // await coupangSignIn();
+
+    const isPincodePage = await coupangActions.getPincode();
+    if (isPincodePage) {
+      return NextResponse.json({
+        success: true,
+        status: 'PINCODE',
+        result: 'PINCODE',
+      });
+    }
+
+    await coupangActions.setPincode(pincode);
+
+    for (const item of itemList) {
+      await coupangActions.addCart(item);
+    }
+    // await coupangAddCart(itemList[1]);
+
+    const screenshotBuffer = await coupangActions.payment();
+    if (screenshotBuffer) {
+      const base64Image = `data:image/png;base64,${screenshotBuffer.toString('base64')}`;
+      return NextResponse.json({
+        success: true,
+        status: 'PASSWORD',
+        result: base64Image,
+      });
+    }
+
+    await coupangActions.setCoupangPayPassword(password);
+
+    await coupangActions.close();
+
     return NextResponse.json({
       success: true,
-      status: 'PINCODE',
-      result: 'PINCODE',
+      status: 'COMPLETED',
+      result: '',
     });
-  }
-
-  await coupangActions.setPincode(pincode);
-
-  for (const item of itemList) {
-    await coupangActions.addCart(item);
-  }
-  // await coupangAddCart(itemList[1]);
-
-  const screenshotBuffer = await coupangActions.payment();
-  if (screenshotBuffer) {
-    const base64Image = `data:image/png;base64,${screenshotBuffer.toString('base64')}`;
+  } catch {
+    console.log('error');
     return NextResponse.json({
       success: true,
-      status: 'PASSWORD',
-      result: base64Image,
+      status: 'ERROR',
+      result: '',
     });
   }
-
-  await coupangActions.setCoupangPayPassword(password);
-
-  await coupangActions.close();
-
-  return NextResponse.json({
-    success: true,
-    status: 'COMPLETED',
-    result: '',
-  });
 }

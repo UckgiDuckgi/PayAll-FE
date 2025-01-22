@@ -16,45 +16,51 @@ export type SessionBrowser = {
   status: BrowserStatus;
 };
 
+export type MapKey = 'COUPANG' | 'ELEVENSTREET' | 'NAVERPAY';
+
 const setPageHeader = async (page: Page) =>
   await page.setExtraHTTPHeaders({
     'sec-ch-ua-platform': '"Windows"',
     'accept-language': 'ko,en-US;q=0.9,en;q=0.8',
-    'sec-ch-ua':
-      '"Google Chrome";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
+    // 'sec-ch-ua':
+    //   '"Google Chrome";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
     'sec-fetch-site': 'same-origin',
     'sec-ch-ua-mobile': '?0',
-    // 'sec-fetch-mode': 'cors',
-    // 'sec-fetch-dest': 'empty',
     'accept-encoding': 'gzip, deflate, br, zstd',
-    'user-agent':
-      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
-    // 'x-requested-with': '',
+    'user-agent': process.env.USER_AGENT ?? '',
   });
 
 class SessionBrowserManager {
-  private static instance: SessionBrowserManager | null;
+  private static instance: Record<MapKey, SessionBrowserManager | null> = {
+    COUPANG: null,
+    ELEVENSTREET: null,
+    NAVERPAY: null,
+  };
   public browser!: Browser;
   public context!: BrowserContext;
   public page!: Page;
   public status: BrowserStatus = 'NOT_SIGNIN';
 
-  constructor({ browser, context, page, status }: SessionBrowser) {
-    if (SessionBrowserManager.instance) {
+  constructor({ browser, context, page, status }: SessionBrowser, key: MapKey) {
+    if (SessionBrowserManager.instance[key]) {
       console.log('Not Created!');
-      return SessionBrowserManager.instance;
+      return SessionBrowserManager.instance[key];
     }
     console.log('Created!');
     this.browser = browser;
     this.context = context;
     this.page = page;
     this.status = status;
-    SessionBrowserManager.instance = this;
+    SessionBrowserManager.instance[key] = this;
   }
 
-  public static async getInstance() {
-    if (!this.instance || !this.instance.page) {
+  public static async getInstance(key: MapKey) {
+    if (!this.instance[key] || !this.instance[key].page) {
       console.log('New Browser Created!');
+
+      if (this.instance[key]) {
+        this.instance[key].browser.close();
+      }
 
       const browser = await chromium.launch({
         executablePath: process.env.CHROME_PATH,
@@ -90,33 +96,48 @@ class SessionBrowserManager {
         Object.defineProperty(navigator, 'mimeTypes', {
           get: () => ['application/pdf'], // PDF MIME 타입 추가
         });
-        // window.chrome 속성 정의
-        Object.defineProperty(window, 'chrome', {
-          get: () => ({ runtime: {} }),
-        });
       });
 
       console.log('New Page Created!');
       const page = await context.newPage();
       await setPageHeader(page);
 
-      this.instance = new this({
-        browser,
-        context,
-        page,
-        status: 'NOT_SIGNIN',
-      });
+      this.instance[key] = new this(
+        {
+          browser,
+          context,
+          page,
+          status: 'NOT_SIGNIN',
+        },
+        key
+      );
+    } else {
+      try {
+        this.instance[key].page.content();
+      } catch {
+        const page = await this.instance[key].context.newPage();
+        await setPageHeader(page);
+
+        this.instance[key] = new this(
+          {
+            ...this.instance[key],
+            page,
+            status: 'NOT_SIGNIN',
+          },
+          key
+        );
+      }
     }
     console.log('Get Instance Excuted!');
-    return this.instance;
+    return this.instance[key];
   }
 
-  public static async close(): Promise<void> {
-    if (this.instance) {
-      const { browser, page } = this.instance;
+  public static async close(key: MapKey): Promise<void> {
+    if (this.instance[key]) {
+      const { browser, page } = this.instance[key];
       await page.close();
       await browser.close();
-      this.instance = null;
+      this.instance[key] = null;
     }
   }
 }

@@ -1,7 +1,7 @@
 'use server';
 
 import { Item } from '@/app/api/coupang/route';
-import SessionBrowserManager from '@/hooks/sessionBrowserManager';
+import SessionBrowserManager, { MapKey } from '@/hooks/sessionBrowserManager';
 
 export type PlaywrightElementSelector = {
   //SignIn
@@ -24,6 +24,7 @@ export type PlaywrightActionsProps<T> = {
   DELAY?: number;
   RANGE?: number;
   elementSelector: T;
+  key: MapKey;
 };
 
 export const getPlaywrightActions = async ({
@@ -32,8 +33,9 @@ export const getPlaywrightActions = async ({
   DELAY = 2000,
   RANGE = 2000,
   elementSelector,
+  key,
 }: PlaywrightActionsProps<PlaywrightElementSelector>) => {
-  const sessionBrowserManager = await SessionBrowserManager.getInstance();
+  const sessionBrowserManager = await SessionBrowserManager.getInstance(key);
 
   return {
     signIn: async ({
@@ -102,7 +104,7 @@ export const getPlaywrightActions = async ({
       await delay(Math.random() * (DELAY + 1000) + RANGE);
     },
     close: async () => {
-      await SessionBrowserManager.close();
+      await SessionBrowserManager.close(key);
     },
   };
 };
