@@ -22,12 +22,14 @@ export const QUERY_KEYS: Record<string, string> = {
   PAYMENT_DETAIL: 'payment-detail',
 
   RECOMMENDATIONS: 'recommendations',
+  RECOMMENDATIONS_PRODUCT: 'recommendations-product',
 
   PRODUCT_DETAIL: 'product-detail',
   PRODUCT_CARDS: 'product-cards',
   PRODUCT_subscriptions: 'product-subscriptions',
-
   PRODUCT_RECEIPT: 'product-receipt',
 
-  RECOMMENDATIONS_PRODUCT: 'recommendations-product',
+  USER: 'user',
+  PLATFORM: 'platform',
+  POST_PLATFORM: 'post-platform',
 };

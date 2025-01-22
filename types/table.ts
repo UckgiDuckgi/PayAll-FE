@@ -5,6 +5,7 @@ export type ApiResponse<T> = {
   data?: T;
 };
 
+type Platform = 'COUPANG' | '11ST' | 'NAVER';
 type Category =
   | 'TOTAL'
   | 'SHOPPING'
@@ -127,6 +128,7 @@ export type {
   Payment,
   Payment_Detail,
   PaymentType,
+  Platform,
   Product,
   ProductType,
   Recommendation,

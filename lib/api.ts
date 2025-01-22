@@ -1,6 +1,7 @@
 import { API_ROUTE } from '@/constants/route';
 import apiCall from '@/hooks/useFetch';
 import { Cart, Category, Purchase, User } from '@/types';
+import { PlatformDetailType } from '@/types/authType';
 
 const BASE_URL = API_ROUTE.api;
 
@@ -16,6 +17,24 @@ export const postSignIn = async ({ authId, password }: Partial<User>) => {
 export const postSignUp = async (postSignUpRequest: Partial<User>) => {
   // 회원가입
   return await apiCall.post(BASE_URL + '/auth/sign-up', postSignUpRequest);
+};
+
+export const postPlatform = async ({
+  platformName,
+  id,
+  password,
+}: PlatformDetailType) => {
+  // 외부플랫폼 계정 등록
+  return await apiCall.post(BASE_URL + '/auth/platform', {
+    platformName,
+    id,
+    password,
+  });
+};
+
+export const getPlatform = async () => {
+  // 외부플랫폼 계정 조회
+  return await apiCall.get(BASE_URL + '/auth/platform');
 };
 
 // accounts
@@ -48,12 +67,14 @@ export const getLimit = async () => {
   return await apiCall.get(BASE_URL + '/limit');
 };
 
+// search
 export const getSearch = async ({ keyword }: { keyword: string }) => {
   return await apiCall.get(BASE_URL + '/search', {
     query: keyword,
   });
 };
 
+// cart
 export const postCart = async ({
   productId,
   quantity = 1,
@@ -130,7 +151,7 @@ export const getProductCards = async () => {
 };
 
 export const getProductSubscribs = async () => {
-  return await apiCall.get(BASE_URL + '/product/subscribs');
+  return await apiCall.get(BASE_URL + '/product/subscribes');
 };
 
 export const getPaymentDetail = async ({
@@ -160,4 +181,9 @@ export const postReceipt = async ({
 
 export const getRecommendationsProduct = async () => {
   return await apiCall.get(BASE_URL + '/recommendations/products');
+};
+
+// mypage
+export const getUserInfo = async () => {
+  return await apiCall.get(BASE_URL + '/user');
 };
