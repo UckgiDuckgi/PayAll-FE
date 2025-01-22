@@ -19,7 +19,7 @@ export type ElevenStreetRequest = {
 
 export type ElevenStreetResponse = {
   success: boolean;
-  status: 'PINCODE' | 'RECAPTCHA' | 'PAYMENT' | 'COMPLETED';
+  status: 'PINCODE' | 'RECAPTCHA' | 'PAYMENT' | 'COMPLETED' | 'ERROR';
   result: { base64Image: string; tableSize: number };
 };
 
@@ -62,64 +62,73 @@ export async function POST(request: Request) {
         // Modal
         modalPropSelector: '[modal-auto-action="close"]',
       },
+      key: 'ELEVENSTREET',
     };
 
-  const elevenStreetActions = await getElevenStreetActions(
-    playwrightActionsProps
-  );
+  try {
+    const elevenStreetActions = await getElevenStreetActions(
+      playwrightActionsProps
+    );
 
-  // const reCaptchaResponse = await elevenStreetActions.reCaptcha();
-  // if (reCaptchaResponse) {
-  //   const { screenshotBuffer, tableSize } = reCaptchaResponse;
-  //   const base64Image = `data:image/png;base64,${screenshotBuffer.toString('base64')}`;
-  //   return NextResponse.json({
-  //     success: true,
-  //     status: 'RECAPTCHA',
-  //     result: { base64Image, tableSize },
-  //   });
-  // }
+    // const reCaptchaResponse = await elevenStreetActions.reCaptcha();
+    // if (reCaptchaResponse) {
+    //   const { screenshotBuffer, tableSize } = reCaptchaResponse;
+    //   const base64Image = `data:image/png;base64,${screenshotBuffer.toString('base64')}`;
+    //   return NextResponse.json({
+    //     success: true,
+    //     status: 'RECAPTCHA',
+    //     result: { base64Image, tableSize },
+    //   });
+    // }
 
-  // await elevenStreetActions.clickReCaptcha(selectedTileList, isReCaptchaEnd);
+    // await elevenStreetActions.clickReCaptcha(selectedTileList, isReCaptchaEnd);
 
-  // const retryReCaptchaResponse = await elevenStreetActions.retryReCaptcha();
-  // if (retryReCaptchaResponse) {
-  //   const { screenshotBuffer, tableSize } = retryReCaptchaResponse;
-  //   const base64Image = `data:image/png;base64,${screenshotBuffer.toString('base64')}`;
-  //   return NextResponse.json({
-  //     success: true,
-  //     status: 'RECAPTCHA',
-  //     result: { base64Image, tableSize },
-  //   });
-  // }
-  // const id = process.env.ELEVEN_STREET_ID ?? '';
-  // const pw = process.env.ELEVEN_STREET_PW ?? '';
-  // await elevenStreetActions.signIn({ id, pw });
+    // const retryReCaptchaResponse = await elevenStreetActions.retryReCaptcha();
+    // if (retryReCaptchaResponse) {
+    //   const { screenshotBuffer, tableSize } = retryReCaptchaResponse;
+    //   const base64Image = `data:image/png;base64,${screenshotBuffer.toString('base64')}`;
+    //   return NextResponse.json({
+    //     success: true,
+    //     status: 'RECAPTCHA',
+    //     result: { base64Image, tableSize },
+    //   });
+    // }
+    // const id = process.env.ELEVEN_STREET_ID ?? '';
+    // const pw = process.env.ELEVEN_STREET_PW ?? '';
+    // await elevenStreetActions.signIn({ id, pw });
 
-  const id = process.env.KAKAO_ID ?? '';
-  const pw = process.env.KAKAO_PW ?? '';
-  await elevenStreetActions.kakaoSignIn({ id, pw });
+    const id = process.env.KAKAO_ID ?? '';
+    const pw = process.env.KAKAO_PW ?? '';
+    await elevenStreetActions.kakaoSignIn({ id, pw });
 
-  await elevenStreetActions.clickModal();
+    await elevenStreetActions.clickModal();
 
-  for (const item of itemList) {
-    await elevenStreetActions.addCart(item);
-  }
+    for (const item of itemList) {
+      await elevenStreetActions.addCart(item);
+    }
 
-  const paymentResponse = await elevenStreetActions.payment();
-  if (paymentResponse) {
-    const base64Image = `data:image/png;base64,${paymentResponse.toString('base64')}`;
+    const paymentResponse = await elevenStreetActions.payment();
+    if (paymentResponse) {
+      const base64Image = `data:image/png;base64,${paymentResponse.toString('base64')}`;
+      return NextResponse.json({
+        success: true,
+        status: 'PAYMENT',
+        result: { base64Image },
+      });
+    }
+
+    await elevenStreetActions.close();
+
     return NextResponse.json({
       success: true,
-      status: 'PAYMENT',
-      result: { base64Image },
+      status: 'COMPLETED',
+      result: {},
+    });
+  } catch {
+    return NextResponse.json({
+      success: false,
+      status: 'ERROR',
+      result: {},
     });
   }
-
-  await elevenStreetActions.close();
-
-  return NextResponse.json({
-    success: true,
-    status: 'COMPLETED',
-    result: {},
-  });
 }

@@ -104,6 +104,10 @@ export default function ElevenStreet() {
           onClick={handleOnClick}
           itemList={itemList}
         />
+      ) : status === 'ERROR' ? (
+        <div className='flex justify-center pt-10 text-3xl'>
+          에러가 발생했습니다. 새로고침해주세요.
+        </div>
       ) : (
         <div className='flex justify-center pt-10 text-3xl'>
           Payment Success!

@@ -11,6 +11,7 @@ export async function GET() {
     buttonSelector: '.login__button--submit',
     id: process.env.COUPANG_ID ?? '',
     pw: process.env.COUPANG_PW ?? '',
+    key: 'COUPANG',
   });
 
   await paymentClose();

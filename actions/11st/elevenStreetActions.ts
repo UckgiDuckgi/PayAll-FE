@@ -49,7 +49,8 @@ export const getElevenStreetActions = async ({
   RANGE = 2000,
   elementSelector,
 }: PlaywrightActionsProps<ElevenStreetElementSelector>) => {
-  const sessionBrowserManager = await SessionBrowserManager.getInstance();
+  const sessionBrowserManager =
+    await SessionBrowserManager.getInstance('ELEVENSTREET');
 
   const playwrightAction = await getPlaywrightActions({
     SIGNIN_URL,
@@ -58,6 +59,7 @@ export const getElevenStreetActions = async ({
     DELAY,
     RANGE,
     elementSelector,
+    key: 'ELEVENSTREET',
   });
   return {
     ...playwrightAction,
