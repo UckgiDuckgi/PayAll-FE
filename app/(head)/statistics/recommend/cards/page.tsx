@@ -28,29 +28,31 @@ function RecommendationCardsContent() {
   return (
     <div className='space-y-3 my-2'>
       <span className='font-bold text-[1.125rem]'>카드 둘러보기</span>
-      <div className='space-y-4'>
+      <ul className='space-y-4'>
         {cardsData?.data?.map(
-          ({ productName, productDescription }: ProductType) => (
-            <SimpleBottomSheet
-              isOpen={isOpen}
-              onOpenChange={toggleDialog}
-              content={
-                <CardBenefitInfo
-                  index={0}
-                  cardName='샵 마이웨이 카드'
-                  paymentDetails={payment_detail}
+          ({ productName, productDescription }: ProductType, idx) => (
+            <li key={`${productName}${idx}`}>
+              <SimpleBottomSheet
+                isOpen={isOpen}
+                onOpenChange={toggleDialog}
+                content={
+                  <CardBenefitInfo
+                    index={0}
+                    cardName='샵 마이웨이 카드'
+                    paymentDetails={payment_detail}
+                  />
+                }
+              >
+                <CardInfoCard
+                  cardImg='/images/cards/samsung.svg'
+                  cardName={productName}
+                  cardDescription={productDescription}
                 />
-              }
-            >
-              <CardInfoCard
-                cardImg='/images/cards/samsung.svg'
-                cardName={productName}
-                cardDescription={productDescription}
-              />
-            </SimpleBottomSheet>
+              </SimpleBottomSheet>
+            </li>
           )
         )}
-      </div>
+      </ul>
     </div>
   );
 }
