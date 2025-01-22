@@ -1,6 +1,5 @@
 'use client';
 
-import { CardBenefitContent } from '@/app/(head)/statistics/recommend/page';
 import {
   Carousel,
   CarouselContent,
@@ -13,6 +12,7 @@ import { RecommendationsType } from '@/types/recommendationsType';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
+import CardBenefitContent from './CardBenefitContent';
 import CardCarouselItem from './CardCarouselItem';
 import SimpleBottomSheet from './ui/SimpleBottomSheet';
 

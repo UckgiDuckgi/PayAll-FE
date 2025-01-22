@@ -61,8 +61,6 @@ const fetcher = async ({
   }
 
   const response = await fetch(`${BASE_URL}${url}${queryString}`, options);
-  console.log(response);
-  console.log(response.status);
 
   if (response.status === 403) {
     await refreshAccessToken();
@@ -74,16 +72,15 @@ const fetcher = async ({
   return response.json();
 };
 
-const handleError = (errorBody: APIError) => {
-  throw {
-    code: errorBody?.code || 'Unknown Code',
-    message: errorBody?.message || 'Unknown Error',
-  };
-};
+// const handleError = (errorBody: APIError) => {
+//   throw {
+//     code: errorBody?.code || 'Unknown Code',
+//     message: errorBody?.message || 'Unknown Error',
+//   };
+// };
 
 const refreshAccessToken = async (): Promise<null> => {
   try {
-    console.log('goodgoodgoodgood');
     const response = await fetch(`${BASE_URL}/api/auth/refresh`, {
       method: 'POST',
       credentials: 'include',

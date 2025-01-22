@@ -1,17 +1,16 @@
 'use client';
 
-import CardBenefitInfo from '@/components/molecules/CardBenefitInfo';
+import CardBenefitContent from '@/components/molecules/CardBenefitContent';
 import { CardCarousel } from '@/components/molecules/CardCarousel';
 import CategorySubCard from '@/components/molecules/CategorySubCard';
 import SimpleBottomSheet from '@/components/molecules/ui/SimpleBottomSheet';
 import { COLORS } from '@/constants/color';
 import { QUERY_KEYS } from '@/constants/queryKey';
 import { useGenericQuery } from '@/hooks/query/globalQuery';
-import { ProductDetailType } from '@/types/productType';
 import { RecommendationsType } from '@/types/recommendationsType';
 import Link from 'next/link';
 import { Suspense, useState } from 'react';
-import { getProductDetail, getRecommendations } from '@/lib/api';
+import { getRecommendations } from '@/lib/api';
 
 function RecommendationContent() {
   const [selectedIdx, setSelectedIdx] = useState(0);
@@ -93,30 +92,6 @@ function RecommendationContent() {
         </div>
       </div>
     </div>
-  );
-}
-
-export function CardBenefitContent({ selectedIdx }: { selectedIdx: number }) {
-  const { resData: productData, isLoading } =
-    useGenericQuery<ProductDetailType>(
-      [QUERY_KEYS.PRODUCT_DETAIL, selectedIdx],
-      () => getProductDetail({ productId: selectedIdx })
-      // {!!enabled: 0,}
-    );
-
-  if (!productData || !productData.data || isLoading) return <></>;
-
-  console.log(productData.data);
-  const { productName, benefitDescription, storeDetails } = productData.data;
-  return (
-    <>
-      <CardBenefitInfo
-        index={selectedIdx}
-        productName={productName}
-        benefitDescription={benefitDescription}
-        storeDetails={storeDetails}
-      />
-    </>
   );
 }
 

@@ -9,13 +9,6 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { getUserInfo } from '@/lib/api';
 
-type UserData = {
-  name: string;
-  id: string;
-  phone: string;
-  address: string;
-};
-
 export default function MyPage() {
   const router = useRouter();
 
