@@ -1,5 +1,6 @@
 'use client';
 
+import CardBenefitContent from '@/components/molecules/CardBenefitContent';
 import CardInfoCard from '@/components/molecules/CardInfoCard';
 import SimpleBottomSheet from '@/components/molecules/ui/SimpleBottomSheet';
 import { QUERY_KEYS } from '@/constants/queryKey';
@@ -7,7 +8,6 @@ import { useGenericQuery } from '@/hooks/query/globalQuery';
 import { ProductType } from '@/types/productType';
 import { Suspense, useState } from 'react';
 import { getProductCards } from '@/lib/api';
-import { CardBenefitContent } from '../page';
 
 function RecommendationCardsContent() {
   const [selectedIdx, setSelectedIdx] = useState(0);
