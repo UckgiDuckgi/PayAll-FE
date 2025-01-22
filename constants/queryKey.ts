@@ -12,6 +12,7 @@ export const QUERY_KEYS: Record<string, string> = {
   CART_LIST: 'cart-list',
   DELETE_CART: 'delete-cart',
   UPDATE_CART: 'update-cart',
+  PURCHASE: 'purchase',
 
   POST_LIMIT: 'post-list',
 
@@ -26,4 +27,6 @@ export const QUERY_KEYS: Record<string, string> = {
   PRODUCT_subscriptions: 'product-subscriptions',
 
   PRODUCT_RECEIPT: 'product-receipt',
+
+  RECOMMENDATIONS_PRODUCT: 'recommendations-product',
 };

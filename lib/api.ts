@@ -1,6 +1,6 @@
 import { API_ROUTE } from '@/constants/route';
 import apiCall from '@/hooks/useFetch';
-import { Cart, Category, User } from '@/types';
+import { Cart, Category, Purchase, User } from '@/types';
 
 const BASE_URL = API_ROUTE.api;
 
@@ -82,6 +82,10 @@ export const updateCart = async ({
   });
 };
 
+export const postPurchase = async (purchase: Purchase) => {
+  return await apiCall.post(BASE_URL + '/purchase', purchase);
+};
+
 export const postLimit = async ({ limitPrice }: { limitPrice: number }) => {
   // 목표 등록
   return await apiCall.post(BASE_URL + '/limit', {
@@ -148,4 +152,8 @@ export const postReceipt = async ({
     paymentId,
     productList,
   });
+};
+
+export const getRecommendationsProduct = async () => {
+  return await apiCall.get(BASE_URL + '/recommendations/products');
 };

@@ -22,7 +22,7 @@ export const LowestProductList = ({ products }: LowestProductListProps) => {
           key={index}
           imageUrl={product.productImage}
           title={product.productName}
-          discount={product.discountRate}
+          discount={product.discountRate.toFixed(0)}
           price={product.price}
         />
       ))}
