@@ -1,7 +1,7 @@
 'use client';
 
 import { OnClick } from '@/app/11st/page';
-import { Item } from '@/app/api/11st/route';
+import { Item } from '@/app/api/payments/11st/route';
 import Image from 'next/image';
 import { useState } from 'react';
 
