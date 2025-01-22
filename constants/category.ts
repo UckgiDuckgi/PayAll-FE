@@ -1,6 +1,7 @@
 import { Category } from '@/types/table';
 
 export const CATEGORY: Record<Category, string> = {
+  TOTAL: '전체',
   SHOPPING: '쇼핑',
   EDUCATION: '교육',
   LIVING: '생활',
