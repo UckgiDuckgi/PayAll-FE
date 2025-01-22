@@ -1,5 +1,6 @@
 'use client';
 
+import CardBenefitInfo from '@/components/molecules/CardBenefitInfo';
 import { CardCarousel } from '@/components/molecules/CardCarousel';
 import CategorySubCard from '@/components/molecules/CategorySubCard';
 import SimpleBottomSheet from '@/components/molecules/ui/SimpleBottomSheet';
@@ -95,7 +96,7 @@ function RecommendationContent() {
   );
 }
 
-function CardBenefitContent({ selectedIdx }: { selectedIdx: number }) {
+export function CardBenefitContent({ selectedIdx }: { selectedIdx: number }) {
   const { resData: productData, isLoading } =
     useGenericQuery<ProductDetailType>(
       [QUERY_KEYS.PRODUCT_DETAIL, selectedIdx],
@@ -106,21 +107,16 @@ function CardBenefitContent({ selectedIdx }: { selectedIdx: number }) {
   if (!productData || !productData.data || isLoading) return <></>;
 
   console.log(productData.data);
-  // const {
-  //   productName,
-  //   benefitDescription,
-  //   category,
-  //   storeName,
-  //   discountAmount,
-  //   visitCount,
-  // } = productData.data;
+  const { productName, benefitDescription, storeDetails } = productData.data;
   return (
-    // <CardBenefitInfo
-    //   index={0}
-    //   cardName={productName}
-    //   paymentDetails={payment_detail}
-    // />
-    <></>
+    <>
+      <CardBenefitInfo
+        index={selectedIdx}
+        productName={productName}
+        benefitDescription={benefitDescription}
+        storeDetails={storeDetails}
+      />
+    </>
   );
 }
 
