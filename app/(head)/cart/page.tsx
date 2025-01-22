@@ -7,10 +7,11 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { QUERY_KEYS } from '@/constants/queryKey';
 import { useGenericMutation, useGenericQuery } from '@/hooks/query/globalQuery';
-import { ApiResponse, Cart } from '@/types';
+import { ApiResponse, Cart, Purchase } from '@/types';
 import { useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { deleteCart, getCart, updateCart } from '@/lib/api';
+import { deleteCart, getCart, postPurchase, updateCart } from '@/lib/api';
 
 type CartItemState = {
   isChecked: boolean;
@@ -71,6 +72,17 @@ export default function CartPage() {
       onSuccess: () => {},
     }
   );
+  const { mutate: postPurchaseMutate } = useGenericMutation(
+    [QUERY_KEYS.PURCHASE],
+    (data: Purchase) => postPurchase(data),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: [QUERY_KEYS.CART_LIST],
+        });
+      },
+    }
+  );
 
   const [itemStates, setItemStates] = useState<Map<number, CartItemState>>(
     () => {
@@ -84,6 +96,7 @@ export default function CartPage() {
       return initialMap;
     }
   );
+  const router = useRouter();
 
   const handleCheckChange = (productId: number, checked: boolean) => {
     setItemStates((prev) => {
@@ -135,7 +148,15 @@ export default function CartPage() {
   };
 
   const handlePurchase = () => {
-    console.log('할인금액', calculateTotalSavings());
+    postPurchaseMutate({
+      purchaseList:
+        cartList?.data?.filter(
+          (item) => itemStates.get(item.productId)?.isChecked
+        ) ?? [],
+      totalPrice: calculateTotalPrice(),
+      totalDiscountPrice: calculateTotalSavings(),
+    });
+    router.push('/');
   };
 
   const calculateTotalPrice = () => {

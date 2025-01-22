@@ -1,6 +1,6 @@
 import { API_ROUTE } from '@/constants/route';
 import apiCall from '@/hooks/useFetch';
-import { Cart, Category, User } from '@/types';
+import { Cart, Category, Purchase, User } from '@/types';
 
 const BASE_URL = API_ROUTE.api;
 
@@ -80,6 +80,10 @@ export const updateCart = async ({
   return await apiCall.patch(BASE_URL + '/cart/' + cartId, {
     quantity,
   });
+};
+
+export const postPurchase = async (purchase: Purchase) => {
+  return await apiCall.post(BASE_URL + '/purchase', purchase);
 };
 
 export const postLimit = async ({ limitPrice }: { limitPrice: number }) => {
