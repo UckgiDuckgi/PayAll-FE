@@ -132,3 +132,20 @@ export const getPaymentDetail = async ({
 }) => {
   return await apiCall.get(BASE_URL + '/accounts/payments/' + paymentId);
 };
+
+export const postReceipt = async ({
+  paymentId,
+  productList,
+}: {
+  paymentId: number;
+  productList: Array<{
+    productName: string;
+    quantity: number;
+    price: number;
+  }>;
+}) => {
+  return await apiCall.post(BASE_URL + '/receipt', {
+    paymentId,
+    productList,
+  });
+};

@@ -2,11 +2,15 @@
 
 import PaperReceipt from '@/components/ocr/PaperReceipt';
 import { Button } from '@/components/ui/button';
+import { QUERY_KEYS } from '@/constants/queryKey';
+import { useGenericMutation } from '@/hooks/query/globalQuery';
 import { fileAtom } from '@/stores/atom';
+import { ReceiptList } from '@/types';
 import { useAtom } from 'jotai';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useRef, useState, Suspense } from 'react';
+import { postReceipt } from '@/lib/api';
 import { requestWithFile } from '@/lib/ocrRequest';
 
 interface Item {
@@ -22,13 +26,32 @@ interface OCRItem {
   price: { price: { text: string } };
 }
 
-export default function Receipt() {
+export default function ReceiptPage() {
+  return (
+    <Suspense fallback={<Loading />}>
+      <ReceiptContent />
+    </Suspense>
+  );
+}
+
+function ReceiptContent() {
   const [items, setItems] = useState<Item[]>([]);
   const [file] = useAtom(fileAtom);
   const [isLoading, setIsLoading] = useState(true);
+  const paymentId = useSearchParams().get('paymentId');
+  const { mutate } = useGenericMutation(
+    [QUERY_KEYS.PRODUCT_RECEIPT],
+    (receipt: ReceiptList) => postReceipt(receipt),
+    {
+      onSuccess: () => {
+        router.back();
+      },
+    }
+  );
   const router = useRouter();
   const titleRef = useRef('');
   const bizNumRef = useRef('');
+  console.log(paymentId);
   useEffect(() => {
     if (file) {
       requestWithFile(file)
@@ -59,7 +82,14 @@ export default function Receipt() {
       alert('수정중인 상품이 있습니다.');
       return;
     }
-    router.push('/details');
+    mutate({
+      paymentId: Number(paymentId),
+      productList: items.map((item) => ({
+        productName: item.name,
+        quantity: Number(item.amount),
+        price: Number(item.price.replace(/,/g, '')),
+      })),
+    });
   };
 
   return (
@@ -105,6 +135,7 @@ const Loading = () => {
           alt='loading'
           width={250}
           height={250}
+          priority
         />
         <p className='mt-10 text-xl font-bold'>영수증을 분석중이에요</p>
       </div>
