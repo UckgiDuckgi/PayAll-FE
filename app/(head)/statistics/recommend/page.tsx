@@ -3,6 +3,7 @@
 import { CardCarousel } from '@/components/molecules/CardCarousel';
 import CategorySubCard from '@/components/molecules/CategorySubCard';
 import SimpleBottomSheet from '@/components/molecules/ui/SimpleBottomSheet';
+import { COLORS } from '@/constants/color';
 import { QUERY_KEYS } from '@/constants/queryKey';
 import { useGenericQuery } from '@/hooks/query/globalQuery';
 import { ProductDetailType } from '@/types/productType';
@@ -71,7 +72,7 @@ function RecommendationContent() {
                   <CategorySubCard
                     img={'/images/subscribes/T.svg'}
                     category={category}
-                    color='#B77DF1'
+                    color={COLORS[idx]}
                     paymentName={storeName}
                     amount={discountAmount}
                   />

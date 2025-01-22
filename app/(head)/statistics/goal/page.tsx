@@ -68,6 +68,7 @@ function StatisticsGoalContent() {
       +(dayjs().daysInMonth() - dayjs().date())
     ).toFixed(0);
 
+    const dayAvg = +did - (+willDo < 0 ? -1 * +willDo : +willDo);
     return (
       <>
         <ProgressBar
@@ -80,38 +81,42 @@ function StatisticsGoalContent() {
         <div className='mt-16 space-y-6'>
           <EmotionBox differ={+did - +willDo} />
 
-          <div className='flex items-center w-full justify-between'>
-            <div className='w-full flex flex-col gap-2 items-center justify-center'>
-              <span className='text-grey font-bold text-[.75rem]'>
-                하루 평균 <span className='text-[1rem]'>쓴 돈</span>
-              </span>
-              <span className='font-bold text-[1.125rem] text-white'>
-                {(+did).toLocaleString()}원
-              </span>
-            </div>
-            <Separator
-              orientation='vertical'
-              className='h-[2.125rem] bg-grey'
-            />
-            <div className='w-full flex flex-col gap-2 items-center justify-center'>
-              <span className='text-grey font-bold text-[.75rem]'>
-                하루 평균 <span className='text-[1rem]'>쓸 돈</span>
-              </span>
-              <span className='font-bold text-[1.125rem] text-white'>
-                {(+willDo < 0 ? -1 * +willDo : +willDo).toLocaleString()}원
-              </span>
-            </div>
-          </div>
+          {dayAvg > 0 ? (
+            <>
+              <div className='flex items-center w-full justify-between'>
+                <div className='w-full flex flex-col gap-2 items-center justify-center'>
+                  <span className='text-grey font-bold text-[.75rem]'>
+                    하루 평균 <span className='text-[1rem]'>쓴 돈</span>
+                  </span>
+                  <span className='font-bold text-[1.125rem] text-white'>
+                    {(+did).toLocaleString()}원
+                  </span>
+                </div>
+                <Separator
+                  orientation='vertical'
+                  className='h-[2.125rem] bg-grey'
+                />
+                <div className='w-full flex flex-col gap-2 items-center justify-center'>
+                  <span className='text-grey font-bold text-[.75rem]'>
+                    하루 평균 <span className='text-[1rem]'>쓸 돈</span>
+                  </span>
+                  <span className='font-bold text-[1.125rem] text-white'>
+                    {(+willDo).toLocaleString()}원
+                  </span>
+                </div>
+              </div>
 
-          <div className='py-3'>
-            <AccentText
-              prefix='목표 달성을 위해서는 하루 평균'
-              accent={`${(+did - (+willDo < 0 ? -1 * +willDo : +willDo)).toLocaleString()}원`}
-              suffix='을 아껴야해요.'
-              accentColor='text-main'
-              accentSize='text-[1.125rem]'
-            />
-          </div>
+              <div className='py-3'>
+                <AccentText
+                  prefix='목표 달성을 위해서는 하루 평균'
+                  accent={`${dayAvg.toLocaleString()}원`}
+                  suffix='을 아껴야해요.'
+                  accentColor='text-main'
+                  accentSize='text-[1.125rem]'
+                />
+              </div>
+            </>
+          ) : null}
 
           <Separator className='w-full bg-darkGrey' />
 

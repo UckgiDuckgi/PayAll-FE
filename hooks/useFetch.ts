@@ -64,7 +64,7 @@ const fetcher = async ({
 
   if (!response.ok) {
     const errorBody = await response.json();
-    if (errorBody.message === 'Token is expired') {
+    if (errorBody.message === 'Token is expired' || errorBody.code === 403) {
       const newAccessToken = await refreshAccessToken();
       if (newAccessToken) {
         const configHeaders: Record<string, string> = {
@@ -113,7 +113,7 @@ const handleError = (errorBody: APIError) => {
 };
 
 const refreshAccessToken = async (): Promise<string | null> => {
-  const tokenName: AccessTokenNames = 'accessToken';
+  // const tokenName: AccessTokenNames = 'accessToken';
   try {
     const response = await fetch(`${BASE_URL}/api/auth/refresh`, {
       method: 'POST',
@@ -125,12 +125,10 @@ const refreshAccessToken = async (): Promise<string | null> => {
     }
 
     const { accessToken } = await response.json();
-    sessionStorage.setItem(tokenName, accessToken);
     return accessToken;
   } catch (error) {
     console.error('Error refreshing token:', error);
     // 로그아웃 또는 추가 처리
-    sessionStorage.removeItem('accessToken');
     return null;
   }
 };
