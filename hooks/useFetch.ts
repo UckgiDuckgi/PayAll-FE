@@ -61,45 +61,14 @@ const fetcher = async ({
   }
 
   const response = await fetch(`${BASE_URL}${url}${queryString}`, options);
+  console.log(response);
+  console.log(response.status);
 
-  if (!response.ok) {
+  if (response.status === 403) {
+    await refreshAccessToken();
     const errorBody = await response.json();
-    if (errorBody.message === 'Token is expired' || errorBody.code === 403) {
-      const newAccessToken = await refreshAccessToken();
-      if (newAccessToken) {
-        const configHeaders: Record<string, string> = {
-          ...headers,
-          'Content-Type': 'application/json',
-        };
 
-        let queryString = '';
-        if (params && method === 'GET') {
-          queryString = `?${new URLSearchParams(params as Record<string, string>).toString()}`;
-        }
-
-        const options: RequestInit = {
-          method,
-          headers: configHeaders,
-          credentials: 'include',
-        };
-
-        if (data && method !== 'GET') {
-          options.body = JSON.stringify(data);
-        }
-
-        const response = await fetch(
-          `${BASE_URL}${url}${queryString}`,
-          options
-        );
-
-        if (!response.ok) {
-          throw handleError(errorBody);
-        }
-
-        return response.json();
-      }
-    }
-    throw handleError(errorBody);
+    console.log(errorBody);
   }
 
   return response.json();
@@ -112,23 +81,21 @@ const handleError = (errorBody: APIError) => {
   };
 };
 
-const refreshAccessToken = async (): Promise<string | null> => {
-  // const tokenName: AccessTokenNames = 'accessToken';
+const refreshAccessToken = async (): Promise<null> => {
   try {
+    console.log('goodgoodgoodgood');
     const response = await fetch(`${BASE_URL}/api/auth/refresh`, {
       method: 'POST',
-      credentials: 'include', // Refresh Token은 HttpOnly 쿠키에서 처리
+      credentials: 'include',
     });
 
     if (!response.ok) {
       throw new Error('Failed to refresh access token');
     }
-
-    const { accessToken } = await response.json();
-    return accessToken;
+    return null;
   } catch (error) {
     console.error('Error refreshing token:', error);
-    // 로그아웃 또는 추가 처리
+    window.location.href = '/login';
     return null;
   }
 };
