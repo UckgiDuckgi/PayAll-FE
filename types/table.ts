@@ -78,6 +78,7 @@ type Cart = {
   storeName: string;
   link: string;
   image: string;
+  prevPrice: number;
 };
 
 type Payment_Detail = {

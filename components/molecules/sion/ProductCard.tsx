@@ -19,7 +19,8 @@ export const ProductCard = ({ searchResult }: { searchResult: Search }) => {
   const queryClient = useQueryClient();
   const { mutate } = useGenericMutation(
     [QUERY_KEYS.CART],
-    (data: { productId: number; quantity: number }) => postCart(data),
+    (data: { productId: number; quantity: number; prevPrice: number }) =>
+      postCart(data),
     {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CART_LIST] });
@@ -32,7 +33,11 @@ export const ProductCard = ({ searchResult }: { searchResult: Search }) => {
   };
 
   const handleAddCart = () => {
-    mutate({ productId: searchResult.pcode, quantity: quantity });
+    mutate({
+      productId: searchResult.pcode,
+      quantity: quantity,
+      prevPrice: searchResult.storeList[seletedProduct].price,
+    });
   };
 
   return (

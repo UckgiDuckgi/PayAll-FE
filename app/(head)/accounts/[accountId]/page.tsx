@@ -5,7 +5,7 @@ import { AccountDetailCard } from '@/components/molecules/sion/AccountDetailCard
 import TitleBottomLine from '@/components/ui/TitleBottomLine';
 import { QUERY_KEYS } from '@/constants/queryKey';
 import { useGenericQuery } from '@/hooks/query/globalQuery';
-import { AccountsPayment } from '@/types/paymentType';
+import { AccountsPayment } from '@/types';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 import { getAccountsDetail } from '@/lib/api';
@@ -40,7 +40,7 @@ export default function AccountDetail({
             {accountsDetail.data.paymentList.map((item: AccountsPayment) => (
               <div key={item.paymentDate}>
                 <TitleBottomLine
-                  left={item.paymentDate}
+                  left={dayjs(item.paymentDate).format('MM.DD (ddd)')}
                   right={'-' + item.dayPaymentPrice.toLocaleString() + '원'}
                 >
                   {item.paymentDetail.map((payment) => (

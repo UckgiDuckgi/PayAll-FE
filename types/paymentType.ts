@@ -28,3 +28,25 @@ export type AccountsPayments = {
   category: string;
   paymentList: AccountsPayment[];
 };
+
+export type PaymentDetailList = {
+  paymentDetailId: number;
+  productName: string;
+  productId: number;
+  price: number;
+  amount: number;
+  lowestPrice: number;
+  lowestPricePlace: string;
+  link: string;
+};
+
+export type PaymentDetail = {
+  accountName: string;
+  paymentPrice: number;
+  category: Category;
+  paymentTime: string;
+  paymentPlace: string;
+  paymentType: PaymentType;
+  bankName: string;
+  paymentDetailList: PaymentDetailList[];
+};

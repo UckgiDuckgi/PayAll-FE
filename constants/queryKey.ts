@@ -17,6 +17,7 @@ export const QUERY_KEYS: Record<string, string> = {
 
   ACCOUNTS: 'accounts',
   ACCOUNTS_DETAIL: 'accounts-detail',
+  PAYMENT_DETAIL: 'payment-detail',
 
   RECOMMENDATIONS: 'recommendations',
 

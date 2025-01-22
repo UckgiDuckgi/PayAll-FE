@@ -50,10 +50,15 @@ export const getSearch = async ({ keyword }: { keyword: string }) => {
   });
 };
 
-export const postCart = async ({ productId, quantity = 1 }: Partial<Cart>) => {
+export const postCart = async ({
+  productId,
+  quantity = 1,
+  prevPrice,
+}: Partial<Cart>) => {
   return await apiCall.post(BASE_URL + '/cart', {
     productId,
     quantity,
+    prevPrice,
   });
 };
 
@@ -118,4 +123,12 @@ export const getProductCards = async () => {
 
 export const getProductSubscribs = async () => {
   return await apiCall.get(BASE_URL + '/product/subscribs');
+};
+
+export const getPaymentDetail = async ({
+  paymentId,
+}: {
+  paymentId: number;
+}) => {
+  return await apiCall.get(BASE_URL + '/accounts/payments/' + paymentId);
 };

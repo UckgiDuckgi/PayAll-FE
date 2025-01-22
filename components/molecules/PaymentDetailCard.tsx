@@ -2,6 +2,7 @@
 
 import { QUERY_KEYS } from '@/constants/queryKey';
 import { useGenericMutation } from '@/hooks/query/globalQuery';
+import { PaymentDetailList } from '@/types';
 import { useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useState } from 'react';
@@ -12,20 +13,17 @@ import BottomSheet from './ui/BottomSheet';
 
 function PaymentDetailCard({
   productName,
+  productId,
   price,
   lowestPrice,
-  vendorName,
-}: {
-  productName: string;
-  price: number;
-  lowestPrice: number;
-  vendorName: string;
-}) {
+  lowestPricePlace,
+}: PaymentDetailList) {
   const queryClient = useQueryClient();
   const [quantity, setQuantity] = useState<number>(1);
   const { mutate } = useGenericMutation(
     [QUERY_KEYS.CART],
-    (data: { productId: number; quantity: number }) => postCart(data),
+    (data: { productId: number; quantity: number; prevPrice: number }) =>
+      postCart(data),
     {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CART_LIST] });
@@ -34,7 +32,11 @@ function PaymentDetailCard({
   );
 
   const handleAddCart = () => {
-    mutate({ productId: 0, quantity: quantity });
+    mutate({
+      productId: productId,
+      quantity: quantity,
+      prevPrice: price,
+    });
   };
 
   const onCountChange = (pid: number, count: number) => {
@@ -55,7 +57,10 @@ function PaymentDetailCard({
             같은 상품의 최저가
           </span>
           <div className='flex items-center justify-between gap-2'>
-            <IconIndicator src={`/images/${vendorName}.png`} height={13} />
+            <IconIndicator
+              src={`/images/${lowestPricePlace}.png`}
+              height={13}
+            />
             <span className='text-[.75rem] font-medium'>
               {lowestPrice.toLocaleString()}원
             </span>
@@ -73,7 +78,10 @@ function PaymentDetailCard({
                 <span className='text-white font-bold'>
                   {lowestPrice.toLocaleString()}원
                 </span>
-                <IconIndicator src={`/images/${vendorName}.png`} height={13} />
+                <IconIndicator
+                  src={`/images/${lowestPricePlace}.png`}
+                  height={13}
+                />
               </div>
               <Counter
                 pid={0}
