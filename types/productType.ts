@@ -12,11 +12,3 @@ export type ProductType = {
   productDescription: string;
   benefitDescription: string;
 };
-
-export type ProductCardsType = {
-  cards: ProductType[];
-};
-
-export type ProductSubscriptionsType = {
-  subscribes: ProductType[];
-};

@@ -56,7 +56,7 @@ function PaymentCard({
             </span>
           ) : null}
         </div>
-        {category !== 'SHOPPING' ? (
+        {paymentType === 'OFFLINE' ? (
           <UploadButton />
         ) : (
           <a

@@ -3,7 +3,7 @@ import { Category } from './table';
 // 소비 분석 탭
 export type CategoryExpensesType = {
   id: number;
-  category: Category;
+  categoryName: Category;
   amount: number;
 };
 

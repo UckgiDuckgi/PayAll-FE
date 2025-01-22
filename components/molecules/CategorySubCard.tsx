@@ -1,3 +1,5 @@
+import { CATEGORY } from '@/constants/category';
+import { Category } from '@/types';
 import Image from 'next/image';
 
 function CategorySubCard({
@@ -24,7 +26,8 @@ function CategorySubCard({
       />
       <div className='flex flex-col items-start justify-between'>
         <div className='text-[.625rem] flex items-end gap-1 text-grey font-bold'>
-          <span style={{ color: color }}>{category}</span>중 최고 소비
+          <span style={{ color: color }}>{CATEGORY[category as Category]}</span>
+          중 최고 소비
           <span className='text-[.875rem]'>{paymentName}</span>
         </div>
         <div className='flex items-center gap-1 text-[.625rem] text-grey font-bold'>
