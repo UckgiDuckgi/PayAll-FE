@@ -26,4 +26,6 @@ export const QUERY_KEYS: Record<string, string> = {
   PRODUCT_subscriptions: 'product-subscriptions',
 
   PRODUCT_RECEIPT: 'product-receipt',
+
+  RECOMMENDATIONS_PRODUCT: 'recommendations-product',
 };

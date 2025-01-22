@@ -9,7 +9,7 @@ export const LowestProductCard = ({
 }: {
   imageUrl: string;
   title: string;
-  discount: number;
+  discount: string;
   price: number;
 }) => {
   return (

@@ -12,3 +12,13 @@ export type ProductType = {
   productDescription: string;
   benefitDescription: string;
 };
+
+export type RecommendationsProductType = {
+  productId: number;
+  productName: string;
+  productImage: string;
+  price: number;
+  storeName: string;
+  link: string;
+  discountRate: number;
+};

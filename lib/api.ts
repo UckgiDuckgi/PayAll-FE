@@ -149,3 +149,7 @@ export const postReceipt = async ({
     productList,
   });
 };
+
+export const getRecommendationsProduct = async () => {
+  return await apiCall.get(BASE_URL + '/recommendations/products');
+};
