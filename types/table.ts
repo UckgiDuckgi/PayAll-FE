@@ -6,6 +6,7 @@ export type ApiResponse<T> = {
 };
 
 type Category =
+  | 'TOTAL'
   | 'SHOPPING'
   | 'EDUCATION'
   | 'LIVING'

@@ -7,7 +7,6 @@ import CategoryChart from '@/components/molecules/ui/CategoryChart';
 import { AccentText } from '@/components/ui/AccentText';
 import { CATEGORY } from '@/constants/category';
 import { COLORS } from '@/constants/color';
-import { MOCK_STAT } from '@/constants/mockdata';
 import { QUERY_KEYS } from '@/constants/queryKey';
 import { useGenericQuery } from '@/hooks/query/globalQuery';
 import { StatisticsType } from '@/types/statisticsType';
@@ -52,11 +51,14 @@ function StatisticsContent() {
     totalSpent,
     dateAverage,
     difference,
-    categoryExpenses,
+    categoryExpenses: categories,
     fixedExpenses,
   } = statisticsData.data;
 
   console.log(statisticsData);
+  const categoryExpenses = categories
+    ?.filter((c) => c.categoryName !== 'TOTAL')
+    .sort((a, b) => b.amount - a.amount);
   if (!category) {
     return (
       <div className='w-full mx-auto'>
@@ -115,21 +117,23 @@ function StatisticsContent() {
           <TitleLine title='카테고리 별 지출' />
 
           <ul className='w-full overflow-x-scroll flex space-x-4 px-2 pb-6 pt-1 scrollbar-hide snap-x'>
-            {categoryExpenses?.map(({ id, category, amount }) => (
-              <Link
-                href={`/statistics?category=${category}`}
-                key={id}
-                className='flex-shrink-0 snap-center'
-              >
-                <CategoryCarouselItem
-                  percent={+((amount / MOCK_STAT.total_spent) * 100).toFixed(0)}
-                  color={COLORS[id]}
-                  categoryName={CATEGORY[category as Category]}
-                  categoryIconName={category}
-                  amount={amount}
-                />
-              </Link>
-            ))}
+            {categoryExpenses
+              ?.filter((c) => c.categoryName !== 'TOTAL')
+              .map(({ id, categoryName, amount }, idx) => (
+                <Link
+                  href={`/statistics/${categoryName}`}
+                  key={id}
+                  className='flex-shrink-0 snap-center'
+                >
+                  <CategoryCarouselItem
+                    percent={+((amount / totalSpent) * 100).toFixed(0)}
+                    color={COLORS[idx]}
+                    categoryName={CATEGORY[categoryName as Category]}
+                    categoryIconName={categoryName}
+                    amount={amount}
+                  />
+                </Link>
+              ))}
           </ul>
 
           <BenefitCard />
