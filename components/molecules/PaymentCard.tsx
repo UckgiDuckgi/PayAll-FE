@@ -1,4 +1,4 @@
-import { AccountsPaymentsDetail } from '@/types/paymentType';
+import { AccountsPaymentsDetail } from '@/types';
 import { ChevronRight } from 'lucide-react';
 import { parseCategory, parsePaymentType } from '@/lib/utils';
 import UploadButton from './ui/UploadButton';

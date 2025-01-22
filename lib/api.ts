@@ -119,3 +119,11 @@ export const getProductCards = async () => {
 export const getProductSubscribs = async () => {
   return await apiCall.get(BASE_URL + '/product/subscribs');
 };
+
+export const getPaymentDetail = async ({
+  paymentId,
+}: {
+  paymentId: number;
+}) => {
+  return await apiCall.get(BASE_URL + '/accounts/payments/' + paymentId);
+};

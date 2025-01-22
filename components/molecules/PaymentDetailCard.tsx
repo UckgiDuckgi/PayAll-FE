@@ -2,6 +2,7 @@
 
 import { QUERY_KEYS } from '@/constants/queryKey';
 import { useGenericMutation } from '@/hooks/query/globalQuery';
+import { PaymentDetail } from '@/types';
 import { useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useState } from 'react';
@@ -14,13 +15,8 @@ function PaymentDetailCard({
   productName,
   price,
   lowestPrice,
-  vendorName,
-}: {
-  productName: string;
-  price: number;
-  lowestPrice: number;
-  vendorName: string;
-}) {
+  lowestPricePlace,
+}: PaymentDetail) {
   const queryClient = useQueryClient();
   const [quantity, setQuantity] = useState<number>(1);
   const { mutate } = useGenericMutation(
@@ -55,7 +51,10 @@ function PaymentDetailCard({
             같은 상품의 최저가
           </span>
           <div className='flex items-center justify-between gap-2'>
-            <IconIndicator src={`/images/${vendorName}.png`} height={13} />
+            <IconIndicator
+              src={`/images/${lowestPricePlace}.png`}
+              height={13}
+            />
             <span className='text-[.75rem] font-medium'>
               {lowestPrice.toLocaleString()}원
             </span>
@@ -73,7 +72,10 @@ function PaymentDetailCard({
                 <span className='text-white font-bold'>
                   {lowestPrice.toLocaleString()}원
                 </span>
-                <IconIndicator src={`/images/${vendorName}.png`} height={13} />
+                <IconIndicator
+                  src={`/images/${lowestPricePlace}.png`}
+                  height={13}
+                />
               </div>
               <Counter
                 pid={0}
