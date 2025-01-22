@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { QUERY_KEYS } from '@/constants/queryKey';
 import { useGenericMutation, useGenericQuery } from '@/hooks/query/globalQuery';
-import { Cart } from '@/types';
+import { ApiResponse, Cart } from '@/types';
 import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { deleteCart, getCart, updateCart } from '@/lib/api';
@@ -61,23 +61,25 @@ export default function CartPage() {
   const queryClient = useQueryClient();
   const { mutate } = useGenericMutation(
     [QUERY_KEYS.DELETE_CART],
-    (cartId: number) => deleteCart({ cartId }),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CART_LIST] });
-      },
-    }
+    (cartId: number) => deleteCart({ cartId })
   );
+
   const { mutate: updateCartMutate } = useGenericMutation(
     [QUERY_KEYS.UPDATE_CART],
-    (data: { cartId: number; quantity: number }) => updateCart(data)
+    (data: { cartId: number; quantity: number }) => updateCart(data),
+    {
+      onSuccess: () => {},
+    }
   );
 
   const [itemStates, setItemStates] = useState<Map<number, CartItemState>>(
     () => {
       const initialMap = new Map();
       cartList?.data?.forEach((item) => {
-        initialMap.set(item.productId, { isChecked: false, quantity: 1 });
+        initialMap.set(item.productId, {
+          isChecked: false,
+          quantity: item.quantity,
+        });
       });
       return initialMap;
     }
@@ -104,6 +106,17 @@ export default function CartPage() {
       return newMap;
     });
     updateCartMutate({ cartId: cartId, quantity: count });
+    queryClient.setQueryData(
+      [QUERY_KEYS.CART_LIST],
+      (oldData: ApiResponse<Cart[]>) => {
+        return {
+          ...oldData,
+          data: oldData?.data?.map((item) =>
+            item.cartId === cartId ? { ...item, quantity: count } : item
+          ),
+        };
+      }
+    );
   };
 
   const handleSelectAll = (checked: boolean) => {
@@ -188,7 +201,7 @@ export default function CartPage() {
           {cartList?.data?.map((item) => {
             const state = itemStates.get(item.productId) || {
               isChecked: false,
-              quantity: 1,
+              quantity: item.quantity,
             };
             return (
               <CartProductCard
