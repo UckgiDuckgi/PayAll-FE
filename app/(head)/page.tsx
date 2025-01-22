@@ -8,7 +8,11 @@ import { QUERY_KEYS } from '@/constants/queryKey';
 import { useGenericQuery } from '@/hooks/query/globalQuery';
 import { Triangle } from '@/public/icons/Triangle';
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from 'chart.js';
-import { getRecommendationsProduct, getStatisticsDiff } from '@/lib/api';
+import {
+  getLimit,
+  getRecommendationsProduct,
+  getStatisticsDiff,
+} from '@/lib/api';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -31,17 +35,16 @@ export default function Home() {
   const { resData: statisticsDiff, isLoading: statisticsDiffLoading } =
     useGenericQuery([QUERY_KEYS.STATISTICS_DIFF], () => getStatisticsDiff());
 
-  const MOCK_GOAL: Goal = {
-    limit_amount: 1500000,
-    spent_amount: 1300000,
-    saved_amount: 31010,
-    start_date: '2025-01-01',
-    end_date: '2025-01-31',
-  };
+  const { resData: limit, isLoading: limitLoading } = useGenericQuery(
+    [QUERY_KEYS.LIMIT],
+    () => getLimit()
+  );
 
   return (
     <>
-      {statisticsDiffLoading || recommendationsProductLoading ? (
+      {statisticsDiffLoading ||
+      recommendationsProductLoading ||
+      limitLoading ? (
         <div>Loading...</div>
       ) : (
         <div className='flex justify-center flex-col items-center w-full'>
@@ -90,10 +93,10 @@ export default function Home() {
           </div>
 
           <ProgressBar
-            spentAmount={MOCK_GOAL.spent_amount}
-            limitAmount={MOCK_GOAL.limit_amount}
-            start_date={MOCK_GOAL.start_date}
-            end_date={MOCK_GOAL.end_date}
+            spentAmount={limit?.data.spentAmount}
+            limitAmount={limit?.data.limitPrice}
+            start_date={limit?.data.startDate}
+            end_date={limit?.data.endDate}
           />
 
           <div className='flex flex-col mt-20 w-full'>
