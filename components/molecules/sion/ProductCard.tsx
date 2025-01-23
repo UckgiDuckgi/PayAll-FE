@@ -35,7 +35,7 @@ export const ProductCard = ({ searchResult }: { searchResult: Search }) => {
     mutate({
       productId: searchResult.pcode,
       productName: searchResult.productName,
-      image: searchResult.productImage,
+      productImage: searchResult.productImage,
       shopName: searchResult.storeList[seletedProduct].shopName,
       shopUrl: searchResult.storeList[seletedProduct].shopUrl,
       price: searchResult.storeList[seletedProduct].price,
