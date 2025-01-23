@@ -55,7 +55,7 @@ export default function AccountUnionCard({
         </div>
       </div>
       <div className='flex items-end justify-end h-full'>
-        <span className='font-bold relative before:content-[""] before:absolute before:top-0 before:left-[0.0625rem] before:w-4/5 before:border-t-2 before:border-white pt-[0.125rem]'>
+        <span className='font-semibold relative before:content-[""] before:absolute before:top-0 before:left-[0.0625rem] before:w-4/5 before:border-t-2 before:border-white pt-[0.125rem]'>
           PayAll
         </span>
       </div>

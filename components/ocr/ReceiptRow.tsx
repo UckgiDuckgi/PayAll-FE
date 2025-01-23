@@ -78,7 +78,14 @@ export const ReceiptRow = ({ item, index, onSave }: ReceiptRowProps) => {
             defaultValue={item.price}
             className='w-[80%] border rounded p-1'
             onBlur={(e) => {
-              if (e.target.value === '') e.target.value = '0';
+              if (e.target.value === '') {
+                e.target.value = '0';
+              } else {
+                const numericValue = Number(
+                  e.target.value.replace(/[^0-9]/g, '')
+                );
+                e.target.value = numericValue.toLocaleString();
+              }
             }}
           />
         ) : (

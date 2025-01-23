@@ -19,6 +19,7 @@ export default function PaymentDetailPage({
         paymentId: Number(params.paymentId),
       })
   );
+  console.log(paymentDetailRes);
   return (
     <>
       {isLoading || !paymentDetailRes ? (

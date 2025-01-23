@@ -26,7 +26,7 @@ export default function Accounts() {
       ) : (
         <div className='py-8 flex flex-col items-center justify-center'>
           <AccountUnionCard
-            username='김덕지'
+            username={accounts.data?.userName}
             formattedLastMonthDate={formattedLastMonthDate}
             totalBalance={accounts.data?.totalBalance}
             difference={accounts.data?.paymentDifference}

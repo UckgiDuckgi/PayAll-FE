@@ -6,6 +6,7 @@ import { useGenericMutation } from '@/hooks/query/globalQuery';
 import { CartBySearch, Search } from '@/types';
 import { useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useState } from 'react';
 import { postCartBySearch } from '@/lib/api';
 import { IconIndicator } from '../../ui/IconIndicator';
@@ -50,9 +51,11 @@ export const ProductCard = ({ searchResult }: { searchResult: Search }) => {
       <div className='flex gap-3'>
         <SquareImage src={searchResult.productImage} alt='Logo' size={120} />
         <div className='flex flex-col gap-1 w-7/12 text-left'>
-          <div className='text-white w-full text-xs font-medium'>
-            {searchResult.productName}
-          </div>
+          <Link href={searchResult.storeList[seletedProduct].shopUrl}>
+            <div className='text-white w-full text-xs font-medium'>
+              {searchResult.productName}
+            </div>
+          </Link>
           <div className='text-white w-full font-bold text-base flex gap-1 items-center'>
             {searchResult.storeList[seletedProduct].price.toLocaleString()}원
             <IconIndicator
