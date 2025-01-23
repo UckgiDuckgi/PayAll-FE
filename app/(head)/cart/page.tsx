@@ -3,26 +3,29 @@
 import DeliveryFeeProgress from '@/components/molecules/DeliveryFeeProgress';
 import CardSlide from '@/components/molecules/sion/CardSlide';
 import { CartProductCard } from '@/components/molecules/sion/CartProductCard';
+import { ToTalPriceBox } from '@/components/molecules/sion/ToTalPriceBox';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { QUERY_KEYS } from '@/constants/queryKey';
 import { useGenericMutation, useGenericQuery } from '@/hooks/query/globalQuery';
-import { ApiResponse, Cart, Purchase } from '@/types';
+import { shopCartAtom } from '@/stores/atom';
+import { ApiResponse, Cart, Purchase, shopCartItem } from '@/types';
 import { useQueryClient } from '@tanstack/react-query';
+import { useAtom } from 'jotai';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { deleteCart, getCart, postPurchase, updateCart } from '@/lib/api';
+import { useState, useEffect } from 'react';
+import {
+  deleteCart,
+  getCart,
+  getUserInfo,
+  postPurchase,
+  updateCart,
+} from '@/lib/api';
+import { parseURL } from '@/lib/utils';
 
 type CartItemState = {
   isChecked: boolean;
   quantity: number;
-};
-
-const USER_INFO = {
-  name: '문해빈',
-  phone: '010-7330-9731',
-  address:
-    '서울 성동구 뚝섬로1가길 17 (성수동1가, 얼리브홈 서울숲), 503호 [04779]',
 };
 
 const MOCK_CARDS = [
@@ -55,23 +58,34 @@ const MOCK_CARDS = [
 const DELIVERY_FEE = 2000;
 
 export default function CartPage() {
-  const { resData: cartList, isLoading } = useGenericQuery<Cart[]>(
-    [QUERY_KEYS.CART_LIST],
-    () => getCart()
+  const [, setShopCart] = useAtom(shopCartAtom);
+  const { resData: userInfo, isLoading: userInfoLoading } = useGenericQuery(
+    [QUERY_KEYS.USER_INFO],
+    () => getUserInfo()
   );
+
+  const { resData: cartList, isLoading: cartListLoading } = useGenericQuery<
+    Cart[]
+  >([QUERY_KEYS.CART_LIST], () => getCart());
   const queryClient = useQueryClient();
+
   const { mutate } = useGenericMutation(
     [QUERY_KEYS.DELETE_CART],
-    (cartId: number) => deleteCart({ cartId })
+    (cartId: number) => deleteCart({ cartId }),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: [QUERY_KEYS.CART_LIST],
+        });
+      },
+    }
   );
 
   const { mutate: updateCartMutate } = useGenericMutation(
     [QUERY_KEYS.UPDATE_CART],
-    (data: { cartId: number; quantity: number }) => updateCart(data),
-    {
-      onSuccess: () => {},
-    }
+    (data: { cartId: number; quantity: number }) => updateCart(data)
   );
+
   const { mutate: postPurchaseMutate } = useGenericMutation(
     [QUERY_KEYS.PURCHASE],
     (data: Purchase) => postPurchase(data),
@@ -85,17 +99,22 @@ export default function CartPage() {
   );
 
   const [itemStates, setItemStates] = useState<Map<number, CartItemState>>(
-    () => {
+    () => new Map()
+  );
+
+  useEffect(() => {
+    if (cartList?.data) {
       const initialMap = new Map();
-      cartList?.data?.forEach((item) => {
+      cartList.data.forEach((item) => {
         initialMap.set(item.productId, {
-          isChecked: false,
+          isChecked: true,
           quantity: item.quantity,
         });
       });
-      return initialMap;
+      setItemStates(initialMap);
     }
-  );
+  }, [cartList?.data]);
+
   const router = useRouter();
 
   const handleCheckChange = (productId: number, checked: boolean) => {
@@ -130,6 +149,7 @@ export default function CartPage() {
         };
       }
     );
+    console.log(queryClient.getQueryData([QUERY_KEYS.CART_LIST]));
   };
 
   const handleSelectAll = (checked: boolean) => {
@@ -148,14 +168,49 @@ export default function CartPage() {
   };
 
   const handlePurchase = () => {
+    const selectedItems =
+      cartList?.data?.filter(
+        (item) => itemStates.get(item.productId)?.isChecked
+      ) ?? [];
+
+    const groupedItems = selectedItems.reduce(
+      (acc, item) => {
+        const productId = parseURL(item.link, 'productId');
+        const itemId = parseURL(item.link, 'itemId');
+        const quantity = itemStates.get(item.productId)?.quantity || 1;
+
+        if (productId) {
+          const cartItem = {
+            productId,
+            ...(itemId && { itemId }),
+            quantity,
+          };
+          console.log(item.storeName);
+
+          if (item.storeName === 'Coupang') {
+            acc.coupang.push(cartItem);
+            console.log('push! coupang');
+          } else if (item.storeName === '11st') {
+            acc['11st'].push(cartItem);
+            console.log('push! 11st');
+          }
+        }
+        return acc;
+      },
+      {
+        coupang: [],
+        '11st': [],
+      } as shopCartItem
+    );
+
+    setShopCart(groupedItems);
+
     postPurchaseMutate({
-      purchaseList:
-        cartList?.data?.filter(
-          (item) => itemStates.get(item.productId)?.isChecked
-        ) ?? [],
+      purchaseList: selectedItems,
       totalPrice: calculateTotalPrice(),
       totalDiscountPrice: calculateTotalSavings(),
     });
+
     router.push('/');
   };
 
@@ -204,107 +259,100 @@ export default function CartPage() {
 
   return (
     <>
-      {isLoading ? (
-        <div>로딩중</div>
+      {userInfoLoading || cartListLoading ? (
+        <div className='flex justify-center items-center min-h-[calc(100vh-15rem)]'>
+          <div className='w-10 h-10 border-4 border-t-4 border-main border-t-transparent rounded-full animate-spin'></div>
+        </div>
       ) : (
         <div className='flex flex-col gap-[0.625rem] pb-24'>
-          <DeliveryFeeProgress fee={calculateTotalPrice()} totalFee={19900} />
-          <div className='flex items-center gap-2 my-3'>
-            <Checkbox
-              checked={cartList?.data?.every(
-                (item) => itemStates.get(item.productId)?.isChecked
-              )}
-              onCheckedChange={handleSelectAll}
-            />
-            <span className='text-white text-[0.6875rem]'>전체 선택</span>
-          </div>
-
-          {cartList?.data?.map((item) => {
-            const state = itemStates.get(item.productId) || {
-              isChecked: false,
-              quantity: item.quantity,
-            };
-            return (
-              <CartProductCard
-                key={item.productId}
-                cartId={item.cartId}
-                imageUrl={item.image}
-                productId={item.productId}
-                title={item.productName}
-                price={item.productPrice}
-                shop={item.storeName}
-                quantity={item.quantity}
-                isChecked={state.isChecked}
-                onCheckChange={handleCheckChange}
-                onQuantityChange={handleQuantityChange}
-                onDelete={handleDelete}
+          {(cartList?.data?.length ?? 0 > 0) ? (
+            <>
+              <DeliveryFeeProgress
+                fee={calculateTotalPrice()}
+                totalFee={19900}
               />
-            );
-          })}
-          <div className='w-[111.2%] bg-black -mx-[5.6%]'>
-            <div className='flex flex-col gap-2 w-[90%] mx-auto py-[0.875rem]'>
-              <div className='font-bold text-[0.9375rem]'>배송 정보</div>
-              <div className='text-grey  text-xs'>
-                <span className=''>{USER_INFO.name}</span>
-                <span className='mx-2'>·</span>
-                <span className=''>{USER_INFO.phone}</span>
+              <div className='flex items-center gap-2 my-3'>
+                <Checkbox
+                  checked={cartList?.data?.every(
+                    (item) => itemStates.get(item.productId)?.isChecked
+                  )}
+                  onCheckedChange={handleSelectAll}
+                />
+                <span className='text-white text-[0.6875rem]'>전체 선택</span>
               </div>
-              <div className='text-white text-xs'>{USER_INFO.address}</div>
-            </div>
-          </div>
-          <div className='w-[111.2%] bg-black -mx-[5.6%]'>
-            <div className='flex flex-col gap-2 w-[90%] mx-auto py-[0.875rem]'>
-              <div className='font-bold text-[0.9375rem]'>결제 수단</div>
-              <CardSlide cards={MOCK_CARDS} />
-            </div>
-          </div>
-          <div className='w-[111.2%] bg-black -mx-[5.6%]'>
-            <div className='flex flex-col gap-2 w-[90%] mx-auto py-[0.875rem]'>
-              <div className='font-bold text-[0.9375rem]'>결제 예상 금액</div>
-              <div className='flex flex-col gap-1 mt-1 border-b border-[#D9D9D9] pb-3'>
-                <div className='text-grey text-xs w-full flex justify-between '>
-                  <span>상품 금액</span>
-                  <span className=''>
-                    {calculateTotalPrice().toLocaleString()}원
-                  </span>
+
+              {cartList?.data?.map((item) => {
+                const state = itemStates.get(item.productId) || {
+                  isChecked: false,
+                  quantity: item.quantity,
+                };
+                return (
+                  <CartProductCard
+                    key={item.productId}
+                    cartId={item.cartId}
+                    imageUrl={item.image}
+                    productId={item.productId}
+                    title={item.productName}
+                    price={item.productPrice}
+                    shop={item.storeName}
+                    quantity={item.quantity}
+                    isChecked={state.isChecked}
+                    onCheckChange={handleCheckChange}
+                    onQuantityChange={handleQuantityChange}
+                    onDelete={handleDelete}
+                  />
+                );
+              })}
+              <div className='w-[111.2%] bg-black -mx-[5.6%]'>
+                <div className='flex flex-col gap-2 w-[90%] mx-auto py-[0.875rem]'>
+                  <div className='font-bold text-[0.9375rem]'>배송 정보</div>
+                  <div className='text-grey  text-xs'>
+                    <span className=''>{userInfo?.data.name}</span>
+                    <span className='mx-2'>·</span>
+                    <span className=''>{userInfo?.data.phone}</span>
+                  </div>
+                  <div className='text-white text-xs'>
+                    {userInfo?.data.address}
+                  </div>
                 </div>
-                <div className='text-grey text-xs w-full flex justify-between '>
-                  <span>배송비</span>
-                  <span className=''>
-                    {calculateDeliveryFee().toLocaleString()}원
-                  </span>
+              </div>
+              <div className='w-[111.2%] bg-black -mx-[5.6%]'>
+                <div className='flex flex-col gap-2 w-[90%] mx-auto py-[0.875rem]'>
+                  <div className='font-bold text-[0.9375rem]'>결제 수단</div>
+                  <CardSlide cards={MOCK_CARDS} />
                 </div>
               </div>
-              <div className='text-white font-bold flex justify-between w-full'>
-                <span className='text-sm'>총 금액</span>
-                <span className='text-main'>
-                  {(
-                    calculateTotalPrice() + calculateDeliveryFee()
-                  ).toLocaleString()}
-                  원
-                </span>
+              <div className='w-[111.2%] bg-black -mx-[5.6%]'>
+                <ToTalPriceBox
+                  totalPrice={calculateTotalPrice()}
+                  deliveryFee={calculateDeliveryFee()}
+                />
               </div>
+              <div className='fixed bottom-24 w-[90%] max-w-[460px] mx-auto items-center z-50'>
+                <Button
+                  className='w-full bg-[#6A8DFF] rounded-xl hover:none'
+                  onClick={handlePurchase}
+                >
+                  <div className='flex items-center justify-between'>
+                    <span className='text-main font-bold text-[0.9375rem] rounded-full bg-white w-6 h-6 flex items-center justify-center mr-1'>
+                      {calculateSelectedItemsCount()}
+                    </span>
+                    <span>
+                      {' 개 '}
+                      {(
+                        calculateTotalPrice() + calculateDeliveryFee()
+                      ).toLocaleString()}
+                      원 구매하기
+                    </span>
+                  </div>
+                </Button>
+              </div>
+            </>
+          ) : (
+            <div className='flex items-center justify-center min-h-[calc(100vh-15rem)]'>
+              장바구니가 비었습니다.
             </div>
-          </div>
-          <div className='fixed bottom-24 w-[90%] max-w-[460px] mx-auto items-center z-50'>
-            <Button
-              className='w-full bg-[#6A8DFF] rounded-xl hover:none'
-              onClick={handlePurchase}
-            >
-              <div className='flex items-center justify-between'>
-                <span className='text-main font-bold text-[0.9375rem] rounded-full bg-white w-6 h-6 flex items-center justify-center mr-1'>
-                  {calculateSelectedItemsCount()}
-                </span>
-                <span>
-                  {' 개 '}
-                  {(
-                    calculateTotalPrice() + calculateDeliveryFee()
-                  ).toLocaleString()}
-                  원 구매하기
-                </span>
-              </div>
-            </Button>
-          </div>
+          )}
         </div>
       )}
     </>

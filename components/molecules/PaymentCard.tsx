@@ -21,6 +21,7 @@ function PaymentCard({
     paymentTime,
     bankName,
     accountName,
+    shootNeed,
   } = paymentInfo;
 
   return (
@@ -56,15 +57,19 @@ function PaymentCard({
             </span>
           ) : null}
         </div>
-        {paymentType === 'OFFLINE' ? (
+        {shootNeed && paymentType === 'OFFLINE' ? (
           <UploadButton paymentId={paymentId} />
         ) : (
-          <a
-            href={`/accounts/payments/${paymentId}`}
-            className='text-[0.5rem] font-medium flex items-center gap-1'
-          >
-            상세보기 <ChevronRight className='w-2 h-2' />
-          </a>
+          <div>
+            {!shootNeed && (
+              <a
+                href={`/accounts/payments/${paymentId}`}
+                className='text-[0.5rem] font-medium flex items-center gap-1'
+              >
+                상세보기 <ChevronRight className='w-2 h-2' />
+              </a>
+            )}
+          </div>
         )}
       </div>
     </div>
