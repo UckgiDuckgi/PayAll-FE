@@ -20,7 +20,7 @@ export type CoupangRequest = {
 
 export type CoupangResponse = {
   success: boolean;
-  status: 'PINCODE' | 'PASSWORD' | 'COMPLETED' | 'ERROR';
+  status: 'C_PINCODE' | 'C_PASSWORD' | 'C_COMPLETED' | 'C_ERROR';
   result: string;
 };
 
@@ -70,9 +70,9 @@ export async function POST(request: Request) {
     if (isPincodePage) {
       return NextResponse.json({
         success: true,
-        status: 'PINCODE',
+        status: 'C_PINCODE',
         result: 'PINCODE',
-      });
+      } as CoupangResponse);
     }
 
     await coupangActions.setPincode(pincode);
@@ -87,9 +87,9 @@ export async function POST(request: Request) {
       const base64Image = `data:image/png;base64,${screenshotBuffer.toString('base64')}`;
       return NextResponse.json({
         success: true,
-        status: 'PASSWORD',
+        status: 'C_PASSWORD',
         result: base64Image,
-      });
+      } as CoupangResponse);
     }
 
     await coupangActions.setCoupangPayPassword(password);
@@ -98,15 +98,15 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       success: true,
-      status: 'COMPLETED',
+      status: 'C_COMPLETED',
       result: '',
-    });
+    } as CoupangResponse);
   } catch {
     console.log('error');
     return NextResponse.json({
       success: true,
-      status: 'ERROR',
+      status: 'C_ERROR',
       result: '',
-    });
+    } as CoupangResponse);
   }
 }

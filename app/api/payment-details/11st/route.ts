@@ -1,26 +1,5 @@
-import {
-  getCookiesWithKakaoAuth,
-  paymentClose,
-} from '@/actions/payment/paymentActions';
 import * as cheerio from 'cheerio';
 import { NextResponse } from 'next/server';
-
-const SIGNIN_URL = 'https://buy.11st.co.kr/my11st/order/OrderList.tmall';
-
-export async function GET() {
-  const cookies = await getCookiesWithKakaoAuth({
-    signInUrl: SIGNIN_URL,
-    buttonKakaoAuthSelector: '.c-sns__link.c-sns__link--kakao',
-    inputKakaoIdSelector: '#loginId--1',
-    inputKakaoPwSelector: '#password--2',
-    buttonKakaoSignInSelector: '.btn_g.highlight.submit',
-    id: process.env.KAKAO_ID ?? '',
-    pw: process.env.KAKAO_PW ?? '',
-  });
-
-  await paymentClose();
-  return NextResponse.json({ success: true, result: cookies });
-}
 
 export type OrderInfo = {
   orderId: string;
@@ -103,19 +82,15 @@ export async function POST(request: Request) {
     shDateTo,
   });
 
-  // GET Coupang Payment List
+  // GET 11st Payment List
   const response = await fetch(url + `?${param}`, {
     method: 'GET',
     headers: {
       Cookie: cookie,
     },
   });
-  // const data = (await response.json()) as CoupangPaymentResponse;
   const rawString = await response.text();
-  // console.log('🚀 ~ POST ~ rawString:', rawString);
   const data = parseOrderTable(rawString);
-  // writeFileSync('output.txt', rawString, 'utf8');
-  // console.log('🚀 ~ POST ~ data111:', data);
 
   return NextResponse.json({ success: true, result: data });
 }

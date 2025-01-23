@@ -1,6 +1,6 @@
 'use server';
 
-import { Item } from '@/app/api/coupang/route';
+import { Item } from '@/app/api/payments/coupang/route';
 import SessionBrowserManager, { MapKey } from '@/hooks/sessionBrowserManager';
 
 export type PlaywrightElementSelector = {
