@@ -81,7 +81,7 @@ export const postCart = async ({
   prevPrice,
   search = false,
 }: {
-  productId: number;
+  productId: number | null;
   quantity: number;
   prevPrice: number;
   search: boolean;

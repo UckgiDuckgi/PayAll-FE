@@ -23,7 +23,7 @@ function PaymentDetailCard({
   const { mutate } = useGenericMutation(
     [QUERY_KEYS.CART],
     (data: {
-      productId: number;
+      productId: number | null;
       quantity: number;
       prevPrice: number;
       search: boolean;
@@ -37,7 +37,7 @@ function PaymentDetailCard({
 
   const handleAddCart = () => {
     mutate({
-      productId: productId,
+      productId: productId ?? null,
       quantity: quantity,
       prevPrice: price,
       search: false,
@@ -69,9 +69,11 @@ function PaymentDetailCard({
             <span className='text-[.75rem] font-medium'>
               {lowestPrice.toLocaleString()}원
             </span>
-            <span className='text-[.625rem] text-main font-medium'>
-              {(((price - lowestPrice) / price) * 100).toFixed(0)}% 절약
-            </span>
+            {price > lowestPrice && (
+              <span className='text-[.625rem] text-main font-medium'>
+                {(((price - lowestPrice) / price) * 100).toFixed(1)}% 절약
+              </span>
+            )}
           </div>
         </div>
         <BottomSheet

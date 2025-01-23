@@ -33,7 +33,7 @@ export type AccountsPayments = {
 export type PaymentDetailList = {
   paymentDetailId: number;
   productName: string;
-  productId: number;
+  productId?: number;
   price: number;
   amount: number;
   lowestPrice: number;
