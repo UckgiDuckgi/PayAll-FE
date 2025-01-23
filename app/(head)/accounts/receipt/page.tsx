@@ -102,7 +102,7 @@ function ReceiptContent() {
       {isLoading ? (
         <Loading />
       ) : (
-        <div className='p-4'>
+        <div className='pt-4'>
           <div className='text-white mb-5'>
             <p>영수증을 확인하시고,</p>
             <p>잘못된 부분은 수정해주세요</p>
@@ -116,9 +116,9 @@ function ReceiptContent() {
             />
           </div>
 
-          <div className='fixed left-0 bottom-24 w-[90%] max-w-[460px] mx-auto'>
+          <div className='fixed bottom-24 w-full max-w-[460px] mx-auto'>
             <Button
-              className='w-full bg-[#6A8DFF] rounded-xl text-white hover:none'
+              className='w-full bg-[#6A8DFF] rounded-xl text-white hover:bg-[#6A8DFF]'
               onClick={clickHandler}
             >
               확인
