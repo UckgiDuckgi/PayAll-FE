@@ -13,12 +13,16 @@ import { Category } from '@/types/table';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 import Image from 'next/image';
+import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 import { getPaymentsCategory } from '@/lib/api';
 
 dayjs.locale('ko');
 
 function PaymentCategoryContent({ category }: { category: Category }) {
+  const searchParams = useSearchParams();
+  const date = searchParams.get('date');
+
   const { resData: paymentsData, isLoading } =
     useGenericQuery<AccountsPayments>(
       [QUERY_KEYS.STATISTICS_CATEGORY, category],
@@ -27,7 +31,15 @@ function PaymentCategoryContent({ category }: { category: Category }) {
 
   if (!paymentsData || !paymentsData.data || isLoading) return <>Loading...</>;
 
-  const { paymentCount, monthPaymentPrice, paymentList } = paymentsData.data;
+  const {
+    paymentCount,
+    monthPaymentPrice,
+    paymentList: payments,
+  } = paymentsData.data;
+
+  const paymentList = payments.filter(
+    ({ paymentDate }) => dayjs(paymentDate).format('YYYY-MM') === date
+  );
 
   return (
     <div className='space-y-6 mt-3'>
@@ -45,7 +57,7 @@ function PaymentCategoryContent({ category }: { category: Category }) {
             />
           </span>
           <span className='text-[.875rem] text-grey'>
-            이번달
+            {dayjs(date).format('YYYY년 M월')}
             <span
               className='ml-1 text-[1.0625rem] font-bold'
               style={{ color: COLORS[0] }}

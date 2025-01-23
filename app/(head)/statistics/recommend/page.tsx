@@ -82,27 +82,30 @@ function RecommendationContent() {
                 내 소비를 아는 구독 서비스
               </span>
             </div>
-            {subscribes.map(
-              ({ storeName, discountAmount, category, productId }, idx) => (
-                <div key={idx}>
-                  <SimpleBottomSheet
-                    isOpen={isOpen}
-                    onOpenChange={toggleDialog}
-                    content={<CardBenefitContent selectedIdx={selectedIdx} />}
-                  >
-                    <div onClick={() => setSelectedIdx(productId)}>
-                      <CategorySubCard
-                        img={'/images/subscribes/T.svg'}
-                        category={category}
-                        color={COLORS[idx]}
-                        paymentName={storeName}
-                        amount={discountAmount}
-                      />
-                    </div>
-                  </SimpleBottomSheet>
-                </div>
+            {
+              subscribes.map(
+                ({ storeName, discountAmount, category, productId }, idx) => (
+                  <div key={idx}>
+                    <SimpleBottomSheet
+                      isOpen={isOpen}
+                      onOpenChange={toggleDialog}
+                      content={<CardBenefitContent selectedIdx={selectedIdx} />}
+                    >
+                      <div onClick={() => setSelectedIdx(productId)}>
+                        <CategorySubCard
+                          img={'/images/subscribes/T.svg'}
+                          category={category}
+                          color={COLORS[idx]}
+                          paymentName={storeName}
+                          amount={discountAmount}
+                        />
+                      </div>
+                    </SimpleBottomSheet>
+                  </div>
+                )
               )
-            )}
+              // .slice((_s: any, idx: number) => idx < 3)
+            }
           </>
         ) : (
           <div className='my-12 flex flex-col items-center justify-center gap-3'>

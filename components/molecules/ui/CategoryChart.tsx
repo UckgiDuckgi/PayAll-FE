@@ -24,7 +24,7 @@ function CategoryChart({
       {
         data: categoryExpenses?.map((category) => category.amount),
         backgroundColor: COLORS.slice(0, categoryExpenses?.length ?? 0),
-        borderWidth: 1,
+        borderWidth: 0,
       },
     ],
   };

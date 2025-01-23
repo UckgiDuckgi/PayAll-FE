@@ -6,6 +6,7 @@ import { useGenericQuery } from '@/hooks/query/globalQuery';
 import { User } from '@/types';
 import { ChevronRight } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { getUserInfo } from '@/lib/api';
 
@@ -58,18 +59,18 @@ export default function MyPage() {
       <div className='py-[1.875rem] text-white pt-72'>
         <div className='space-y-3'>
           <Modal title='배송지' description={address} btnText='확인'>
-            <div className='flex justify-between items-center py-[0.34375rem]'>
+            <div className='cursor-pointer flex justify-between items-center py-[0.34375rem]'>
               <span>배송지 정보</span>
               <ChevronRight className='text-[#999999]' />
             </div>
           </Modal>
 
-          <div className='flex justify-between items-center py-[0.34375rem]'>
+          <div
+            className='cursor-pointer flex justify-between items-center py-[0.34375rem]'
+            onClick={toMembershipPage}
+          >
             <span>연동 계정 관리</span>
-            <ChevronRight
-              className='text-[#999999]'
-              onClick={toMembershipPage}
-            />
+            <ChevronRight className='text-[#999999]' />
           </div>
           <hr className='border-t-1 border-[#D9D9D9]' />
           <div className='flex justify-between items-center py-[0.34375rem]'>
@@ -82,6 +83,9 @@ export default function MyPage() {
           </div>
         </div>
       </div>
+      <p className='w-full text-right'>
+        <Link href='/login'>로그아웃</Link>
+      </p>
     </>
   );
 }

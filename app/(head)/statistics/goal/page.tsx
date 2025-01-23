@@ -26,7 +26,7 @@ const EmotionBox = ({
   const percent = ((spentAmount / limitPrice) * 100).toFixed(0);
   if (+percent < 80) {
     return (
-      <div className='w-fit flex items-center justify-center gap-3 py-2 px-5 rounded-[20px] bg-deepDarkGrey'>
+      <div className='mx-auto w-fit flex items-center justify-center gap-3 py-2 px-5 rounded-[20px] bg-deepDarkGrey'>
         <Image src='/icons/good.svg' alt='good' width={45} height={45} />
         <div className='text-[.875rem] text-[#AAAAAA] flex items-center justify-center gap-2'>
           <p>잘하고 있어요!</p>

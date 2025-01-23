@@ -13,12 +13,12 @@ function CardBenefitInfo({
   storeDetails,
 }: ProductDetailType & { index: number }) {
   return (
-    <div className='w-[90%] mx-auto flex flex-col items-start justify-start gap-5'>
+    <div className='w-full mx-auto flex flex-col items-start justify-start gap-5'>
       <div className='w-full'>
         <span className='w-full text-center text-[1.25rem] font-bold'>
           {productName}
         </span>
-        <div className='my-3 flex items-center justify-evenly gap-6 w-full'>
+        <div className='my-3 flex items-center justify-around gap-3 w-full'>
           <div className='w-[100px] sm:2-[120px] h-auto'>
             <Image
               src={cardImgs[index % 3]}

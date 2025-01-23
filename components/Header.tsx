@@ -22,9 +22,11 @@ const HeaderIcon = () => {
   const pathname = usePathname();
   const router = useRouter();
   console.log(pathname);
+
+  const homeRoute = ['/', '/search', '/accounts', '/statistics', '/mypage'];
   return (
     <>
-      {pathname === '/' ? (
+      {homeRoute.includes(pathname) ? (
         <Link href='/'>
           <Image src='/images/Logo.png' alt='logo' width={50} height={15} />
         </Link>
