@@ -35,7 +35,7 @@ export type PaymentDetailList = {
   productName: string;
   productId?: number;
   price: number;
-  amount: number;
+  quantity: number;
   lowestPrice: number;
   lowestPricePlace: string;
   link: string;

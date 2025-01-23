@@ -4,7 +4,9 @@ import { QUERY_KEYS } from '@/constants/queryKey';
 import { useGenericMutation } from '@/hooks/query/globalQuery';
 import { PaymentDetailList } from '@/types';
 import { useQueryClient } from '@tanstack/react-query';
+import { SquareArrowOutUpRight } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useState } from 'react';
 import { postCart } from '@/lib/api';
 import { Counter } from '../ui/Counter';
@@ -16,10 +18,12 @@ function PaymentDetailCard({
   productId,
   price,
   lowestPrice,
+  quantity,
+  link,
   lowestPricePlace,
 }: PaymentDetailList) {
   const queryClient = useQueryClient();
-  const [quantity, setQuantity] = useState<number>(1);
+  const [new_quantity, setNew_quantity] = useState<number>(1);
   const { mutate } = useGenericMutation(
     [QUERY_KEYS.CART],
     (data: {
@@ -38,29 +42,41 @@ function PaymentDetailCard({
   const handleAddCart = () => {
     mutate({
       productId: productId ?? null,
-      quantity: quantity,
+      quantity: new_quantity,
       prevPrice: price,
       search: false,
     });
   };
 
   const onCountChange = (pid: number, count: number) => {
-    setQuantity(count);
+    setNew_quantity(count);
   };
 
   return (
     <div className='w-full px-2 py-4 space-y-1 border-b-[1px] border-darkGrey'>
       <div className='flex items-center justify-between'>
-        <span className='text-[.875rem] font-medium'>{productName}</span>
+        <div className='flex gap-3'>
+          <span className='text-[.875rem] font-medium'>{productName}</span>
+          <span className='text-[.625rem] font-semibold bg-[#464646] px-2 rounded-full flex justify-center items-center'>
+            {quantity}개
+          </span>
+        </div>
         <span className='tracking-wider text-[.9375rem] font-bold'>
           -{price.toLocaleString()}원
         </span>
       </div>
       <div className='flex items-center justify-between px-3 py-1 rounded-[5px] bg-deepDarkGrey'>
         <div className='py-1 flex flex-col items-start justify-center gap-1'>
-          <span className='font-bold text-[.625rem] text-[#828282]'>
-            같은 상품의 최저가
-          </span>
+          <div className='flex gap-2 justify-center'>
+            <span className='font-bold text-[.625rem] text-[#828282]'>
+              같은 상품의 최저가
+            </span>
+            <Link href={link}>
+              <button className='flex items-center justify-center text-[#a1a0a0]'>
+                <SquareArrowOutUpRight size={12} />
+              </button>
+            </Link>
+          </div>
           <div className='flex items-center justify-between gap-2'>
             <IconIndicator
               src={`/images/${lowestPricePlace}.png`}
