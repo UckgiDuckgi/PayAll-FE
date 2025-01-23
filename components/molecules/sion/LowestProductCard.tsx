@@ -1,34 +1,40 @@
+'use client';
+
 import { AccentText } from '@/components/ui/AccentText';
 import { SquareImage } from '@/components/ui/SquareImage';
+import { RecommendationsProductType } from '@/types/productType';
+import { useRouter } from 'next/navigation';
 
-export const LowestProductCard = ({
-  imageUrl,
-  title,
-  discount,
-  price,
-}: {
-  imageUrl: string;
-  title: string;
-  discount: string;
-  price: number;
-}) => {
+export const LowestProductCard = (
+  recommendationsProduct: RecommendationsProductType
+) => {
+  const router = useRouter();
+
+  const handleClick = () => {
+    router.push(`/search?keyword=${recommendationsProduct.productName}`);
+  };
+
   return (
-    <div className='flex flex-col w-[8.5rem]'>
-      <SquareImage src={imageUrl} alt={title} size={136} />
+    <button className='flex flex-col w-[8.5rem]' onClick={handleClick}>
+      <SquareImage
+        src={recommendationsProduct.productImage}
+        alt={recommendationsProduct.productName}
+        size={136}
+      />
       <div className='text-[0.6875rem] text-white truncate w-full pt-1'>
-        {title}
+        {recommendationsProduct.productName}
       </div>
       <AccentText
         prefix={`지난 구매보다 `}
-        accent={`${discount}%`}
+        accent={`${recommendationsProduct.discountRate.toFixed(0)}%`}
         suffix='저렴'
         accentColor='text-red'
         accentSize='text-sm'
         className='text-xs font-bold text-right'
       />
       <div className='text-sm text-white font-bold text-right pr-2'>
-        {price.toLocaleString()}원
+        {recommendationsProduct.price.toLocaleString()}원
       </div>
-    </div>
+    </button>
   );
 };

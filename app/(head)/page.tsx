@@ -16,14 +16,6 @@ import {
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export type Goal = {
-  limit_amount: number;
-  spent_amount: number;
-  saved_amount: number;
-  start_date: string;
-  end_date: string;
-};
-
 export default function Home() {
   const {
     resData: recommendationsProduct,
