@@ -8,6 +8,8 @@ import { COLORS } from '@/constants/color';
 import { QUERY_KEYS } from '@/constants/queryKey';
 import { useGenericQuery } from '@/hooks/query/globalQuery';
 import { RecommendationsType } from '@/types/recommendationsType';
+import { ChevronRight } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { Suspense, useState } from 'react';
 import { getRecommendations } from '@/lib/api';
@@ -36,14 +38,31 @@ function RecommendationContent() {
   return (
     <div className='relative'>
       <div className='pt-3'>
-        <div className='flex items-center justify-between'>
-          <span className='text-[1.125rem] font-bold text-grey'>
-            내 소비를 아는 카드
-          </span>
-        </div>
-        <div className='h-[270px]'>
-          <CardCarousel cards={cards} />
-        </div>
+        {cards.length > 0 ? (
+          <>
+            <div className='flex items-center justify-between'>
+              <span className='text-[1.125rem] font-bold text-grey'>
+                내 소비를 아는 카드
+              </span>
+            </div>
+            <div className='h-[270px]'>
+              <CardCarousel cards={cards} />
+            </div>
+          </>
+        ) : (
+          <div className='my-12 flex flex-col items-center justify-center gap-3'>
+            <Image
+              src='/images/rainbowCard.svg'
+              alt='card'
+              width={150}
+              height={150}
+              className='float-animation'
+            />
+            <span className='tracking-wide text-[1rem] font-bold text-grey'>
+              사용자 소비내역에 맞는 카드를 찾지 못했어요
+            </span>
+          </div>
+        )}
       </div>
 
       <div className='relative w-full'>
@@ -54,32 +73,50 @@ function RecommendationContent() {
           >
             모든 카드와 혜택 보러가기
           </Link>
+          <ChevronRight className='text-white' width={20} height={20} />
         </div>
-        <div className='flex items-end justify-between pt-5'>
-          <span className='text-[1.125rem] font-bold text-grey'>
-            내 소비를 아는 구독 서비스
-          </span>
-        </div>
-        {subscribes.map(
-          ({ storeName, discountAmount, category, productId }, idx) => (
-            <div key={idx}>
-              <SimpleBottomSheet
-                isOpen={isOpen}
-                onOpenChange={toggleDialog}
-                content={<CardBenefitContent selectedIdx={selectedIdx} />}
-              >
-                <div onClick={() => setSelectedIdx(productId)}>
-                  <CategorySubCard
-                    img={'/images/subscribes/T.svg'}
-                    category={category}
-                    color={COLORS[idx]}
-                    paymentName={storeName}
-                    amount={discountAmount}
-                  />
-                </div>
-              </SimpleBottomSheet>
+        {subscribes.length > 0 ? (
+          <>
+            <div className='flex items-end justify-between pt-5'>
+              <span className='text-[1.125rem] font-bold text-grey'>
+                내 소비를 아는 구독 서비스
+              </span>
             </div>
-          )
+            {subscribes.map(
+              ({ storeName, discountAmount, category, productId }, idx) => (
+                <div key={idx}>
+                  <SimpleBottomSheet
+                    isOpen={isOpen}
+                    onOpenChange={toggleDialog}
+                    content={<CardBenefitContent selectedIdx={selectedIdx} />}
+                  >
+                    <div onClick={() => setSelectedIdx(productId)}>
+                      <CategorySubCard
+                        img={'/images/subscribes/T.svg'}
+                        category={category}
+                        color={COLORS[idx]}
+                        paymentName={storeName}
+                        amount={discountAmount}
+                      />
+                    </div>
+                  </SimpleBottomSheet>
+                </div>
+              )
+            )}
+          </>
+        ) : (
+          <div className='my-12 flex flex-col items-center justify-center gap-3'>
+            <Image
+              src='/images/rainbowBookmark.svg'
+              alt='bookmark'
+              width={150}
+              height={150}
+              className='float-animation'
+            />
+            <span className='tracking-wide text-[1rem] font-bold text-grey'>
+              사용자 소비내역에 맞는 구독을 찾지 못했어요
+            </span>
+          </div>
         )}
 
         <div className='flex items-center justify-end'>
@@ -89,6 +126,7 @@ function RecommendationContent() {
           >
             모든 구독과 혜택 보러가기
           </Link>
+          <ChevronRight className='text-white' width={20} height={20} />
         </div>
       </div>
     </div>
