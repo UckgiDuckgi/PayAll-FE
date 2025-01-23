@@ -1,6 +1,6 @@
 import { API_ROUTE } from '@/constants/route';
 import apiCall from '@/hooks/useFetch';
-import { Cart, Category, Purchase, User } from '@/types';
+import { Cart, CartBySearch, Category, Purchase, User } from '@/types';
 import { PlatformDetailType } from '@/types/authType';
 
 const BASE_URL = API_ROUTE.api;
@@ -79,11 +79,24 @@ export const postCart = async ({
   productId,
   quantity = 1,
   prevPrice,
-}: Partial<Cart>) => {
+  search = false,
+}: {
+  productId: number;
+  quantity: number;
+  prevPrice: number;
+  search: boolean;
+}) => {
   return await apiCall.post(BASE_URL + '/cart', {
     productId,
     quantity,
     prevPrice,
+    search,
+  });
+};
+
+export const postCartBySearch = async (cart: CartBySearch) => {
+  return await apiCall.post(BASE_URL + '/cart', {
+    ...cart,
   });
 };
 

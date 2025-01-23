@@ -28,3 +28,14 @@ export type shopCartItem = {
   coupang: CartItem[];
   '11st': CartItem[];
 };
+export type CartBySearch = {
+  productId: number;
+  productName: string;
+  image: string;
+  shopName: string;
+  shopUrl: string;
+  price: number;
+  quantity: number;
+  prevPrice: number;
+  search: boolean;
+};

@@ -3,11 +3,11 @@
 import { Counter } from '@/components/ui/Counter';
 import { QUERY_KEYS } from '@/constants/queryKey';
 import { useGenericMutation } from '@/hooks/query/globalQuery';
-import { Search } from '@/types';
+import { Cart, CartBySearch, Search } from '@/types';
 import { useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useState } from 'react';
-import { postCart } from '@/lib/api';
+import { postCartBySearch } from '@/lib/api';
 import { IconIndicator } from '../../ui/IconIndicator';
 import { SquareImage } from '../../ui/SquareImage';
 import BottomSheet from '../ui/BottomSheet';
@@ -18,9 +18,8 @@ export const ProductCard = ({ searchResult }: { searchResult: Search }) => {
   const [quantity, setQuantity] = useState<number>(1);
   const queryClient = useQueryClient();
   const { mutate } = useGenericMutation(
-    [QUERY_KEYS.CART],
-    (data: { productId: number; quantity: number; prevPrice: number }) =>
-      postCart(data),
+    [QUERY_KEYS.CART_BY_SEARCH],
+    (data: CartBySearch) => postCartBySearch(data),
     {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CART_LIST] });
@@ -35,8 +34,14 @@ export const ProductCard = ({ searchResult }: { searchResult: Search }) => {
   const handleAddCart = () => {
     mutate({
       productId: searchResult.pcode,
+      productName: searchResult.productName,
+      image: searchResult.productImage,
+      shopName: searchResult.storeList[seletedProduct].shopName,
+      shopUrl: searchResult.storeList[seletedProduct].shopUrl,
+      price: searchResult.storeList[seletedProduct].price,
       quantity: quantity,
       prevPrice: searchResult.storeList[seletedProduct].price,
+      search: true,
     });
   };
 

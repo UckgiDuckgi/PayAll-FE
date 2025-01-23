@@ -11,6 +11,7 @@ export const QUERY_KEYS: Record<string, string> = {
   SEARCH: 'search',
   CART: 'cart',
   CART_LIST: 'cart-list',
+  CART_BY_SEARCH: 'cart-by-search',
   DELETE_CART: 'delete-cart',
   UPDATE_CART: 'update-cart',
   PURCHASE: 'purchase',
