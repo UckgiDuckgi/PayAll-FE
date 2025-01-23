@@ -8,6 +8,8 @@ import { QUERY_KEYS } from '@/constants/queryKey';
 import { useGenericQuery } from '@/hooks/query/globalQuery';
 import { Triangle } from '@/public/icons/Triangle';
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from 'chart.js';
+import Image from 'next/image';
+import Link from 'next/link';
 import {
   getLimit,
   getRecommendationsProduct,
@@ -32,6 +34,29 @@ export default function Home() {
     () => getLimit()
   );
 
+  const MOCK_PRODUCT = [
+    {
+      productId: 1026291,
+      productName: '농심 신라면 120g (5개)',
+      productImage:
+        'https://img.danawa.com/prod_img/500000/291/026/img/1026291_1.jpg?shrink=330:*&_v=20220906110726',
+      price: 3170,
+      storeName: 'Coupang',
+      link: 'https://www.coupang.com/vp/products/7958974?itemId=93553&vendorItemId=82652711027&src=1032034&spec=10305199&addtag=400&ctag=7958974&lptag=I93553&itime=20250121140659&pageType=PRODUCT&pageValue=7958974&wPcid=17374317606920554847266&wRef=prod.danawa.com&wTime=20250121140659&redirect=landing&mcid=12f152f169ce4e2b86bb041db3c283b5',
+      discountRate: 68.30000000000001,
+    },
+    {
+      productId: 2012426,
+      productName: '고려은단 비타민C 1000 600정 (1개)',
+      productImage:
+        'https://img.danawa.com/prod_img/500000/426/012/img/2012426_1.jpg?shrink=330:*&_v=20240827133727',
+      price: 39880,
+      storeName: '11st',
+      link: 'https://www.11st.co.kr/products/7588965357?service_id=estimatedn&utm_term=&utm_campaign=%B4%D9%B3%AA%BF%CDpc_%B0%A1%B0%DD%BA%F1%B1%B3%B1%E2%BA%BB&utm_source=%B4%D9%B3%AA%BF%CD_PC_PCS&utm_medium=%B0%A1%B0%DD%BA%F1%B1%B3',
+      discountRate: 92.024,
+    },
+  ];
+
   return (
     <>
       {statisticsDiffLoading ||
@@ -45,57 +70,109 @@ export default function Home() {
           <div className='my-8 flex flex-col gap-2 w-full'>
             <span className='text-[0.8125rem]'>
               <a className='text-lg font-bold border-l-[0.1875rem] pl-[0.5625rem] border-main'>
-                {statisticsDiff?.data.userName}
+                {statisticsDiff?.data?.userName ?? ''}
               </a>
               님
             </span>
             <AccentText
               prefix='연간'
               accent={Math.abs(
-                statisticsDiff?.data.yearlySavingAmount
+                statisticsDiff?.data?.yearlySavingAmount ?? 0
               ).toLocaleString()}
-              suffix='원 절약중'
+              suffix='원 절약중이에요.'
               accentColor='text-white'
               className='text-[0.8125rem]'
               accentSize='text-[1.375rem]'
             />
 
-            {statisticsDiff?.data.monthlyPaymentDifference < 0 ? (
-              <AccentText
-                prefix='지난달 대비'
-                accent={Math.abs(
-                  statisticsDiff?.data.monthlyPaymentDifference
-                ).toLocaleString()}
-                suffix='원 지출하셨습니다.'
-                icon={<Triangle color='#6A8DFF' />}
-                className='text-[0.8125rem]'
-                accentSize='text-[1.375rem]'
-              />
-            ) : (
-              <AccentText
-                prefix='지난달 대비'
-                accent={statisticsDiff?.data.monthlyPaymentDifference.toLocaleString()}
-                suffix='원 지출하셨습니다.'
-                icon={<Triangle className='rotate-180' color='#FF6A6A' />}
-                accentColor='text-red'
-                className='text-[0.8125rem]'
-                accentSize='text-[1.375rem]'
-              />
-            )}
+            <AccentText
+              prefix='지난달 대비'
+              accent={(
+                statisticsDiff?.data?.monthlyPaymentDifference ?? 0
+              )?.toLocaleString()}
+              suffix='원 지출했어요.'
+              icon={
+                (statisticsDiff?.data?.monthlyPaymentDifference ?? 0 > 0) ? (
+                  <Triangle className='rotate-180' color='#FF6F6F' />
+                ) : (
+                  <Triangle color='#6A8DFF' />
+                )
+              }
+              accentColor={
+                (statisticsDiff?.data?.monthlyPaymentDifference ?? 0 > 0)
+                  ? 'text-red'
+                  : 'text-main'
+              }
+              className='text-[0.8125rem]'
+              accentSize='text-[1.375rem]'
+            />
           </div>
 
-          <ProgressBar
-            spentAmount={limit?.data.spentAmount}
-            limitAmount={limit?.data.limitPrice}
-            start_date={limit?.data.startDate}
-            end_date={limit?.data.endDate}
-          />
+          <div className='w-full flex justify-between items-center gap-2'>
+            <span
+              className='w-full h-[1.5px]'
+              style={{
+                background: 'linear-gradient(-90deg, #D9D9D9 0%, #222 95%)',
+              }}
+            />
+            <span className='w-fit text-[1rem] font-bold whitespace-nowrap'>
+              이번달 소비 목표
+            </span>
+            <span
+              className='w-full h-[1.5px]'
+              style={{
+                background: 'linear-gradient(90deg, #D9D9D9 0%, #222 95%)',
+              }}
+            />
+          </div>
+          {limit?.data?.limitPrice ? (
+            <ProgressBar
+              spentAmount={limit?.data?.spentAmount ?? 0}
+              limitAmount={limit?.data?.limitPrice ?? 0}
+              start_date={limit?.data?.startDate ?? 0}
+              end_date={limit?.data?.endDate ?? 0}
+            />
+          ) : (
+            <Link
+              className='mt-5 w-full rounded-[20px] bg-deepDarkGrey h-24 px-4 py-2 flex items-center justify-around'
+              href='/statistics/goal'
+            >
+              <div>
+                <Image
+                  src='/images/flag.svg'
+                  alt='flag'
+                  width={65}
+                  height={65}
+                />
+              </div>
+              <div className='flex flex-col items-start justify-center gap-1'>
+                <span className='text-[.9375rem] font-bold tracking-wide'>
+                  등록된 소비목표가 없어요
+                </span>
+                <span className='text-[.625rem] tracking-wide'>
+                  PayAll로 소비습관을 만들어보세요
+                </span>
+              </div>
+            </Link>
+          )}
 
           <div className='flex flex-col mt-20 w-full'>
-            <span className='text-base font-bold text-grey mb-4'>
-              최근 지출 품목의 최저가 상품
-            </span>
-            <LowestProductList products={recommendationsProduct.data} />
+            {recommendationsProduct?.data &&
+            recommendationsProduct?.data.length > 0 ? (
+              <>
+                <span className='text-base font-bold text-grey mb-4'>
+                  최근 지출 품목의 최저가 상품
+                </span>
+                <LowestProductList products={recommendationsProduct?.data} />
+              </>
+            ) : (
+              <>
+                <span className='text-base font-bold text-grey mb-4'>
+                  실시간 추천 상품
+                </span>
+                <LowestProductList products={MOCK_PRODUCT} />
+              </>
+            )}
           </div>
         </div>
       )}

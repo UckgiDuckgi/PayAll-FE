@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { QUERY_KEYS } from '@/constants/queryKey';
 import { useGenericMutation } from '@/hooks/query/globalQuery';
+import { useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -22,16 +23,19 @@ function GoalRegisterContent() {
   const complete = searchParams.get('complete');
   const [goal, setGoal] = useState<string>(avgSpent?.toString() ?? '0');
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const { mutate } = useGenericMutation(
     [QUERY_KEYS.POST_LIMIT],
     (limitPrice: number) => postLimit({ limitPrice }),
     {
       onSuccess: (data) => {
-        if (data.code === 200)
+        if (data.code === 200) {
+          queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.LIMIT] });
           router.push(
             `/statistics/goal/register?avgSpent=${avgSpent}&complete=${true}`
           );
+        }
       },
     }
   );
@@ -101,7 +105,7 @@ function GoalRegisterContent() {
   }
 
   return (
-    <div className='w-full mx-auto z-50 flex flex-col justify-center items-center gap-10 pb-12'>
+    <div className='w-full mx-auto z-50 flex flex-col justify-center items-center gap-10 pb-12 pt-48 sm:pt-24'>
       <div className='mx-auto w-[150px] sm:w-[200px] h-auto'>
         <Image
           src='/images/glasses.svg'

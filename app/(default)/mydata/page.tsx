@@ -4,9 +4,9 @@ import { PayAllLogo } from '@/components/ui/PayAllLogo';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
+import { cn } from '@/lib/utils';
 
 function MyDataContent() {
   const searchParams = useSearchParams();
@@ -37,11 +37,15 @@ function MyDataContent() {
           <span className='rounded-full'>약관 동의하기</span>
         </Link>
         <div className='flex items-center justify-between'>
-          <Button className='w-[40%] bg-white text-deepDarkGrey  hover:bg-grey'>
-            <Link href='/'>홈으로</Link>
-          </Button>
-          <Button className='w-[55%] bg-main text-white hover:bg-[#476BE3]'>
-            <span onClick={handleTerms}>다음</span>
+          <Button
+            disabled={!complete}
+            className={cn(
+              'w-full text-white',
+              complete ? 'bg-main hover:bg-[#476BE3]' : 'bg-grey'
+            )}
+            onClick={handleTerms}
+          >
+            <span>연동하기</span>
           </Button>
         </div>
       </div>
