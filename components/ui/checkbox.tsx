@@ -18,7 +18,11 @@ const Checkbox = React.forwardRef<
     {...props}
   >
     <CheckboxPrimitive.Indicator
-      className={cn('flex items-center justify-center text-current')}
+      className={cn(
+        'flex items-center justify-center text-current transition-transform duration-200 ease-in-out',
+        'data-[state=unchecked]:scale-0', // 시작 상태
+        'data-[state=checked]:scale-100' // 체크 상태
+      )}
       forceMount
     >
       <Check className='h-4 w-4' />
