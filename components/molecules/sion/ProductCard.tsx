@@ -3,7 +3,7 @@
 import { Counter } from '@/components/ui/Counter';
 import { QUERY_KEYS } from '@/constants/queryKey';
 import { useGenericMutation } from '@/hooks/query/globalQuery';
-import { Cart, CartBySearch, Search } from '@/types';
+import { CartBySearch, Search } from '@/types';
 import { useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useState } from 'react';

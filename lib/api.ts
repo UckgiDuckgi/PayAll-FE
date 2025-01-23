@@ -1,6 +1,6 @@
 import { API_ROUTE } from '@/constants/route';
 import apiCall from '@/hooks/useFetch';
-import { Cart, CartBySearch, Category, Purchase, User } from '@/types';
+import { CartBySearch, Category, Purchase, User } from '@/types';
 import { PlatformDetailType } from '@/types/authType';
 
 const BASE_URL = API_ROUTE.api;
