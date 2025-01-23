@@ -9,6 +9,7 @@ export type AccountsPaymentsDetail = {
   paymentTime: string;
   bankName: string;
   accountName: string;
+  shootNeed: boolean;
 };
 
 export type AccountsPayment = {

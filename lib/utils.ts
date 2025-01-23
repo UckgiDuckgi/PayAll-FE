@@ -27,6 +27,16 @@ export const parsePaymentType = (paymentType: PaymentType) => {
   return '통합';
 };
 
+export const parseURL = (url: string, key: string) => {
+  if (key === 'productId') {
+    const match = url.match(/products\/(\d+)/);
+    return match ? match[1] : null;
+  } else if (key === 'itemId') {
+    const match = url.match(/vendorItemId=(\d+)/);
+    return match ? match[1] : null;
+  }
+};
+
 export const parseCategory = (category: Category) => {
   switch (category) {
     case 'SHOPPING':

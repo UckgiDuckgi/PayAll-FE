@@ -22,8 +22,12 @@ function PaymentDetailCard({
   const [quantity, setQuantity] = useState<number>(1);
   const { mutate } = useGenericMutation(
     [QUERY_KEYS.CART],
-    (data: { productId: number; quantity: number; prevPrice: number }) =>
-      postCart(data),
+    (data: {
+      productId: number;
+      quantity: number;
+      prevPrice: number;
+      search: boolean;
+    }) => postCart(data),
     {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CART_LIST] });
@@ -36,6 +40,7 @@ function PaymentDetailCard({
       productId: productId,
       quantity: quantity,
       prevPrice: price,
+      search: false,
     });
   };
 

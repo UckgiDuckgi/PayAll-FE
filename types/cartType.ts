@@ -17,3 +17,25 @@ export type Purchase = {
   totalPrice: number;
   totalDiscountPrice: number;
 };
+
+export type CartItem = {
+  productId: string;
+  itemId?: string;
+  quantity: number;
+};
+
+export type shopCartItem = {
+  coupang: CartItem[];
+  '11st': CartItem[];
+};
+export type CartBySearch = {
+  productId: number;
+  productName: string;
+  image: string;
+  shopName: string;
+  shopUrl: string;
+  price: number;
+  quantity: number;
+  prevPrice: number;
+  search: boolean;
+};

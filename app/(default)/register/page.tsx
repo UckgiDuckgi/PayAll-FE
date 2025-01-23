@@ -5,6 +5,17 @@ import { Button } from '@/components/ui/button';
 import { usePostSignUp } from '@/hooks/query/auth';
 import { FormEvent, useEffect, useState } from 'react';
 
+const formatPhoneNumber = (value: string) => {
+  const numbers = value.replace(/[^0-9]/g, '');
+  if (numbers.length <= 3) {
+    return numbers;
+  } else if (numbers.length <= 7) {
+    return `${numbers.slice(0, 3)}-${numbers.slice(3)}`;
+  } else {
+    return `${numbers.slice(0, 3)}-${numbers.slice(3, 7)}-${numbers.slice(7, 11)}`;
+  }
+};
+
 export default function RegisterPage() {
   const { mutate } = usePostSignUp();
 
@@ -17,6 +28,11 @@ export default function RegisterPage() {
   const [warningMessage, setWarningMessage] =
     useState('모든 항목을 입력해주세요');
 
+  const handlePhoneChange = (value: string) => {
+    const formattedNumber = formatPhoneNumber(value);
+    setPhone(formattedNumber);
+  };
+
   useEffect(() => {
     // 1. 빈 입력값 체크
     if (!id || !password || !passwordCheck || !name || !phone || !address) {
@@ -25,8 +41,8 @@ export default function RegisterPage() {
     }
 
     // 2. 비밀번호 길이 체크
-    if (password.length < 4 || password.length > 12) {
-      setWarningMessage('비밀번호는 4-12자리로 입력해주세요');
+    if (password.length < 6 || password.length > 12) {
+      setWarningMessage('비밀번호는 6-12자리로 입력해주세요');
       return;
     }
 
@@ -37,8 +53,8 @@ export default function RegisterPage() {
     }
 
     // 4. 전화번호 숫자 체크
-    if (!/^\d+$/.test(phone)) {
-      setWarningMessage('전화번호는 숫자만 입력해주세요');
+    if (!/^010-\d{4}-\d{4}$/.test(phone)) {
+      setWarningMessage('올바른 전화번호 형식이 아닙니다');
       return;
     }
 
@@ -52,14 +68,14 @@ export default function RegisterPage() {
   };
 
   return (
-    <div>
-      <form className='flex flex-col items-center gap-9 mt-21'>
+    <div className='pb-40'>
+      <form className='flex flex-col items-center gap-9 pt-16 w-full'>
         <LoginInput title='아이디' onChange={setId} />
         <LoginInput
           title='비밀번호'
           onChange={setPassword}
           type='password'
-          placeholder='4~12자 사이의 비밀번호를 입력해주세요'
+          placeholder='6~12자 사이의 비밀번호를 입력해주세요'
         />
         <LoginInput
           title='비밀번호 확인'
@@ -69,8 +85,9 @@ export default function RegisterPage() {
         <LoginInput title='이름' onChange={setName} />
         <LoginInput
           title='전화번호'
-          onChange={setPhone}
+          onChange={handlePhoneChange}
           type='tel'
+          value={phone}
           placeholder='숫자만 입력해주세요'
         />
         <LoginInput title='주소' onChange={setAddress} />
@@ -79,14 +96,16 @@ export default function RegisterPage() {
           {warningMessage && (
             <div className='text-red text-sm text-center'>{warningMessage}</div>
           )}
-          <Button
-            className='w-full bg-[#6A8DFF] rounded-xl text-white hover:none'
-            type='submit'
-            disabled={warningMessage !== ''}
-            onClick={registerSignUp}
-          >
-            확인
-          </Button>
+          <div className='w-[90%] max-w-[460px] mx-auto'>
+            <Button
+              className='w-full bg-[#6A8DFF] rounded-xl text-white hover:none'
+              type='submit'
+              disabled={warningMessage !== ''}
+              onClick={registerSignUp}
+            >
+              확인
+            </Button>
+          </div>
         </div>
       </form>
     </div>

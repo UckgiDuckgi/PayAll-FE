@@ -6,6 +6,7 @@ import { QUERY_KEYS } from '@/constants/queryKey';
 import { useGenericMutation } from '@/hooks/query/globalQuery';
 import { fileAtom } from '@/stores/atom';
 import { ReceiptList } from '@/types';
+import { useQueryClient } from '@tanstack/react-query';
 import { useAtom } from 'jotai';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -39,11 +40,15 @@ function ReceiptContent() {
   const [file] = useAtom(fileAtom);
   const [isLoading, setIsLoading] = useState(true);
   const paymentId = useSearchParams().get('paymentId');
+  const queryClient = useQueryClient();
   const { mutate } = useGenericMutation(
     [QUERY_KEYS.PRODUCT_RECEIPT],
     (receipt: ReceiptList) => postReceipt(receipt),
     {
       onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: [QUERY_KEYS.ACCOUNTS_DETAIL],
+        });
         router.back();
       },
     }
