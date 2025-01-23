@@ -1,5 +1,6 @@
 'use client';
 
+import Loading from '@/components/Loading';
 import CardBenefitContent from '@/components/molecules/CardBenefitContent';
 import { CardCarousel } from '@/components/molecules/CardCarousel';
 import CategorySubCard from '@/components/molecules/CategorySubCard';
@@ -26,7 +27,7 @@ function RecommendationContent() {
     RecommendationsType[]
   >([QUERY_KEYS.RECOMMENDATIONS], () => getRecommendations());
 
-  if (!recommendsData || !recommendsData.data || isLoading) return;
+  if (!recommendsData || !recommendsData.data || isLoading) return <Loading />;
 
   const cards = recommendsData.data.filter(
     ({ productType }) => productType === 'CARD'

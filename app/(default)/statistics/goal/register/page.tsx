@@ -105,14 +105,16 @@ function GoalRegisterContent() {
   }
 
   return (
-    <div className='w-full mx-auto z-50 flex flex-col justify-center items-center gap-10 pb-12 pt-48 sm:pt-24'>
-      <div className='mx-auto w-[150px] sm:w-[200px] h-auto'>
-        <Image
-          src='/images/glasses.svg'
-          alt='glasses'
-          width={200}
-          height={200}
-          className='float-animation'
+    <div className='relative h-[100dvh] mx-auto z-50 flex flex-col justify-center items-center gap-10 pb-12 pt-40 sm:pt-20'>
+      <div className='mx-auto w-[300px] sm:w-[350px] h-auto'>
+        <video
+          src='/images/complete.mp4'
+          width='350px'
+          height='250px'
+          autoPlay
+          loop
+          muted
+          playsInline
         />
       </div>
       <div className='flex flex-col gap-3 text-[1rem] font-semibold'>
@@ -122,7 +124,7 @@ function GoalRegisterContent() {
       <Link href='/statistics/goal' className='w-full'>
         <Button
           type='submit'
-          className='absolute bottom-8 w-[90%] max-w-[460px] bg-main hover:bg-[#476BE3]'
+          className='mx-auto absolute bottom-8 w-[90vw] ml-[5vw] max-w-[460px] bg-main hover:bg-[#476BE3]'
         >
           목표 달성하러 가기
         </Button>

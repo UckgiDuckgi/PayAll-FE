@@ -1,5 +1,6 @@
 'use client';
 
+import Loading from '@/components/Loading';
 import PaymentDetailCard from '@/components/molecules/PaymentDetailCard';
 import PaymentInfoCard from '@/components/molecules/sion/PaymentInfoCard';
 import { QUERY_KEYS } from '@/constants/queryKey';
@@ -23,7 +24,7 @@ export default function PaymentDetailPage({
   return (
     <>
       {isLoading || !paymentDetailRes ? (
-        <>Loading</>
+        <Loading />
       ) : (
         <div>
           <PaymentInfoCard paymentInfo={paymentDetailRes.data} />

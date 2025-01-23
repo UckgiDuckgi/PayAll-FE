@@ -1,5 +1,6 @@
 'use client';
 
+import Loading from '@/components/Loading';
 import PaymentCard from '@/components/molecules/PaymentCard';
 import { AccountDetailCard } from '@/components/molecules/sion/AccountDetailCard';
 import TitleBottomLine from '@/components/ui/TitleBottomLine';
@@ -29,7 +30,7 @@ export default function AccountDetail({
   return (
     <>
       {isLoading || !accountsDetail ? (
-        <>Loading</>
+        <Loading />
       ) : (
         <div className='overflow-y-scroll min-h-full'>
           <div className='mt-3'>

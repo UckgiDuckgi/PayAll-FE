@@ -1,6 +1,5 @@
 'use client';
 
-import { PayAllLogo } from '@/components/ui/PayAllLogo';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { motion, useScroll } from 'framer-motion';
@@ -202,8 +201,18 @@ function TermsContent() {
   }
 
   return (
-    <div className='h-[100dvh] flex flex-col items-center justify-center'>
-      <PayAllLogo width={200} height={120} />
+    <div className='relative mx-auto h-[100dvh] flex flex-col items-center justify-center'>
+      <div className='mx-auto w-[300px] sm:w-[350px] h-auto'>
+        <video
+          src='/images/complete.mp4'
+          width='350px'
+          height='250px'
+          autoPlay
+          loop
+          muted
+          playsInline
+        />
+      </div>
       <div className='space-y-3 text-center font-bold mt-10 text-[1rem]'>
         <p>마이데이터가 연동되었어요.</p>
         <p>더 많은 기능을 이용하러 가볼까요?</p>

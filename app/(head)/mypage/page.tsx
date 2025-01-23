@@ -1,5 +1,6 @@
 'use client';
 
+import Loading from '@/components/Loading';
 import { Modal } from '@/components/molecules/ui/Modal';
 import { QUERY_KEYS } from '@/constants/queryKey';
 import { useGenericQuery } from '@/hooks/query/globalQuery';
@@ -22,7 +23,7 @@ export default function MyPage() {
     router.push('/mypage/membership');
   };
 
-  if (!userData || !userData.data || isLoading) return <></>;
+  if (!userData || !userData.data || isLoading) return <Loading />;
 
   const { name, authId, phone, address } = userData.data;
 

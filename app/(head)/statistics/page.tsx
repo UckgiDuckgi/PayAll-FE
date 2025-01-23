@@ -1,5 +1,6 @@
 'use client';
 
+import Loading from '@/components/Loading';
 import CategoryCarouselItem from '@/components/molecules/CategoryCarouselItem';
 import FixedExpensesCard from '@/components/molecules/FixedExpensesCard';
 import { BenefitCard } from '@/components/molecules/sion/BenefitCard';
@@ -88,7 +89,7 @@ function StatisticsContent() {
     );
 
   if (!statisticsData || !statisticsData.data || isLoading) {
-    return <>Loading...</>;
+    return <Loading />;
   }
 
   const {
