@@ -1,6 +1,6 @@
 import { Providers } from '@/components/Provider';
 import type { Metadata } from 'next';
-import { pretendardFont } from './fonts';
+import { bmDohyeonFont, pretendardFont } from './fonts';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -17,7 +17,9 @@ export default function RootLayout({
   return (
     <html lang='ko'>
       <body>
-        <div className={`App ${pretendardFont.variable} font-sans`}>
+        <div
+          className={`App ${pretendardFont.variable} ${bmDohyeonFont.variable} font-sans`}
+        >
           <Providers>{children}</Providers>
         </div>
       </body>
