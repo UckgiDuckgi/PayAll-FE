@@ -1,5 +1,6 @@
 'use client';
 
+import Loading from '@/components/Loading';
 import ProgressBar from '@/components/molecules/GoalProgress';
 import { BenefitCard } from '@/components/molecules/sion/BenefitCard';
 import { AccentText } from '@/components/ui/AccentText';
@@ -8,6 +9,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Separator } from '@/components/ui/separator';
 import { QUERY_KEYS } from '@/constants/queryKey';
 import { useGenericMutation, useGenericQuery } from '@/hooks/query/globalQuery';
+import { useToast } from '@/hooks/use-toast';
 import { StatisticsLimitType } from '@/types/statisticsType';
 import { useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
@@ -15,6 +17,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Suspense, useState } from 'react';
 import { getLimit, postLimit } from '@/lib/api';
+import { showToast } from '@/lib/utils';
 
 const EmotionBox = ({
   spentAmount,
@@ -59,6 +62,7 @@ const EmotionBox = ({
 };
 
 function StatisticsGoalContent() {
+  const { toast } = useToast();
   const queryClient = useQueryClient();
   const [isChecked, setIsChecked] = useState(false);
   const toggleChecked = () => setIsChecked((prev) => !prev);
@@ -76,6 +80,7 @@ function StatisticsGoalContent() {
     {
       onSuccess: (data) => {
         if (data.code === 200) {
+          showToast(toast, '목표가 등록되었습니다.');
           queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.LIMIT] });
         }
       },
@@ -87,7 +92,7 @@ function StatisticsGoalContent() {
     mutate(lastMonthLimit);
   };
 
-  if (!goalData || !goalData.data || isLoading) return <></>;
+  if (!goalData || !goalData.data || isLoading) return <Loading />;
 
   const {
     limitPrice,
@@ -201,19 +206,22 @@ function StatisticsGoalContent() {
         <span>목표를 설정하러 갈까요?</span>
       </div>
       {lastMonthLimit && (
-        <div className='w-[90%] max-w-[512px] flex items-center justify-start gap-2 absolute bottom-40'>
-          <Checkbox
-            className='rounded-full'
-            checked={isChecked}
-            onClick={toggleChecked}
-          />
+        <div
+          className='w-[90%] max-w-[512px] flex items-center justify-start gap-2 absolute bottom-40'
+          onClick={toggleChecked}
+        >
+          <Checkbox className='rounded-full' checked={isChecked} />
           <span className='text-[.875rem] font-light'>
             지난달 목표와 동일하게 설정하기
           </span>
         </div>
       )}
       <Link
-        href={`/statistics/goal/register?avgSpent=${averageSpent}`}
+        href={
+          isChecked
+            ? '/statistics/goal'
+            : `/statistics/goal/register?avgSpent=${averageSpent}`
+        }
         className='absolute bottom-24 w-[90%] max-w-[460px]'
       >
         <Button type='submit' className='w-full bg-main hover:bg-[#476BE3]'>

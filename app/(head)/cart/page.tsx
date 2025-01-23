@@ -1,5 +1,6 @@
 'use client';
 
+import Loading from '@/components/Loading';
 import DeliveryFeeProgress from '@/components/molecules/DeliveryFeeProgress';
 import CardSlide from '@/components/molecules/sion/CardSlide';
 import { CartProductCard } from '@/components/molecules/sion/CartProductCard';
@@ -12,8 +13,9 @@ import { shopCartAtom } from '@/stores/atom';
 import { ApiResponse, Cart, Purchase, shopCartItem } from '@/types';
 import { useQueryClient } from '@tanstack/react-query';
 import { useAtom } from 'jotai';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
   deleteCart,
   getCart,
@@ -260,9 +262,7 @@ export default function CartPage() {
   return (
     <>
       {userInfoLoading || cartListLoading ? (
-        <div className='flex justify-center items-center min-h-[calc(100vh-15rem)]'>
-          <div className='w-10 h-10 border-4 border-t-4 border-main border-t-transparent rounded-full animate-spin'></div>
-        </div>
+        <Loading />
       ) : (
         <div className='flex flex-col gap-[0.625rem] pb-24'>
           {(cartList?.data?.length ?? 0 > 0) ? (
@@ -349,8 +349,19 @@ export default function CartPage() {
               </div>
             </>
           ) : (
-            <div className='flex items-center justify-center min-h-[calc(100vh-15rem)]'>
-              장바구니가 비었습니다.
+            <div className='flex flex-col gap-8 items-center justify-center min-h-[calc(100vh-15rem)]'>
+              <div className='mx-auto w-[150px] sm:w-[200px] h-auto'>
+                <Image
+                  src='/images/bucket.svg'
+                  alt='documentList'
+                  width={200}
+                  height={200}
+                  className='float-animation'
+                />
+              </div>
+              <div className='text-[1.25rem] font-bold'>
+                장바구니가 비었습니다.
+              </div>
             </div>
           )}
         </div>

@@ -11,6 +11,7 @@ import { recentSearchAtom } from '@/stores/atom';
 import { Search } from '@/types';
 import { UseQueryOptions } from '@tanstack/react-query';
 import { useAtom } from 'jotai';
+import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 import { getRecommendationsProduct, getSearch } from '@/lib/api';
@@ -65,8 +66,19 @@ function SearchContent() {
             <>
               <div className='flex flex-col gap-4 overflow-auto h-[calc(100vh-14rem)]'>
                 {searchData?.data?.length === 0 ? (
-                  <div className='flex items-center justify-center h-full text-grey'>
-                    검색결과가 없습니다.
+                  <div className='flex flex-col gap-8 items-center justify-center min-h-[calc(100vh-15rem)]'>
+                    <div className='mx-auto w-[150px] sm:w-[200px] h-auto'>
+                      <Image
+                        src='/images/glasses.svg'
+                        alt='documentList'
+                        width={200}
+                        height={200}
+                        className='float-animation'
+                      />
+                    </div>
+                    <div className='text-[1.25rem] font-bold'>
+                      검색결과가 없습니다.
+                    </div>
                   </div>
                 ) : (
                   searchData?.data?.map((result, idx) => (

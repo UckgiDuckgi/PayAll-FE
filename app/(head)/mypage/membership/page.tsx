@@ -1,5 +1,6 @@
 'use client';
 
+import Loading from '@/components/Loading';
 import { LinkedAccount } from '@/components/molecules/LinkedMembership';
 import { QUERY_KEYS } from '@/constants/queryKey';
 import { useGenericQuery } from '@/hooks/query/globalQuery';
@@ -15,7 +16,7 @@ export default function Membership() {
     () => getPlatform()
   );
 
-  if (!platformData || !platformData.data || isLoading) return <></>;
+  if (!platformData || !platformData.data || isLoading) return <Loading />;
 
   const PLATFORM_LIST = ['COUPANG', '11ST', 'NAVER'];
 

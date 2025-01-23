@@ -1,5 +1,6 @@
 'use client';
 
+import Loading from '@/components/Loading';
 import CardBenefitContent from '@/components/molecules/CardBenefitContent';
 import CardInfoCard from '@/components/molecules/CardInfoCard';
 import SimpleBottomSheet from '@/components/molecules/ui/SimpleBottomSheet';
@@ -17,7 +18,8 @@ function RecommendationSubContent() {
     ProductType[]
   >([QUERY_KEYS.PRODUCT_SUBSCRIPTIONS], () => getProductSubscribs());
 
-  if (!subscriptionsData || !subscriptionsData.data || isLoading) return <></>;
+  if (!subscriptionsData || !subscriptionsData.data || isLoading)
+    return <Loading />;
 
   return (
     <div className='space-y-3 my-2'>
@@ -33,7 +35,7 @@ function RecommendationSubContent() {
               >
                 <div onClick={() => setSelectedIdx(productId)}>
                   <CardInfoCard
-                    cardImg='/images/cards/samsung.svg'
+                    cardImg={`/images/cards/${productId}.svg`}
                     cardName={productName}
                     cardDescription={productDescription}
                   />

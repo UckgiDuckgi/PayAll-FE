@@ -1,5 +1,6 @@
 'use client';
 
+import Loading from '@/components/Loading';
 import { AccountCardList } from '@/components/molecules/sion/AccountCardList';
 import AccountUnionCard from '@/components/molecules/sion/AccountUnionCard';
 import { QUERY_KEYS } from '@/constants/queryKey';
@@ -22,7 +23,7 @@ export default function Accounts() {
   return (
     <div>
       {isLoading || !accounts ? (
-        <>Loading</>
+        <Loading />
       ) : (
         <div className='py-8 flex flex-col items-center justify-center'>
           <AccountUnionCard

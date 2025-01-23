@@ -1,5 +1,6 @@
 'use client';
 
+import Loading from '@/components/Loading';
 import PaymentCard from '@/components/molecules/PaymentCard';
 import { BenefitCard } from '@/components/molecules/sion/BenefitCard';
 import TitleBottomLine from '@/components/ui/TitleBottomLine';
@@ -29,7 +30,7 @@ function PaymentCategoryContent({ category }: { category: Category }) {
       () => getPaymentsCategory({ category })
     );
 
-  if (!paymentsData || !paymentsData.data || isLoading) return <>Loading...</>;
+  if (!paymentsData || !paymentsData.data || isLoading) return <Loading />;
 
   const {
     paymentCount,

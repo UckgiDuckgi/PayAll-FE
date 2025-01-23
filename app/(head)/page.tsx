@@ -1,5 +1,6 @@
 'use client';
 
+import Loading from '@/components/Loading';
 import ProgressBar from '@/components/molecules/GoalProgress';
 import { LowestProductList } from '@/components/molecules/LowestProductList';
 import { AdCarousel } from '@/components/molecules/sion/AdCarousel';
@@ -62,7 +63,7 @@ export default function Home() {
       {statisticsDiffLoading ||
       recommendationsProductLoading ||
       limitLoading ? (
-        <div>Loading...</div>
+        <Loading />
       ) : (
         <div className='flex justify-center flex-col items-center w-full'>
           <AdCarousel />
