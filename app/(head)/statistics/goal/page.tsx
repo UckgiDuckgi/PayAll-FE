@@ -7,43 +7,85 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Separator } from '@/components/ui/separator';
 import { QUERY_KEYS } from '@/constants/queryKey';
-import { useGenericQuery } from '@/hooks/query/globalQuery';
+import { useGenericMutation, useGenericQuery } from '@/hooks/query/globalQuery';
 import { StatisticsLimitType } from '@/types/statisticsType';
+import { useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Suspense, useState } from 'react';
-import { getLimit } from '@/lib/api';
+import { getLimit, postLimit } from '@/lib/api';
 
-const EmotionBox = ({ differ }: { differ: number }) => {
-  if (differ < 0) {
+const EmotionBox = ({
+  spentAmount,
+  limitPrice,
+}: {
+  spentAmount: number;
+  limitPrice: number;
+}) => {
+  const percent = ((spentAmount / limitPrice) * 100).toFixed(0);
+  if (+percent < 80) {
     return (
       <div className='w-fit flex items-center justify-center gap-3 py-2 px-5 rounded-[20px] bg-deepDarkGrey'>
         <Image src='/icons/good.svg' alt='good' width={45} height={45} />
-        <span className='text-[.875rem] text-[#AAAAAA]'>
-          잘하고 있어요! 이대로만 해봐요
-        </span>
+        <div className='text-[.875rem] text-[#AAAAAA] flex items-center justify-center gap-2'>
+          <p>잘하고 있어요!</p>
+          <p>이대로만 해봐요</p>
+        </div>
       </div>
     );
   }
 
+  if (+percent < 100)
+    return (
+      <div className='mx-auto w-fit flex items-center justify-center gap-3 py-2 px-8 rounded-[20px] bg-deepDarkGrey'>
+        <Image src='/icons/bad.svg' alt='bad' width={40} height={40} />
+        <div className='text-[.875rem] text-[#AAAAAA] flex items-center justify-center gap-2'>
+          <p>위험해요!</p>
+          <p>목표를 위해 힘내봐요</p>
+        </div>
+      </div>
+    );
+
   return (
-    <div className='mx-auto w-fit flex items-center justify-center gap-3 py-2 px-8 rounded-[20px] bg-deepDarkGrey'>
+    <div className='mx-auto w-fit flex items-center justify-center gap-3 py-4 px-8 rounded-[20px] bg-deepDarkGrey'>
       <Image src='/icons/bad.svg' alt='bad' width={40} height={40} />
-      <span className='text-[.875rem] text-[#AAAAAA]'>
-        위험해요! 목표를 위해 힘내봐요
-      </span>
+      <div className='text-[.875rem] text-[#AAAAAA]'>
+        <p>목표를 넘었어요!</p>
+        <p>절약을 위해 노력해봐요</p>
+      </div>
     </div>
   );
 };
 
 function StatisticsGoalContent() {
+  const queryClient = useQueryClient();
+  const [isChecked, setIsChecked] = useState(false);
+  const toggleChecked = () => setIsChecked((prev) => !prev);
+
+  // 소비 목표 조회
   const { resData: goalData, isLoading } = useGenericQuery<StatisticsLimitType>(
     [QUERY_KEYS.LIMIT],
     () => getLimit()
   );
-  const [isChecked, setIsChecked] = useState(false);
-  const toggleChecked = () => setIsChecked((prev) => !prev);
+
+  // 소비 목표 등록
+  const { mutate } = useGenericMutation(
+    [QUERY_KEYS.POST_LIMIT],
+    (limitPrice: number) => postLimit({ limitPrice }),
+    {
+      onSuccess: (data) => {
+        if (data.code === 200) {
+          queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.LIMIT] });
+        }
+      },
+    }
+  );
+
+  const submitGoal = () => {
+    if (!lastMonthLimit) return;
+    mutate(lastMonthLimit);
+  };
 
   if (!goalData || !goalData.data || isLoading) return <></>;
 
@@ -57,10 +99,6 @@ function StatisticsGoalContent() {
     endDate,
   } = goalData.data;
 
-  const submitGoal = () => {
-    console.log('goal 셋팅');
-  };
-
   if (limitPrice) {
     const did = (spentAmount / +dayjs().get('D')).toFixed(0);
     const willDo = (
@@ -71,17 +109,20 @@ function StatisticsGoalContent() {
     const dayAvg = +did - (+willDo < 0 ? -1 * +willDo : +willDo);
     return (
       <>
-        <ProgressBar
-          spentAmount={spentAmount}
-          limitAmount={limitPrice}
-          start_date={startDate ?? dayjs().toString()}
-          end_date={endDate ?? dayjs().toString()}
-        />
+        <div className='space-y-2 my-4'>
+          <span className='text-[1.125rem] font-bold'>이번달 소비 목표</span>
+          <ProgressBar
+            spentAmount={spentAmount}
+            limitAmount={limitPrice}
+            start_date={startDate ?? dayjs().toString()}
+            end_date={endDate ?? dayjs().toString()}
+          />
+        </div>
 
         <div className='mt-16 space-y-6'>
-          <EmotionBox differ={+did - +willDo} />
+          <EmotionBox spentAmount={spentAmount} limitPrice={limitPrice} />
 
-          {dayAvg > 0 ? (
+          {dayAvg > 0 && spentAmount <= limitPrice ? (
             <>
               <div className='flex items-center w-full justify-between'>
                 <div className='w-full flex flex-col gap-2 items-center justify-center'>
@@ -141,7 +182,7 @@ function StatisticsGoalContent() {
   }
 
   return (
-    <div className='flex flex-col justify-center items-center gap-10 pt-20 sm:pt-8 w-[90%] mx-auto'>
+    <div className='flex flex-col justify-center items-center gap-10 pt-28 sm:pt-8 w-[90%] mx-auto'>
       <div className='mx-auto w-[150px] sm:w-[200px] h-auto'>
         <Image
           src='/images/glasses.svg'

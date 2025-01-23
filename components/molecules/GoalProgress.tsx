@@ -31,23 +31,6 @@ function ProgressBar({
 
   return (
     <div className='space-y-1 w-full'>
-      <div className='w-full flex justify-between items-center gap-2'>
-        <span
-          className='w-full h-[1.5px]'
-          style={{
-            background: 'linear-gradient(-90deg, #D9D9D9 0%, #222 95%)',
-          }}
-        />
-        <span className='w-fit text-[1rem] font-bold whitespace-nowrap'>
-          이번달 소비 목표
-        </span>
-        <span
-          className='w-full h-[1.5px]'
-          style={{
-            background: 'linear-gradient(90deg, #D9D9D9 0%, #222 95%)',
-          }}
-        />
-      </div>
       <div className='w-full flex items-center justify-between'>
         <div className='flex items-center gap-2'>
           <Image src='/icons/WonIcon.svg' alt='won' width={18} height={18} />

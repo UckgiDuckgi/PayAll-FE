@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { QUERY_KEYS } from '@/constants/queryKey';
 import { useGenericMutation } from '@/hooks/query/globalQuery';
 import { Platform } from '@/types';
+import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { postPlatform } from '@/lib/api';
@@ -16,6 +17,7 @@ export default function MembershipDetail({
   params: { shop: string };
 }) {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
 
@@ -25,7 +27,10 @@ export default function MembershipDetail({
       postPlatform({ platformName: params.shop as Platform, id, password }),
     {
       onSuccess: (data) => {
-        if (data.code === 200) router.push(`/mypage/membership`);
+        if (data.code === 200) {
+          router.push(`/mypage/membership`);
+          queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.PLATFORM] });
+        }
       },
     }
   );
