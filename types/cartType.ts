@@ -31,7 +31,7 @@ export type shopCartItem = {
 export type CartBySearch = {
   productId: number;
   productName: string;
-  image: string;
+  productImage: string;
   shopName: string;
   shopUrl: string;
   price: number;
