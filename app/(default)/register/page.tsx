@@ -96,7 +96,7 @@ export default function RegisterPage() {
           {warningMessage && (
             <div className='text-red text-sm text-center'>{warningMessage}</div>
           )}
-          <div className='w-[90%] max-w-[460px] mx-auto'>
+          <div className='w-[90%] max-w-[460px] mx-auto pt-2'>
             <Button
               className='w-full bg-[#6A8DFF] rounded-xl text-white hover:none'
               type='submit'
