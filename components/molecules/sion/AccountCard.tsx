@@ -28,10 +28,10 @@ export const AccountCard = ({
             </div>
           </div>
         </div>
-        <div className='text-right text-[0.5rem]'>
+        <div className='text-right text-[0.625rem]'>
           지출내역 상세보기<span className='ml-1'>{'>'}</span>
         </div>
-        <div className='absolute -top-5 right-10 overflow-hidden'>
+        <div className='absolute -top-7 right-10 overflow-hidden'>
           <IconIndicator
             src={`/images/banks/${account.bankName}.png`}
             height={180}
