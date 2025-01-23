@@ -69,10 +69,11 @@ function ProgressBar({
               +percent < 100 ? 'text-main' : 'text-red'
             )}
           >
-            {spentAmount.toLocaleString()}
+            {spentAmount.toLocaleString()}원
           </span>
-          <span className='text-[.75rem] text-white'>
-            {(limitAmount - spentAmount).toLocaleString()}
+          <span className='text-[.75rem]'>
+            {Math.abs(limitAmount - spentAmount).toLocaleString()}원{' '}
+            {limitAmount - spentAmount < 0 ? '초과' : '남음'}
           </span>
         </div>
       </div>

@@ -43,7 +43,7 @@ export default function Home() {
       price: 3170,
       storeName: 'Coupang',
       link: 'https://www.coupang.com/vp/products/7958974?itemId=93553&vendorItemId=82652711027&src=1032034&spec=10305199&addtag=400&ctag=7958974&lptag=I93553&itime=20250121140659&pageType=PRODUCT&pageValue=7958974&wPcid=17374317606920554847266&wRef=prod.danawa.com&wTime=20250121140659&redirect=landing&mcid=12f152f169ce4e2b86bb041db3c283b5',
-      discountRate: 68.30000000000001,
+      discountRate: 0,
     },
     {
       productId: 2012426,
@@ -53,7 +53,7 @@ export default function Home() {
       price: 39880,
       storeName: '11st',
       link: 'https://www.11st.co.kr/products/7588965357?service_id=estimatedn&utm_term=&utm_campaign=%B4%D9%B3%AA%BF%CDpc_%B0%A1%B0%DD%BA%F1%B1%B3%B1%E2%BA%BB&utm_source=%B4%D9%B3%AA%BF%CD_PC_PCS&utm_medium=%B0%A1%B0%DD%BA%F1%B1%B3',
-      discountRate: 92.024,
+      discountRate: 0,
     },
   ];
 
@@ -67,7 +67,7 @@ export default function Home() {
         <div className='flex justify-center flex-col items-center w-full'>
           <AdCarousel />
 
-          <div className='my-8 flex flex-col gap-2 w-full'>
+          <div className='my-6 flex flex-col gap-1 w-full'>
             <span className='text-[0.8125rem]'>
               <a className='text-lg font-bold border-l-[0.1875rem] pl-[0.5625rem] border-main'>
                 {statisticsDiff?.data?.userName ?? ''}
@@ -87,9 +87,11 @@ export default function Home() {
 
             <AccentText
               prefix='지난달 대비'
-              accent={(
-                statisticsDiff?.data?.monthlyPaymentDifference ?? 0
-              )?.toLocaleString()}
+              accent={
+                (
+                  Math.abs(statisticsDiff?.data?.monthlyPaymentDifference) ?? 0
+                )?.toLocaleString() ?? 0
+              }
               suffix='원 지출했어요.'
               icon={
                 (statisticsDiff?.data?.monthlyPaymentDifference ?? 0 > 0) ? (
@@ -156,7 +158,7 @@ export default function Home() {
             </Link>
           )}
 
-          <div className='flex flex-col mt-20 w-full'>
+          <div className='flex flex-col mt-16 w-full'>
             {recommendationsProduct?.data &&
             recommendationsProduct?.data.length > 0 ? (
               <>

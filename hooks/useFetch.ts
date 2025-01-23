@@ -62,6 +62,8 @@ const fetcher = async ({
 
   const response = await fetch(`${BASE_URL}${url}${queryString}`, options);
 
+  if (!response.ok) {
+  }
   if (response.status === 403) {
     await refreshAccessToken();
     const errorBody = await response.json();
@@ -71,13 +73,6 @@ const fetcher = async ({
 
   return response.json();
 };
-
-// const handleError = (errorBody: APIError) => {
-//   throw {
-//     code: errorBody?.code || 'Unknown Code',
-//     message: errorBody?.message || 'Unknown Error',
-//   };
-// };
 
 const refreshAccessToken = async (): Promise<null> => {
   try {

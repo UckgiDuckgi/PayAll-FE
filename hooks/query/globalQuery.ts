@@ -27,6 +27,11 @@ export const useGenericMutation = <TVariables>(
     mutationFn,
     onSuccess: (data: ApiResponse<null>) => {
       if (options?.onSuccess) {
+        if (400 <= data.code && data.code < 500) {
+          showToast(toast, data.message);
+        } else if (data.code >= 500) {
+          showToast(toast, '에러가 발생하였습니다.');
+        }
         options.onSuccess(data);
       }
     },

@@ -3,20 +3,41 @@
 import { QUERY_KEYS } from '@/constants/queryKey';
 import { useGenericQuery } from '@/hooks/query/globalQuery';
 import { Cart } from '@/types';
+import { ChevronRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 import { getCart } from '@/lib/api';
 
 function Header() {
   return (
-    <header className='z-50 mx-auto fixed top-0 w-full max-w-[512px] flex justify-between items-center pt-4 pb-3 px-8 bg-background'>
-      <Link href='/'>
-        <Image src='/images/Logo.png' alt='logo' width={50} height={15} />
-      </Link>
+    <header className='z-50 mx-auto fixed top-0 w-full max-w-[512px] flex justify-between items-center pt-4 pb-3 pr-8 pl-6 bg-background'>
+      <HeaderIcon />
       <HeaderCart />
     </header>
   );
 }
+
+const HeaderIcon = () => {
+  const pathname = usePathname();
+  const router = useRouter();
+  console.log(pathname);
+
+  const homeRoute = ['/', '/search', '/accounts', '/statistics', '/mypage'];
+  return (
+    <>
+      {homeRoute.includes(pathname) ? (
+        <Link href='/'>
+          <Image src='/images/Logo.png' alt='logo' width={50} height={15} />
+        </Link>
+      ) : (
+        <span onClick={() => router.back()}>
+          <ChevronRight className='text-[#ffffff] rotate-180' />
+        </span>
+      )}
+    </>
+  );
+};
 
 const HeaderCart = () => {
   const { resData: cartList } = useGenericQuery<Cart[]>(

@@ -169,14 +169,14 @@ function StatisticsContent() {
         <div className='mt-6 space-y-3'>
           <TitleLine title='카테고리 별 지출' />
 
-          <ul className='w-full overflow-x-scroll flex space-x-4 px-2 pb-6 pt-1 scrollbar-hide snap-x'>
+          <ul className='w-full overflow-x-scroll flex px-3 pb-6 pt-1 scrollbar-hide snap-x'>
             {categoryExpenses
               ?.filter((c) => c.categoryName !== 'TOTAL')
               .map(({ id, categoryName, amount }, idx) => (
                 <Link
-                  href={`/statistics/${categoryName}`}
+                  href={`/statistics/${categoryName}?date=${date}`}
                   key={id}
-                  className='flex-shrink-0 snap-center'
+                  className='flex-shrink-0 snap-center mr-3'
                 >
                   <CategoryCarouselItem
                     percent={+((amount / totalSpent) * 100).toFixed(0)}

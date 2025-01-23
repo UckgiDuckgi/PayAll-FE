@@ -30,8 +30,8 @@ export const usePostSignIn = () => {
     },
     {
       onSuccess: (data) => {
-        console.log(data.status);
-        showToast(toast, '로그인에 성공하였습니다!');
+        console.log(data.code);
+        if (data.code === 200) showToast(toast, '로그인에 성공하였습니다.');
         if (data.status === 'OK') router.push(ROUTE.mydata);
         if (data.status === 'Already Exists') router.push(ROUTE.home);
       },
