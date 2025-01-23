@@ -4,10 +4,12 @@ import { LowestProductList } from '@/components/molecules/LowestProductList';
 import { ProductCard } from '@/components/molecules/sion/ProductCard';
 import RecentSearchWords from '@/components/molecules/sion/RecentSearchWords';
 import { SearchInput } from '@/components/molecules/sion/SearchInput';
+import { SearchLoading } from '@/components/molecules/sion/SearchLoading';
 import { QUERY_KEYS } from '@/constants/queryKey';
 import { useGenericQuery } from '@/hooks/query/globalQuery';
 import { recentSearchAtom } from '@/stores/atom';
 import { Search } from '@/types';
+import { UseQueryOptions } from '@tanstack/react-query';
 import { useAtom } from 'jotai';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
@@ -21,7 +23,10 @@ function SearchContent() {
 
   const { resData: searchData, isLoading: searchLoading } = useGenericQuery<
     Search[]
-  >([QUERY_KEYS.SEARCH, keyword], () => getSearch({ keyword: keyword ?? '' }));
+  >([QUERY_KEYS.SEARCH, keyword], () => getSearch({ keyword: keyword ?? '' }), {
+    enabled: !!keyword && keyword !== '',
+  } as UseQueryOptions<Search[], Error, Search[], readonly unknown[]>);
+
   const {
     resData: recommendationsProduct,
     isLoading: recommendationsProductLoading,
@@ -30,8 +35,8 @@ function SearchContent() {
   );
 
   const handleSearch = (keyword: string) => {
-    if (!recentSearch.includes(keyword) && keyword !== '')
-      setRecentSearch([...recentSearch, keyword]);
+    if (keyword !== '')
+      setRecentSearch([keyword, ...recentSearch.filter((w) => w != keyword)]);
     router.push(`/search?keyword=${keyword}`);
   };
 
@@ -53,7 +58,7 @@ function SearchContent() {
         />
       </div>
       {searchLoading || recommendationsProductLoading ? (
-        <div className='pt-14'>Loading...</div>
+        <SearchLoading />
       ) : (
         <div className='pt-14'>
           {keyword ? (
@@ -92,7 +97,7 @@ function SearchContent() {
 
 export default function Page() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<SearchLoading />}>
       <SearchContent />
     </Suspense>
   );

@@ -82,7 +82,7 @@ export const ProductCard = ({ searchResult }: { searchResult: Search }) => {
             btnTexts={['취소', '담기']}
             onClick={handleAddCart}
           >
-            <div className='relative cursor-pointer flex items-end justify-end w-full'>
+            <div className='relative flex items-end justify-end w-full'>
               <button className='w-9 h-9 rounded-full bg-darkGrey flex items-center justify-center'>
                 <Image
                   src='/icons/HeaderCart.svg'
