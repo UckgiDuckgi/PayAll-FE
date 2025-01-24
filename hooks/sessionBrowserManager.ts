@@ -63,7 +63,7 @@ class SessionBrowserManager {
       }
 
       const browser = await chromium.launch({
-        executablePath: '/opt/google/chrome/chrome',
+        executablePath: process.env.CHROME_PATH,
         headless: false,
         args: [
           // '--window-position=-10000,-10000',
