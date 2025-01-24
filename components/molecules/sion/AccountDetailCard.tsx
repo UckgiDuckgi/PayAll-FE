@@ -11,7 +11,11 @@ export const AccountDetailCard = ({
     <div
       className='flex flex-col w-full rounded-xl p-5 items-start justify-around'
       style={{
-        background: `linear-gradient(60deg, ${COLORS_MAP[account.bankName ?? '통합'][0]} 0%, ${COLORS_MAP[account.bankName ?? '통합'][1]} 50%, ${COLORS_MAP[account.bankName ?? '통합'][0]} 100%)`,
+        background: `linear-gradient(60deg, ${
+          (COLORS_MAP[account.bankName] ?? COLORS_MAP['통합'])[0]
+        } 0%, ${(COLORS_MAP[account.bankName] ?? COLORS_MAP['통합'])[1]} 50%, ${
+          (COLORS_MAP[account.bankName] ?? COLORS_MAP['통합'])[0]
+        } 100%)`,
       }}
     >
       <div className=''>
