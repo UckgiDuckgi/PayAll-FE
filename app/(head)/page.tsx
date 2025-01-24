@@ -12,6 +12,7 @@ import { ArcElement, Chart as ChartJS, Legend, Tooltip } from 'chart.js';
 import { cubicBezier, motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import {
   getLimit,
   getRecommendationsProduct,
@@ -21,6 +22,7 @@ import {
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export default function Home() {
+  const router = useRouter();
   const {
     resData: recommendationsProduct,
     isLoading: recommendationsProductLoading,
@@ -150,7 +152,11 @@ export default function Home() {
             />
           </motion.div>
 
-          <motion.div variants={item} className='w-full'>
+          <motion.div
+            variants={item}
+            className='w-full'
+            onClick={() => router.push('/statistics/goal')}
+          >
             <div className='w-full flex justify-between items-center gap-2'>
               <span
                 className='w-full h-[1.5px]'

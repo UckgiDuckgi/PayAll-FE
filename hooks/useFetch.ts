@@ -62,12 +62,13 @@ const fetcher = async ({
 
   const response = await fetch(`${BASE_URL}${url}${queryString}`, options);
 
-  if (!response.ok) {
-  }
   if (response.status === 403) {
     await refreshAccessToken();
     const errorBody = await response.json();
 
+    console.log(errorBody);
+  } else if (response.status === 401) {
+    const errorBody = await response.json();
     console.log(errorBody);
   }
 
