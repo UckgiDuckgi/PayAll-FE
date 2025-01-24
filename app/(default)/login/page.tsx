@@ -4,7 +4,8 @@ import { LoginInput } from '@/components/molecules/sion/LoginInput';
 import { PayAllLogo } from '@/components/ui/PayAllLogo';
 import { Button } from '@/components/ui/button';
 import { usePostSignIn } from '@/hooks/query/auth';
-import { FormEvent, useEffect, useState } from 'react';
+import { useThrottle } from '@/hooks/useThrottle';
+import { FormEvent, useState } from 'react';
 
 export default function LoginPage() {
   const { mutate } = usePostSignIn();
@@ -12,12 +13,14 @@ export default function LoginPage() {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
 
-  useEffect(() => {}, [id, password]);
+  const throttledSignIn = useThrottle(() => {
+    if (id === '' || password === '') return;
+    mutate({ authId: id, password });
+  }, 2000);
 
   const registerSignIn = (e: FormEvent) => {
     e.preventDefault();
-    if (id === '' || password === '') return;
-    mutate({ authId: id, password });
+    throttledSignIn();
   };
   return (
     <form className='h-screen flex flex-col items-center justify-center'>
