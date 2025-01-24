@@ -52,8 +52,9 @@ export const usePostSignUp = () => {
       return postSignUp({ name, authId, password, phone, address });
     },
     {
-      onSuccess: () => {
-        showToast(toast, '회원가입에 성공하였습니다!');
+      onSuccess: (data) => {
+        if (data.code === 200) showToast(toast, '로그인에 성공하였습니다.');
+        else showToast(toast, data.message);
         router.push(ROUTE.signin);
       },
       onError: (error) => {

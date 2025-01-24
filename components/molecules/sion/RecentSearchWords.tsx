@@ -17,7 +17,7 @@ export default function RecentSearchWords({
           <a onClick={() => deleteWord('')}>모두 삭제</a>
         </div>
       </div>
-      <div className='overflow-x-scroll flex gap-[0.5625rem] mt-[0.875rem] pb-2'>
+      <div className='overflow-x-scroll scrollbar-hide flex gap-[0.5625rem] mt-[0.875rem] pb-2'>
         {recentSearch.length === 0 ? (
           <div className='text-grey text-center w-full'>
             최근 검색어가 없습니다.

@@ -59,7 +59,7 @@ function GoalRegisterContent() {
 
   if (!complete) {
     return (
-      <div className='w-[90%] mx-auto z-50 flex flex-col justify-start items-start gap-10'>
+      <div className='min-h-screen w-[90%] mx-auto z-50 flex flex-col justify-start items-start gap-10'>
         <form
           className='w-full flex flex-col items-start justify-start gap-4 pt-40 sm:pt-24'
           onSubmit={handleSubmit}
@@ -124,7 +124,7 @@ function GoalRegisterContent() {
       <Link href='/statistics/goal' className='w-full'>
         <Button
           type='submit'
-          className='mx-auto absolute bottom-8 w-[90vw] ml-[5vw] max-w-[460px] bg-main hover:bg-[#476BE3]'
+          className='mx-auto absolute bottom-8 w-[90vw] max-w-[460px] bg-main hover:bg-[#476BE3]'
         >
           목표 달성하러 가기
         </Button>

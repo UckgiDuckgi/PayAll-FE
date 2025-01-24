@@ -18,7 +18,7 @@ function CardBenefitInfo({
         <span className='w-full text-center text-[1.25rem] font-bold'>
           {productName}
         </span>
-        <div className='my-3 flex items-center justify-around gap-3 w-full'>
+        <div className=' my-3 flex items-center justify-around gap-3 w-full'>
           <div className='w-[100px] sm:2-[120px] h-auto'>
             <Image
               src={cardImgs[index % 3]}
@@ -28,10 +28,13 @@ function CardBenefitInfo({
             />
           </div>
           <div className='text-[.8125rem] text-grey font-medium '>
-            <p>
+            <p className='flex items-center justify-start gap-3 flex-wrap'>
               {benefitDescription?.split(',')?.map((des, idx) => (
-                <div key={idx}>
-                  <span className='text-[.875rem]'>
+                <div
+                  key={idx}
+                  className='flex items-center justify-start gap-1'
+                >
+                  <span className='text-[.875rem] whitespace-nowrap'>
                     {des.split('-')[0] ?? ''}
                   </span>
                   <span className='text-[.875rem] text-main font-bold'>

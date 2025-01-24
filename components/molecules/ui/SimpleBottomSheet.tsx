@@ -42,7 +42,7 @@ function SimpleBottomSheet({
         role='dialog' // 접근성 역할 추가
         aria-modal='true' // 모달 상태 명시
       >
-        <DrawerHeader>
+        <DrawerHeader className='w-full'>
           <DrawerTitle></DrawerTitle>
           <DrawerDescription></DrawerDescription>
           {content}
