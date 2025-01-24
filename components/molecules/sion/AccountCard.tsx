@@ -15,7 +15,9 @@ export const AccountCard = ({
       <div
         className='overflow-hidden relative flex flex-col w-full justify-between rounded-[15px] py-5 px-6 h-28'
         style={{
-          background: `linear-gradient(to right, ${COLORS_MAP[account.bankName][0]}, ${COLORS_MAP[account.bankName][1]})`,
+          background: `linear-gradient(to right, ${
+            (COLORS_MAP[account.bankName] ?? COLORS_MAP['통합'])[0]
+          }, ${(COLORS_MAP[account.bankName] ?? COLORS_MAP['통합'])[1]})`,
         }}
       >
         <div className='flex gap-2'>
