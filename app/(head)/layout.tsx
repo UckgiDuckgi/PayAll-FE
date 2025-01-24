@@ -6,7 +6,7 @@ function layout({ children }: { children: ReactNode }) {
   return (
     <>
       <Header />
-      <div className='w-[90%] mx-auto pt-16 pb-24'>{children}</div>
+      <div className='w-[90%] mx-auto pt-16 pb-24 min-h-screen'>{children}</div>
       <Nav />
     </>
   );

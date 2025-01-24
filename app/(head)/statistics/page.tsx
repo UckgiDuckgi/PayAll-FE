@@ -14,6 +14,7 @@ import { Triangle } from '@/public/icons/Triangle';
 import { StatisticsType } from '@/types/statisticsType';
 import { Category } from '@/types/table';
 import dayjs from 'dayjs';
+import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
@@ -105,20 +106,27 @@ function StatisticsContent() {
       <>
         <DateStepper date={date} />
 
-        <div className='flex flex-col justify-between items-center gap-10 pt-28 sm:pt-8 w-[90%] mx-auto'>
-          <div>
-            <div className='mx-auto w-[150px] sm:w-[200px] h-auto'>
-              <Image
-                src='/images/money.svg'
-                alt='money'
-                width={200}
-                height={200}
-                className='float-animation'
-              />
-            </div>
-            <div className='flex flex-col gap-1 text-[1.25rem] items-center font-semibold'>
-              <span>소비내역이 존재하지 않아요.</span>
-            </div>
+        <div className='flex flex-col justify-between items-center gap-5 pt-28 sm:pt-8 w-[90%] mx-auto'>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{
+              duration: 0.8,
+              delay: 0.5,
+              ease: [0, 0.71, 0.2, 1.01],
+            }}
+            className='box mx-auto w-[150px] sm:w-[200px] h-auto'
+          >
+            <Image
+              src='/images/money.svg'
+              alt='money'
+              width={200}
+              height={200}
+              className='float-animation'
+            />
+          </motion.div>
+          <div className='flex flex-col gap-1 text-[1.25rem] items-center font-semibold'>
+            <span>소비내역이 존재하지 않아요.</span>
           </div>
         </div>
       </>

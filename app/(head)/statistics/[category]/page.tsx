@@ -34,7 +34,7 @@ function PaymentCategoryContent({ category }: { category: Category }) {
 
   const {
     paymentCount,
-    monthPaymentPrice,
+    // monthPaymentPrice,
     paymentList: payments,
   } = paymentsData.data;
 
@@ -70,7 +70,10 @@ function PaymentCategoryContent({ category }: { category: Category }) {
         </div>
         <div className='space-x-2'>
           <span className='font-bold text-[1.5rem]'>
-            {monthPaymentPrice.toLocaleString()}원
+            {paymentList
+              ?.reduce((acc, payment) => acc + payment.dayPaymentPrice, 0)
+              ?.toLocaleString()}
+            원
           </span>
           <Badge className='bg-deepDarkGrey px-2 py-1 rounded-full text-grey font-medium text-[.6875rem]'>
             총 {paymentCount}회
