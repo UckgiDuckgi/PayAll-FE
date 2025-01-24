@@ -64,7 +64,7 @@ function SearchContent() {
         <div className='pt-14'>
           {keyword ? (
             <>
-              <div className='flex flex-col gap-4 overflow-auto h-[calc(100vh-14rem)]'>
+              <div className='flex flex-col gap-4 scrollbar-hide overflow-auto h-[calc(100vh-14rem)]'>
                 {searchData?.data?.length === 0 ? (
                   <div className='flex flex-col gap-8 items-center justify-center min-h-[calc(100vh-15rem)]'>
                     <div className='mx-auto w-[150px] sm:w-[200px] h-auto'>

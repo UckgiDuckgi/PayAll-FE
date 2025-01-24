@@ -22,7 +22,7 @@ function TabsContent() {
       : (url.findIndex((u) => currentPath.startsWith(u)) ?? 0);
 
   return (
-    <div className='z-50 bg-background fixed top-20 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center font-bold justify-center w-screen max-w-[512px] border-b-[1px] border-darkGrey'>
+    <div className='z-50 bg-background fixed top-[4.5rem] left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center font-bold justify-center w-screen max-w-[512px] border-b-[1px] border-darkGrey'>
       {tabs.map((tab: Tab, idx: number) => (
         <Link
           href={idx === 0 ? `${url[idx]}date=${date}` : url[idx]}

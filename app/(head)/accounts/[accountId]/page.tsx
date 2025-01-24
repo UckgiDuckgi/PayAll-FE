@@ -32,7 +32,7 @@ export default function AccountDetail({
       {isLoading || !accountsDetail ? (
         <Loading />
       ) : (
-        <div className='overflow-y-scroll min-h-full'>
+        <div className='overflow-y-scroll scrollbar-hide min-h-full'>
           <div className='mt-3'>
             <AccountDetailCard account={accountsDetail.data} />
           </div>

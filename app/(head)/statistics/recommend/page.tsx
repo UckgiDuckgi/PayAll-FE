@@ -9,6 +9,7 @@ import { COLORS } from '@/constants/color';
 import { QUERY_KEYS } from '@/constants/queryKey';
 import { useGenericQuery } from '@/hooks/query/globalQuery';
 import { RecommendationsType } from '@/types/recommendationsType';
+import { cubicBezier, motion } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -36,9 +37,44 @@ function RecommendationContent() {
     ({ productType }) => productType === 'SUBSCRIBE'
   );
 
+  const easeCustom = cubicBezier(0.4, 0, 0.2, 1);
+
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        ease: easeCustom,
+      },
+    },
+  };
+
+  const item = {
+    hidden: { opacity: 0, height: 0, scale: 0.8 },
+    show: {
+      opacity: [0, 0.5, 1],
+      height: 'auto',
+      scale: 1,
+      transition: {
+        duration: 0.7,
+        ease: easeCustom,
+        opacity: {
+          duration: 1,
+          ease: easeCustom,
+        },
+      },
+    },
+  };
+
   return (
-    <div className='relative'>
-      <div className='pt-3'>
+    <motion.div
+      variants={container}
+      initial='hidden'
+      animate='show'
+      className='relative'
+    >
+      <motion.div variants={item} className='w-full pt-3'>
         {cards.length > 0 ? (
           <>
             <div className='flex items-center justify-between'>
@@ -64,9 +100,9 @@ function RecommendationContent() {
             </span>
           </div>
         )}
-      </div>
+      </motion.div>
 
-      <div className='relative w-full'>
+      <motion.div variants={item} className='relative w-full'>
         <div className='flex items-center justify-end'>
           <Link
             href='/statistics/recommend/cards'
@@ -132,8 +168,8 @@ function RecommendationContent() {
           </Link>
           <ChevronRight className='text-white' width={20} height={20} />
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }
 

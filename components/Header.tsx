@@ -11,7 +11,7 @@ import { getCart } from '@/lib/api';
 
 function Header() {
   return (
-    <header className='z-50 mx-auto fixed top-0 w-full max-w-[512px] flex justify-between items-center pt-4 pb-3 pr-8 pl-6 bg-background'>
+    <header className='h-[3.75rem] z-50 mx-auto fixed top-0 w-full max-w-[512px] flex justify-between items-center pt-4 pb-3 pr-8 pl-6 bg-background'>
       <HeaderIcon />
       <HeaderCart />
     </header>
