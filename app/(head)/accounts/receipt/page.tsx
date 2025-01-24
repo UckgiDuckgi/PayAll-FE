@@ -116,7 +116,7 @@ function ReceiptContent() {
             />
           </div>
 
-          <div className='fixed bottom-24 w-full max-w-[460px] mx-auto'>
+          <div className='fixed bottom-24 w-[90%] max-w-[460px] mx-auto'>
             <Button
               className='w-full bg-[#6A8DFF] rounded-xl text-white hover:bg-[#6A8DFF]'
               onClick={clickHandler}
