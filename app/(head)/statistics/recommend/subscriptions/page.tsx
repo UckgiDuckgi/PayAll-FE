@@ -35,7 +35,7 @@ function RecommendationSubContent() {
               >
                 <div onClick={() => setSelectedIdx(productId)}>
                   <CardInfoCard
-                    cardImg={`/images/cards/${productId}.svg`}
+                    cardImg={`/images/subscribes/${productId}.png`}
                     cardName={productName}
                     cardDescription={productDescription}
                   />

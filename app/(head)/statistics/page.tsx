@@ -14,7 +14,7 @@ import { Triangle } from '@/public/icons/Triangle';
 import { StatisticsType } from '@/types/statisticsType';
 import { Category } from '@/types/table';
 import dayjs from 'dayjs';
-import { motion } from 'framer-motion';
+import { cubicBezier, motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
@@ -136,9 +136,45 @@ function StatisticsContent() {
   const categoryExpenses = categories
     ?.filter((c) => c.categoryName !== 'TOTAL')
     .sort((a, b) => b.amount - a.amount);
+
+  const easeCustom = cubicBezier(0.4, 0, 0.2, 1);
+
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        ease: easeCustom,
+      },
+    },
+  };
+
+  const item = {
+    hidden: { opacity: 0, height: 0, scale: 0.8 },
+    show: {
+      opacity: [0, 0.5, 1],
+      height: 'auto',
+      scale: 1,
+      transition: {
+        duration: 0.7,
+        ease: easeCustom,
+        opacity: {
+          duration: 1,
+          ease: easeCustom,
+        },
+      },
+    },
+  };
+
   if (!category) {
     return (
-      <div className='w-full mx-auto'>
+      <motion.div
+        className={`flex flex-col gap-4 w-full mx-auto`}
+        variants={container}
+        initial='hidden'
+        animate='show'
+      >
         <DateStepper date={date} />
 
         <CategoryChart
@@ -146,7 +182,10 @@ function StatisticsContent() {
           totalSpent={totalSpent}
         />
 
-        <div className='mt-6 space-y-2'>
+        <motion.div
+          variants={item}
+          className='w-full overflow-hidden mt-6 space-y-2'
+        >
           <AccentText
             prefix='하루 평균'
             accent={`${dateAverage?.toLocaleString() ?? 0}원`}
@@ -173,9 +212,12 @@ function StatisticsContent() {
             className='text-[0.8125rem]'
             accentSize='text-[1.375rem]'
           />
-        </div>
+        </motion.div>
 
-        <div className='mt-6 space-y-3'>
+        <motion.div
+          variants={item}
+          className='w-full overflow-hidden mt-6 space-y-3'
+        >
           <TitleLine title='카테고리 별 지출' />
 
           <ul className='w-full overflow-x-scroll flex px-3 pb-6 pt-1 scrollbar-hide snap-x'>
@@ -189,7 +231,7 @@ function StatisticsContent() {
                 >
                   <CategoryCarouselItem
                     percent={+((amount / totalSpent) * 100).toFixed(0)}
-                    color={COLORS[idx]}
+                    color={COLORS[idx % COLORS.length]}
                     categoryName={CATEGORY[categoryName as Category]}
                     categoryIconName={categoryName}
                     amount={amount}
@@ -199,9 +241,12 @@ function StatisticsContent() {
           </ul>
 
           <BenefitCard />
-        </div>
+        </motion.div>
 
-        <div className='mt-6 space-y-2'>
+        <motion.div
+          variants={item}
+          className='w-full overflow-hidden mt-6 space-y-2'
+        >
           <TitleLine title='고정 지출' />
 
           <ul className='space-y-3 my-5'>
@@ -222,8 +267,8 @@ function StatisticsContent() {
               </div>
             )}
           </ul>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     );
   }
 }

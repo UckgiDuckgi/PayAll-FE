@@ -35,7 +35,7 @@ function RecommendationCardsContent() {
               >
                 <div onClick={() => setSelectedIdx(productId)}>
                   <CardInfoCard
-                    cardImg={`/images/cards/${productId}.svg`}
+                    cardImg={`/images/cards/${productId}.png`}
                     cardName={productName}
                     cardDescription={productDescription}
                   />

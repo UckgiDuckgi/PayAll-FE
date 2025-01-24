@@ -13,6 +13,7 @@ import { useToast } from '@/hooks/use-toast';
 import { StatisticsLimitType } from '@/types/statisticsType';
 import { useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
+import { cubicBezier, motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Suspense, useState } from 'react';
@@ -30,7 +31,19 @@ const EmotionBox = ({
   if (+percent < 80) {
     return (
       <div className='mx-auto w-fit flex items-center justify-center gap-3 py-2 px-5 rounded-[20px] bg-deepDarkGrey'>
-        <Image src='/icons/good.svg' alt='good' width={45} height={45} />
+        <motion.div
+          animate={{
+            rotate: [0, -10, 10, 0],
+          }}
+          transition={{
+            duration: 2,
+            ease: 'easeInOut',
+            times: [0, 0.2, 0.8, 1],
+            repeat: Infinity,
+          }}
+        >
+          <Image src='/icons/good.svg' alt='good' width={45} height={45} />
+        </motion.div>
         <div className='text-[.875rem] text-[#AAAAAA] flex items-center justify-center gap-2'>
           <p>잘하고 있어요!</p>
           <p>이대로만 해봐요</p>
@@ -42,7 +55,19 @@ const EmotionBox = ({
   if (+percent < 100)
     return (
       <div className='mx-auto w-fit flex items-center justify-center gap-3 py-2 px-8 rounded-[20px] bg-deepDarkGrey'>
-        <Image src='/icons/bad.svg' alt='bad' width={40} height={40} />
+        <motion.div
+          animate={{
+            rotate: [0, -10, 10, 0],
+          }}
+          transition={{
+            duration: 2,
+            ease: 'easeInOut',
+            times: [0, 0.2, 0.8, 1],
+            repeat: Infinity,
+          }}
+        >
+          <Image src='/icons/bad.svg' alt='bad' width={40} height={40} />
+        </motion.div>
         <div className='text-[.875rem] text-[#AAAAAA] flex items-center justify-center gap-2'>
           <p>위험해요!</p>
           <p>목표를 위해 힘내봐요</p>
@@ -52,7 +77,19 @@ const EmotionBox = ({
 
   return (
     <div className='mx-auto w-fit flex items-center justify-center gap-3 py-4 px-8 rounded-[20px] bg-deepDarkGrey'>
-      <Image src='/icons/bad.svg' alt='bad' width={40} height={40} />
+      <motion.div
+        animate={{
+          rotate: [0, -10, 10, 0],
+        }}
+        transition={{
+          duration: 2,
+          ease: 'easeInOut',
+          times: [0, 0.2, 0.8, 1],
+          repeat: Infinity,
+        }}
+      >
+        <Image src='/icons/bad.svg' alt='bad' width={40} height={40} />
+      </motion.div>
       <div className='text-[.875rem] text-[#AAAAAA]'>
         <p>목표를 넘었어요!</p>
         <p>절약을 위해 노력해봐요</p>
@@ -66,6 +103,36 @@ function StatisticsGoalContent() {
   const queryClient = useQueryClient();
   const [isChecked, setIsChecked] = useState(false);
   const toggleChecked = () => setIsChecked((prev) => !prev);
+
+  const easeCustom = cubicBezier(0.4, 0, 0.2, 1);
+
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        ease: easeCustom,
+      },
+    },
+  };
+
+  const item = {
+    hidden: { opacity: 0, height: 0, scale: 0.8 },
+    show: {
+      opacity: [0, 0.5, 1],
+      height: 'auto',
+      scale: 1,
+      transition: {
+        duration: 0.7,
+        ease: easeCustom,
+        opacity: {
+          duration: 1,
+          ease: easeCustom,
+        },
+      },
+    },
+  };
 
   // 소비 목표 조회
   const { resData: goalData, isLoading } = useGenericQuery<StatisticsLimitType>(
@@ -113,8 +180,13 @@ function StatisticsGoalContent() {
 
     const dayAvg = +did - (+willDo < 0 ? -1 * +willDo : +willDo);
     return (
-      <>
-        <div className='space-y-2 my-4'>
+      <motion.div
+        variants={container}
+        initial='hidden'
+        animate='show'
+        className={`flex flex-col gap-4 w-full mx-auto`}
+      >
+        <motion.div variants={item} className='w-full space-y-2 my-4'>
           <span className='text-[1.125rem] font-bold'>이번달 소비 목표</span>
           <ProgressBar
             spentAmount={spentAmount}
@@ -122,13 +194,15 @@ function StatisticsGoalContent() {
             start_date={startDate ?? dayjs().toString()}
             end_date={endDate ?? dayjs().toString()}
           />
-        </div>
+        </motion.div>
 
         <div className='mt-16 space-y-6'>
-          <EmotionBox spentAmount={spentAmount} limitPrice={limitPrice} />
+          <motion.div variants={item} className='w-full'>
+            <EmotionBox spentAmount={spentAmount} limitPrice={limitPrice} />
+          </motion.div>
 
           {spentAmount <= limitPrice ? (
-            <>
+            <motion.div variants={item} className='w-full'>
               <div className='flex items-center w-full justify-between'>
                 <div className='w-full flex flex-col gap-2 items-center justify-center'>
                   <span className='text-grey font-bold text-[.75rem]'>
@@ -163,28 +237,35 @@ function StatisticsGoalContent() {
                   />
                 </div>
               )}
-            </>
+            </motion.div>
           ) : null}
 
-          <Separator className='w-full bg-darkGrey' />
+          <motion.div variants={item} className='w-full'>
+            <Separator className='w-full bg-darkGrey' />
 
-          <div className='flex items-center justify-between'>
-            <div className='flex items-center justify-center gap-2'>
-              <Image src='/images/Logo.png' alt='logo' width={61} height={30} />
-              <span className='text-[1.125rem]'>로 절약한 금액</span>
+            <div className='flex items-center justify-between mt-5'>
+              <div className='flex items-center justify-center gap-2'>
+                <Image
+                  src='/images/Logo.png'
+                  alt='logo'
+                  width={61}
+                  height={30}
+                />
+                <span className='text-[1.125rem]'>로 절약한 금액</span>
+              </div>
+              <span className='font-bold'>
+                {(savedAmount ?? 0).toLocaleString()}원
+              </span>
             </div>
-            <span className='font-bold'>
-              {(savedAmount ?? 0).toLocaleString()}원
+
+            <span className='text-[.75rem] text-darkGrey pb-5'>
+              PayAll 이용으로 혜택받은 금액이에요
             </span>
-          </div>
 
-          <span className='text-[.75rem] text-darkGrey'>
-            PayAll 이용으로 혜택받은 금액이에요
-          </span>
-
-          <BenefitCard />
+            <BenefitCard />
+          </motion.div>
         </div>
-      </>
+      </motion.div>
     );
   }
 
