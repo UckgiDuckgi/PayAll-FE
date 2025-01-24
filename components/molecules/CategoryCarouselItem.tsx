@@ -14,7 +14,7 @@ function CategoryCarouselItem({
   amount: number;
 }) {
   return (
-    <div className='box-border w-[6.25rem] h-[4.5625rem] relative flex flex-col items-center justify-center'>
+    <div className='min-w-[6.25rem] box-border h-[4.5625rem] relative flex flex-col items-center justify-center mr-2'>
       <span
         className='box-border z-10 flex items-center justify-center absolute top-0 w-[2.375rem] h-[2.375rem] rounded-full'
         style={{ background: color }}
@@ -26,15 +26,15 @@ function CategoryCarouselItem({
           height={18}
         />
       </span>
-      <div className='box-border w-fit absolute top-[1.18925rem] flex flex-col items-centerspace-y-1 py-2 px-4 pt-6 rounded-[20px] bg-deepDarkGrey whitespace-nowrap'>
+      <div className='min-w-[7rem] box-border w-fit absolute top-[1.18925rem] flex flex-col items-centerspace-y-1 py-2 px-4 pt-6 rounded-[20px] bg-deepDarkGrey whitespace-nowrap'>
         <span className='space-x-1 text-center text-[#A5A5A5] text-[.8125rem] font-bold'>
           <span>{categoryName}</span>
           <span className='text-[.6875rem]' style={{ color: color }}>
             {percent}%
           </span>
         </span>
-        <span className='tracking-wide text-[.9325rem] font-bold'>
-          {amount.toLocaleString()}원
+        <span className='mx-auto tracking-wide text-[.9325rem] font-bold'>
+          {amount?.toLocaleString() ?? 0}원
         </span>
       </div>
     </div>

@@ -1,17 +1,33 @@
 'use client';
 
-import { PayAllLogo } from '@/components/ui/PayAllLogo';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { motion, useScroll } from 'framer-motion';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
-import { Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Suspense, useState } from 'react';
 
 function TermsContent() {
+  const router = useRouter();
   const { scrollYProgress } = useScroll();
   const searchParams = useSearchParams();
   const complete = searchParams.get('complete');
+  const [isChecked, setIsChecked] = useState(false);
+
+  const handleAgree = () => {
+    if (!isChecked) {
+      window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: 'smooth',
+      });
+
+      setTimeout(() => {
+        setIsChecked(true);
+      }, 500);
+    } else {
+      router.push(`/mydata?complete=${true}`);
+    }
+  };
 
   if (!complete) {
     return (
@@ -162,33 +178,51 @@ function TermsContent() {
               정보 전송 시 암호화 기술을 사용하며, 데이터 접근 권한은
               최소화됩니다.
             </span>
-            <div className='flex items-center justify-start gap-3 my-3'>
-              <Checkbox />
+            <div
+              onClick={() => setIsChecked((prev) => !prev)}
+              className='flex items-center justify-start gap-3 mt-3 mb-12'
+            >
+              <Checkbox checked={isChecked} />
               <label htmlFor='agree' className='text-[.75rem]'>
                 본인은 하나은행 마이데이터를 활용한 서비스 제공을 위해 개인정보
                 수집·이용에 동의합니다.
               </label>
             </div>
           </div>
-          <Button className='w-full bg-main hover:bg-[#476BE3]'>
-            <Link href={`/mydata?complete=${true}`}>동의</Link>
-          </Button>
+        </div>
+        <div
+          className='w-[90%] fixed bottom-3 max-w-[460px]'
+          onClick={handleAgree} // 버튼 클릭 시 동작 설정
+        >
+          <Button className='w-full bg-main hover:bg-[#476BE3]'>동의</Button>
         </div>
       </>
     );
   }
 
   return (
-    <div className='h-[100dvh] flex flex-col items-center justify-center'>
-      <PayAllLogo width={200} height={120} />
+    <div className='relative mx-auto h-[100dvh] flex flex-col items-center justify-center'>
+      <div className='mx-auto w-[300px] sm:w-[350px] h-auto'>
+        <video
+          src='/images/complete.mp4'
+          width='350px'
+          height='250px'
+          autoPlay
+          loop
+          muted
+          playsInline
+        />
+      </div>
       <div className='space-y-3 text-center font-bold mt-10 text-[1rem]'>
         <p>마이데이터가 연동되었어요.</p>
         <p>더 많은 기능을 이용하러 가볼까요?</p>
       </div>
       <div className='fixed bottom-8 w-[90%] max-w-[460px]'>
-        <Button className='w-full bg-main text-white hover:bg-[#476BE3]'>
-          <Link href='/'>확인</Link>
-        </Button>
+        <Link href='/' className='w-full'>
+          <Button className='w-full bg-main text-white hover:bg-[#476BE3]'>
+            확인
+          </Button>
+        </Link>
       </div>
     </div>
   );

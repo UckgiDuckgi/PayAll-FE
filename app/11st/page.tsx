@@ -1,12 +1,13 @@
 'use client';
 
-import { Item } from '@/app/api/coupang/route';
+import { Item } from '@/app/api/payments/coupang/route';
 import { PaymentInputForm } from '@/components/11st/paymentInputForm';
 import ReCaptchaInputForm from '@/components/11st/reCaptchaInputForm';
 import PincodeInputForm from '@/components/coupang/pincodeInputForm';
 import { Button } from '@/components/ui/button';
+import { API_ROUTE } from '@/constants/route';
 import { useState } from 'react';
-import { ElevenStreetResponse } from '../api/11st/route';
+import { ElevenStreetResponse } from '../api/payments/11st/route';
 
 export type OnClick = ({
   itemList,
@@ -44,7 +45,7 @@ export default function ElevenStreet() {
   }) => {
     try {
       setIsLoading(true);
-      const response = await fetch('/api/11st', {
+      const response = await fetch(API_ROUTE.payments.elevenstreet, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -89,21 +90,25 @@ export default function ElevenStreet() {
 
   return (
     <>
-      {status === 'PINCODE' ? (
+      {status === '11_PINCODE' ? (
         <PincodeInputForm onClick={handleOnClick} itemList={itemList} />
-      ) : status === 'RECAPTCHA' ? (
+      ) : status === '11_RECAPTCHA' ? (
         <ReCaptchaInputForm
           base64Image={base64Image}
           tableSize={tableSize}
           onClick={handleOnClick}
           itemList={itemList}
         />
-      ) : status === 'PAYMENT' ? (
+      ) : status === '11_PAYMENT' ? (
         <PaymentInputForm
           base64Image={base64Image}
           onClick={handleOnClick}
           itemList={itemList}
         />
+      ) : status === '11_ERROR' ? (
+        <div className='flex justify-center pt-10 text-3xl'>
+          에러가 발생했습니다. 새로고침해주세요.
+        </div>
       ) : (
         <div className='flex justify-center pt-10 text-3xl'>
           Payment Success!

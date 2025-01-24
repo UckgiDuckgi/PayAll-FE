@@ -1,6 +1,5 @@
 import { QUERY_KEYS } from '@/constants/queryKey';
 import { ROUTE } from '@/constants/route';
-import { User } from '@/types/table';
 import { useRouter } from 'next/navigation';
 import { postSignIn, postSignUp } from '@/lib/api';
 import { showToast } from '@/lib/utils';
@@ -21,18 +20,20 @@ type SignUp = {
 };
 
 export const usePostSignIn = () => {
-  const router = useRouter();
   const { toast } = useToast();
+  const router = useRouter();
 
-  return useGenericMutation<SignIn, Partial<User>>(
+  return useGenericMutation<SignIn>(
     [QUERY_KEYS.SIGN_IN],
     async ({ authId, password }: SignIn) => {
       return postSignIn({ authId, password });
     },
     {
-      onSuccess: () => {
-        showToast(toast, '로그인에 성공하였습니다!');
-        router.push(ROUTE.home);
+      onSuccess: (data) => {
+        console.log(data.code);
+        if (data.code === 200) showToast(toast, '로그인에 성공하였습니다.');
+        if (data.status === 'OK') router.push(ROUTE.mydata);
+        if (data.status === 'Already Exists') router.push(ROUTE.home);
       },
       onError: (error) => {
         showToast(toast, error.message || '로그인 중 에러가 발생했습니다.');
@@ -45,7 +46,7 @@ export const usePostSignUp = () => {
   const router = useRouter();
   const { toast } = useToast();
 
-  return useGenericMutation<SignUp, Partial<User>>(
+  return useGenericMutation<SignUp>(
     [QUERY_KEYS.SIGN_UP],
     async ({ name, authId, password, phone, address }) => {
       return postSignUp({ name, authId, password, phone, address });

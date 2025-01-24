@@ -22,11 +22,11 @@ export const AdCarouselItem = ({
       }}
     >
       <div className='flex flex-col gap-2 '>
-        <div className='text-[1.5rem] flex-col flex items-start'>
+        <div className='text-[1.25rem] space-y-[1px] flex-col flex items-start'>
           <span>{title1}</span>
           <span className='-mt-2'>{title2}</span>
         </div>
-        <div className=''>{subItem}</div>
+        <div className='font-sans'>{subItem}</div>
       </div>
       <div className='w-1/2 flex items-center justify-center'>
         <Image

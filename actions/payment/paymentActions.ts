@@ -1,6 +1,6 @@
 'use server';
 
-import SessionBrowserManager from '@/hooks/sessionBrowserManager';
+import SessionBrowserManager, { MapKey } from '@/hooks/sessionBrowserManager';
 import { delay } from '../playwrightActions';
 
 type GetCookiesProps = {
@@ -10,6 +10,7 @@ type GetCookiesProps = {
   buttonSelector: string;
   id: string;
   pw: string;
+  key: MapKey;
 };
 
 type GetCookiesWithKakaoAuthProps = {
@@ -29,8 +30,9 @@ export async function getCookies({
   buttonSelector,
   id,
   pw,
+  key,
 }: GetCookiesProps) {
-  const sessionBrowserManager = await SessionBrowserManager.getInstance();
+  const sessionBrowserManager = await SessionBrowserManager.getInstance(key);
 
   const { context, page } = sessionBrowserManager;
 
@@ -43,7 +45,7 @@ export async function getCookies({
   await delay(Math.random() * 1000 + 500);
 
   await page.locator(buttonSelector).click();
-  await delay(Math.random() * 3000 + 500);
+  await delay(Math.random() * 5000 + 500);
 
   return await context.cookies();
 }
@@ -57,7 +59,8 @@ export async function getCookiesWithKakaoAuth({
   id,
   pw,
 }: GetCookiesWithKakaoAuthProps) {
-  const sessionBrowserManager = await SessionBrowserManager.getInstance();
+  const sessionBrowserManager =
+    await SessionBrowserManager.getInstance('ELEVENSTREET');
 
   const { context, page } = sessionBrowserManager;
 
@@ -73,11 +76,11 @@ export async function getCookiesWithKakaoAuth({
   await delay(Math.random() * 1000 + 500);
 
   await page.locator(buttonKakaoSignInSelector).click();
-  await delay(Math.random() * 3000 + 500);
+  await delay(Math.random() * 5000 + 500);
 
   return await context.cookies();
 }
 
-export async function paymentClose() {
-  await SessionBrowserManager.close();
+export async function paymentClose(key: MapKey) {
+  await SessionBrowserManager.close(key);
 }

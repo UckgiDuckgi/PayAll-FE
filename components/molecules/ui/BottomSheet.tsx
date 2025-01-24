@@ -17,12 +17,14 @@ function BottomSheet({
   desciptionFooter,
   btnTexts,
   children,
+  onClick,
 }: {
   title: string;
   description: string;
   desciptionFooter: ReactNode;
   btnTexts: string[];
   children: ReactNode;
+  onClick: () => void;
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -54,8 +56,8 @@ function BottomSheet({
             className='hover:bg-[#4B4B4B] hover:text-white bg-darkGrey w-[55%] text-white border-none'
             variant='outline'
             onClick={() => {
+              onClick();
               toggleDialog();
-              console.log('장바구니 담기 로직 추가');
             }}
           >
             {btnTexts[1]}

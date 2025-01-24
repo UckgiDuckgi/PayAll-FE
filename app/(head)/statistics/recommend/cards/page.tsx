@@ -1,31 +1,58 @@
-import CardBenefitInfo from '@/components/molecules/CardBenefitInfo';
-import { payment_detail } from '@/components/molecules/CardCarousel';
+'use client';
+
+import Loading from '@/components/Loading';
+import CardBenefitContent from '@/components/molecules/CardBenefitContent';
 import CardInfoCard from '@/components/molecules/CardInfoCard';
 import SimpleBottomSheet from '@/components/molecules/ui/SimpleBottomSheet';
+import { QUERY_KEYS } from '@/constants/queryKey';
+import { useGenericQuery } from '@/hooks/query/globalQuery';
+import { ProductType } from '@/types/productType';
+import { Suspense, useState } from 'react';
+import { getProductCards } from '@/lib/api';
 
-function page() {
+function RecommendationCardsContent() {
+  const [selectedIdx, setSelectedIdx] = useState(0);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const { resData: cardsData, isLoading } = useGenericQuery<ProductType[]>(
+    [QUERY_KEYS.PRODUCT_CARDS],
+    () => getProductCards()
+  );
+
+  if (!cardsData || !cardsData.data || isLoading) return <Loading />;
+
   return (
     <div className='space-y-3 my-2'>
       <span className='font-bold text-[1.125rem]'>카드 둘러보기</span>
-      <div className='space-y-4'>
-        <SimpleBottomSheet
-          content={
-            <CardBenefitInfo
-              index={0}
-              cardName='샵 마이웨이 카드'
-              paymentDetails={payment_detail}
-            />
-          }
-        >
-          <CardInfoCard
-            cardImg='/images/cards/samsung.svg'
-            cardName='card name'
-            cardDescription='card description'
-          />
-        </SimpleBottomSheet>
-      </div>
+      <ul className='space-y-4'>
+        {cardsData?.data?.map(
+          ({ productId, productName, productDescription }: ProductType) => (
+            <li key={productId}>
+              <SimpleBottomSheet
+                isOpen={isOpen}
+                onOpenChange={setIsOpen}
+                content={<CardBenefitContent selectedIdx={selectedIdx} />}
+              >
+                <div onClick={() => setSelectedIdx(productId)}>
+                  <CardInfoCard
+                    cardImg={`/images/cards/${productId}.svg`}
+                    cardName={productName}
+                    cardDescription={productDescription}
+                  />
+                </div>
+              </SimpleBottomSheet>
+            </li>
+          )
+        )}
+      </ul>
     </div>
   );
 }
 
-export default page;
+export default function Page() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <RecommendationCardsContent />
+    </Suspense>
+  );
+}

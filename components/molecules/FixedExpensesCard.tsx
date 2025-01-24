@@ -17,7 +17,7 @@ function FixedExpensesCard({
         <span className='text-[.9375rem] font-bold'>{expensesName}</span>
       </div>
       <span className='text-[.875rem] text-[#AAAAAA] font-bold'>
-        {expensesPrice.toLocaleString()}원
+        {expensesPrice?.toLocaleString() ?? 0}원
       </span>
     </div>
   );

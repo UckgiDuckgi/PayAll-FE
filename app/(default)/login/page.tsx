@@ -1,7 +1,7 @@
 'use client';
 
 import { LoginInput } from '@/components/molecules/sion/LoginInput';
-import { IconIndicator } from '@/components/ui/IconIndicator';
+import { PayAllLogo } from '@/components/ui/PayAllLogo';
 import { Button } from '@/components/ui/button';
 import { usePostSignIn } from '@/hooks/query/auth';
 import { FormEvent, useEffect, useState } from 'react';
@@ -20,9 +20,9 @@ export default function LoginPage() {
     mutate({ authId: id, password });
   };
   return (
-    <div className='flex flex-col items-center'>
-      <div className='flex flex-col items-center justify-center mt-40'>
-        <IconIndicator src='/images/Logo.png' width={130} />
+    <form className='h-screen flex flex-col items-center justify-center'>
+      <div className='flex flex-col items-center justify-center pb-10'>
+        <PayAllLogo width={200} height={100} />
       </div>
       <LoginInput title='아이디' onChange={setId} />
       <div className='w-full mt-11 bg-white'></div>
@@ -30,6 +30,7 @@ export default function LoginPage() {
       <div className='w-full mt-7 bg-white'></div>
       <Button
         variant='basic'
+        type='submit'
         disabled={id === '' || password === ''}
         onClick={registerSignIn}
       >
@@ -38,6 +39,6 @@ export default function LoginPage() {
       <div className='mt-[1.375rem] text-right w-full text-sm'>
         <a href='/register'>회원가입</a>
       </div>
-    </div>
+    </form>
   );
 }

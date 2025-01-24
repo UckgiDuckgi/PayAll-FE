@@ -1,46 +1,50 @@
-import { PaymentData } from '@/constants/mockdata';
+import { AccountsPaymentsDetail } from '@/types';
 import { ChevronRight } from 'lucide-react';
+import { parseCategory, parsePaymentType } from '@/lib/utils';
 import UploadButton from './ui/UploadButton';
 
-// TODO: props에 data 추가
 function PaymentCard({
   showAccount = true,
   paymentInfo,
 }: {
   showAccount: boolean;
-  paymentInfo: PaymentData;
+  paymentInfo: AccountsPaymentsDetail;
 }) {
   if (!paymentInfo) return;
 
   const {
-    payment_id,
-    payment_place,
+    paymentId,
+    paymentPlace,
     category,
-    payment_price,
-    payment_type,
-    payment_time,
-    bank_name,
-    account_name,
+    paymentPrice,
+    paymentType,
+    paymentTime,
+    bankName,
+    accountName,
+    shootNeed,
   } = paymentInfo;
+
   return (
     <div className='w-full py-3 border-b-[1px] border-darkGrey space-y-2'>
       <div className='flex items-center justify-between'>
         <div className='space-x-2'>
-          <span className='text-[.8125rem]'>{payment_place}</span>
-          <span className='text-[.6875rem] text-[#858585]'>{category}</span>
+          <span className='text-[.8125rem]'>{paymentPlace}</span>
+          <span className='text-[.6875rem] text-[#858585]'>
+            {parseCategory(category)}
+          </span>
         </div>
         <span className='text-[.9375rem] font-bold'>
-          - {payment_price.toLocaleString()}원
+          - {paymentPrice.toLocaleString()}원
         </span>
       </div>
       <div className='flex items-center justify-between'>
         <div className='space-y-1'>
           <div className='flex items-center gap-1'>
             <span className='text-[.6875rem] text-main font-regular'>
-              {payment_type} 결제
+              {parsePaymentType(paymentType)} 결제
             </span>
             <span className='text-[.6875rem] text-grey font-regular'>
-              {new Date(payment_time).toLocaleTimeString('en-US', {
+              {new Date(paymentTime).toLocaleTimeString('en-US', {
                 hour: '2-digit',
                 minute: '2-digit',
                 hour12: true,
@@ -49,19 +53,23 @@ function PaymentCard({
           </div>
           {showAccount ? (
             <span className='text-[.6875rem] text-grey font-regular'>
-              {bank_name} {account_name}
+              {bankName} {accountName}
             </span>
           ) : null}
         </div>
-        {category !== '쇼핑' ? (
-          <UploadButton />
+        {shootNeed && paymentType === 'OFFLINE' ? (
+          <UploadButton paymentId={paymentId} />
         ) : (
-          <a
-            href={`/accounts/payments/${payment_id}`}
-            className='text-[0.5rem] font-medium flex items-center gap-1'
-          >
-            상세보기 <ChevronRight className='w-2 h-2' />
-          </a>
+          <div>
+            {!shootNeed && (
+              <a
+                href={`/accounts/payments/${paymentId}`}
+                className='text-[0.5rem] font-medium flex items-center gap-1'
+              >
+                상세보기 <ChevronRight className='w-2 h-2' />
+              </a>
+            )}
+          </div>
         )}
       </div>
     </div>

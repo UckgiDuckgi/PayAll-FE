@@ -1,39 +1,42 @@
-import { PaymentData } from '@/constants/mockdata';
+import { PaymentDetail } from '@/types';
+import { parseCategory, parsePaymentType } from '@/lib/utils';
 
 export default function PaymentInfoCard({
   paymentInfo,
 }: {
-  paymentInfo: PaymentData;
+  paymentInfo: PaymentDetail;
 }) {
   const {
-    payment_place,
+    paymentPlace,
     category,
-    payment_price,
-    payment_type,
-    payment_time,
-    bank_name,
-    account_name,
+    paymentPrice,
+    paymentType,
+    paymentTime,
+    bankName,
+    accountName,
   } = paymentInfo;
   return (
     <div>
       <div className='w-full py-5 bg-deepDarkGrey space-y-2 px-[0.875rem] rounded-xl'>
         <div className='flex items-center justify-between'>
           <div className='space-x-2'>
-            <span className='text-[.8125rem]'>{payment_place}</span>
-            <span className='text-[.6875rem] text-[#858585]'>{category}</span>
+            <span className='text-[.8125rem]'>{paymentPlace}</span>
+            <span className='text-[.6875rem] text-[#858585]'>
+              {parseCategory(category)}
+            </span>
           </div>
           <span className='text-[.9375rem] font-bold'>
-            - {payment_price.toLocaleString()}원
+            - {paymentPrice.toLocaleString()}원
           </span>
         </div>
         <div className='flex items-center justify-between'>
           <div className='space-y-1'>
             <div className='flex items-center gap-1'>
               <span className='text-[.6875rem] text-main font-regular'>
-                {payment_type} 결제
+                {parsePaymentType(paymentType)} 결제
               </span>
               <span className='text-[.6875rem] text-grey font-regular'>
-                {new Date(payment_time)
+                {new Date(paymentTime)
                   .toLocaleTimeString('en-US', {
                     month: '2-digit',
                     day: '2-digit',
@@ -46,7 +49,7 @@ export default function PaymentInfoCard({
               </span>
             </div>
             <span className='text-[.6875rem] text-[#C1C1C1] font-medium'>
-              {bank_name} {account_name}
+              {bankName} {accountName}
             </span>
           </div>
         </div>

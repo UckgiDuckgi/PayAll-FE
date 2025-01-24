@@ -3,7 +3,13 @@
 import { X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
-export const WordChip = ({ word }: { word: string }) => {
+export const WordChip = ({
+  word,
+  deleteWord,
+}: {
+  word: string;
+  deleteWord: (word: string) => void;
+}) => {
   const router = useRouter();
   return (
     <button
@@ -14,7 +20,7 @@ export const WordChip = ({ word }: { word: string }) => {
       <a
         onClick={(e) => {
           e.stopPropagation();
-          console.log(word, '삭제');
+          deleteWord(word);
         }}
       >
         <X size={11} />

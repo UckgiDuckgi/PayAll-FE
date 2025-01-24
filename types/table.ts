@@ -1,4 +1,13 @@
+export type ApiResponse<T> = {
+  code: number;
+  status: string;
+  message: string;
+  data?: T;
+};
+
+type Platform = 'COUPANG' | '11ST' | 'NAVER';
 type Category =
+  | 'TOTAL'
   | 'SHOPPING'
   | 'EDUCATION'
   | 'LIVING'
@@ -70,6 +79,7 @@ type Cart = {
   storeName: string;
   link: string;
   image: string;
+  prevPrice: number;
 };
 
 type Payment_Detail = {
@@ -118,6 +128,7 @@ export type {
   Payment,
   Payment_Detail,
   PaymentType,
+  Platform,
   Product,
   ProductType,
   Recommendation,

@@ -1,7 +1,8 @@
 'use client';
 
+import dayjs from 'dayjs';
 import Image from 'next/image';
-import { useRouter, usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 
 type NavItem = {
@@ -25,7 +26,7 @@ export const NavIcons: NavItem[] = [
   {
     name: '소비분석',
     icon: '/icons/Chart.svg',
-    route: 'statistics?date=2025-01',
+    route: `statistics?date=${dayjs().format('YYYY-MM')}`,
   },
   {
     name: '마이페이지',

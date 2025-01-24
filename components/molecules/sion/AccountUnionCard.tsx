@@ -16,6 +16,7 @@ export default function AccountUnionCard({
   difference: number;
 }) {
   const router = useRouter();
+
   return (
     <button
       className='w-full h-32 bg-gradient-to-r from-[#333333] to-[#8A8A8A] rounded-2xl p-5 pr-3 pb-3 flex items-center justify-stretch'
@@ -54,7 +55,7 @@ export default function AccountUnionCard({
         </div>
       </div>
       <div className='flex items-end justify-end h-full'>
-        <span className='font-bold relative before:content-[""] before:absolute before:top-0 before:left-[0.0625rem] before:w-4/5 before:border-t-2 before:border-white pt-[0.125rem]'>
+        <span className='font-semibold relative before:content-[""] before:absolute before:top-0 before:left-[0.0625rem] before:w-4/5 before:border-t-2 before:border-white pt-[0.125rem]'>
           PayAll
         </span>
       </div>

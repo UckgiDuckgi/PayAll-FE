@@ -1,3 +1,10 @@
+import { shopCartItem } from '@/types';
 import { atom } from 'jotai';
+import { atomWithStorage } from 'jotai/utils';
 
 export const fileAtom = atom<File | null>(null);
+export const recentSearchAtom = atomWithStorage<string[]>('recentSearch', []);
+export const shopCartAtom = atom<shopCartItem>({
+  coupang: [],
+  '11st': [],
+});
