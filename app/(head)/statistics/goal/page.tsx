@@ -127,7 +127,7 @@ function StatisticsGoalContent() {
         <div className='mt-16 space-y-6'>
           <EmotionBox spentAmount={spentAmount} limitPrice={limitPrice} />
 
-          {dayAvg > 0 && spentAmount <= limitPrice ? (
+          {spentAmount <= limitPrice ? (
             <>
               <div className='flex items-center w-full justify-between'>
                 <div className='w-full flex flex-col gap-2 items-center justify-center'>
@@ -152,15 +152,17 @@ function StatisticsGoalContent() {
                 </div>
               </div>
 
-              <div className='py-3'>
-                <AccentText
-                  prefix='목표 달성을 위해서는 하루 평균'
-                  accent={`${dayAvg.toLocaleString()}원`}
-                  suffix='을 아껴야해요.'
-                  accentColor='text-main'
-                  accentSize='text-[1.125rem]'
-                />
-              </div>
+              {dayAvg > 0 && (
+                <div className='py-3'>
+                  <AccentText
+                    prefix='목표 달성을 위해서는 하루 평균'
+                    accent={`${dayAvg.toLocaleString()}원`}
+                    suffix='을 아껴야해요.'
+                    accentColor='text-main'
+                    accentSize='text-[1.125rem]'
+                  />
+                </div>
+              )}
             </>
           ) : null}
 
