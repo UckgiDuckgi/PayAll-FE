@@ -170,10 +170,10 @@ function StatisticsContent() {
   if (!category) {
     return (
       <motion.div
-        className={`flex flex-col gap-4 w-full mx-auto`}
         variants={container}
         initial='hidden'
         animate='show'
+        className={`flex flex-col gap-4 w-full mx-auto`}
       >
         <DateStepper date={date} />
 

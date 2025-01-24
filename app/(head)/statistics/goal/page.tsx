@@ -290,7 +290,7 @@ function StatisticsGoalContent() {
       </div>
       {lastMonthLimit && (
         <div
-          className='w-[90%] max-w-[512px] flex items-center justify-start gap-2 absolute bottom-40'
+          className='w-[90%] max-w-[460.8px] flex items-center justify-start gap-2 absolute bottom-40'
           onClick={toggleChecked}
         >
           <Checkbox className='rounded-full' checked={isChecked} />

@@ -78,7 +78,7 @@ function CategoryChart({
       className='overflow-hidden z-10 relative w-[80%] h-[80%] max-w-[420px] max-h-[420px] mx-auto'
     >
       {/* <div className='mx-auto w-full h-full max-w-[460px]'> */}
-      <Doughnut data={data} options={options} />
+      <Doughnut data={data} options={options} className='mx-auto' />
       {/* </div> */}
       <div className='flex flex-col items-center justify-center gap-2 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/4 text-center'>
         <span className='text-[0.75rem]'>이번달 총 지출</span>
