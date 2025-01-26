@@ -33,7 +33,7 @@ function PaymentCategoryContent({ category }: { category: Category }) {
   if (!paymentsData || !paymentsData.data || isLoading) return <Loading />;
 
   const {
-    paymentCount,
+    // paymentCount,
     // monthPaymentPrice,
     paymentList: payments,
   } = paymentsData.data;
@@ -51,7 +51,7 @@ function PaymentCategoryContent({ category }: { category: Category }) {
             style={{ background: COLORS[0] }}
           >
             <Image
-              src={`/icons/Category/${category}.svg`}
+              src={`/icons/Category/${category.toLowerCase()}.svg`}
               alt='category'
               width={14}
               height={14}
@@ -76,7 +76,12 @@ function PaymentCategoryContent({ category }: { category: Category }) {
             원
           </span>
           <Badge className='bg-deepDarkGrey px-2 py-1 rounded-full text-grey font-medium text-[.6875rem]'>
-            총 {paymentCount}회
+            총{' '}
+            {paymentList?.reduce(
+              (acc, payment) => acc + payment.paymentDetail.length,
+              0
+            )}
+            회
           </Badge>
         </div>
       </div>

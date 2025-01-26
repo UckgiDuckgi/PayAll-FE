@@ -79,7 +79,12 @@ export const CardCarousel = ({ cards }: { cards: RecommendationsType[] }) => {
                 <SimpleBottomSheet
                   isOpen={isOpen}
                   onOpenChange={onOpenChange}
-                  content={<CardBenefitContent selectedIdx={clickIdx} />}
+                  content={
+                    <CardBenefitContent
+                      selectedIdx={clickIdx}
+                      productId={productId}
+                    />
+                  }
                 >
                   <div
                     onClick={() => setClickIdx(productId)}

@@ -34,6 +34,7 @@ export const usePostSignIn = () => {
         if (data.code === 200) showToast(toast, '로그인에 성공하였습니다.');
         if (data.status === 'OK') router.push(ROUTE.mydata);
         if (data.status === 'Already Exists') router.push(ROUTE.home);
+        else showToast(toast, data.message);
       },
       onError: (error) => {
         showToast(toast, error.message || '로그인 중 에러가 발생했습니다.');
@@ -53,7 +54,7 @@ export const usePostSignUp = () => {
     },
     {
       onSuccess: (data) => {
-        if (data.code === 200) showToast(toast, '로그인에 성공하였습니다.');
+        if (data.code === 200) showToast(toast, '회원가입에 성공하였습니다.');
         else showToast(toast, data.message);
         router.push(ROUTE.signin);
       },

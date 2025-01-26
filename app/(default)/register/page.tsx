@@ -68,7 +68,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className='pb-40'>
+    <div className='h-screen'>
       <form className='flex flex-col items-center gap-9 pt-16 w-full'>
         <LoginInput title='아이디' onChange={setId} />
         <LoginInput

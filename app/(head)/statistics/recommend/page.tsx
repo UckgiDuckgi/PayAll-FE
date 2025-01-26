@@ -18,11 +18,6 @@ import { getRecommendations } from '@/lib/api';
 
 function RecommendationContent() {
   const [selectedIdx, setSelectedIdx] = useState(0);
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleDialog = () => {
-    setIsOpen((prev) => !prev);
-  };
 
   const { resData: recommendsData, isLoading } = useGenericQuery<
     RecommendationsType[]
@@ -124,13 +119,25 @@ function RecommendationContent() {
                 ({ storeName, discountAmount, category, productId }, idx) => (
                   <div key={idx}>
                     <SimpleBottomSheet
-                      isOpen={isOpen}
-                      onOpenChange={toggleDialog}
-                      content={<CardBenefitContent selectedIdx={selectedIdx} />}
+                      isOpen={selectedIdx === productId}
+                      onOpenChange={() =>
+                        setSelectedIdx((prev) => {
+                          if (prev === productId) return 0;
+                          return productId;
+                        })
+                      }
+                      content={
+                        <div key={productId}>
+                          <CardBenefitContent
+                            selectedIdx={selectedIdx}
+                            productId={productId}
+                          />
+                        </div>
+                      }
                     >
-                      <div onClick={() => setSelectedIdx(productId)}>
+                      <div>
                         <CategorySubCard
-                          img={'/images/subscribes/T.svg'}
+                          img={`/images/subscribes/${productId}.png`}
                           category={category}
                           color={COLORS[idx]}
                           paymentName={storeName}
