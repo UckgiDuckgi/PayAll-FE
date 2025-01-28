@@ -112,11 +112,11 @@ export const getCoupangActions = async ({
       console.log('Payment Button Clicked!');
       await delay(Math.random() * (DELAY + 3000) + RANGE);
 
-      await page.waitForLoadState('networkidle');
       const screenshotBuffer = await page
         .locator(modalPaymentSelector)
-        .screenshot();
+        .screenshot({ timeout: 10000, animations: 'disabled' });
 
+      console.log('Screenshot Completed! ~ Coupang');
       sessionBrowserManager.status = 'PAYMENT';
       return screenshotBuffer;
     },
