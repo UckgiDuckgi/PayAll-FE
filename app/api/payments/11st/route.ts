@@ -3,6 +3,7 @@ import {
   getElevenStreetActions,
 } from '@/actions/11st/elevenStreetActions';
 import { PlaywrightActionsProps } from '@/actions/playwrightActions';
+import { ElevenStreetResponse } from '@/types/payment';
 import { NextResponse } from 'next/server';
 
 export type Item = {
@@ -15,17 +16,6 @@ export type ElevenStreetRequest = {
   selectedTileList: string;
   itemList: Item[];
   isReCaptchaEnd: boolean;
-};
-
-export type ElevenStreetResponse = {
-  success: boolean;
-  status:
-    | '11_PINCODE'
-    | '11_RECAPTCHA'
-    | '11_PAYMENT'
-    | '11_COMPLETED'
-    | '11_ERROR';
-  result: { base64Image: string; tableSize: number };
 };
 
 export async function POST(request: Request) {

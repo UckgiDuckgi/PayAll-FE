@@ -1,6 +1,6 @@
 'use client';
 
-import { OnClick } from '@/app/11st/page';
+import { OnClick } from '@/app/(head)/payments/page';
 import { Item } from '@/app/api/payments/11st/route';
 import Image from 'next/image';
 import { useState } from 'react';
@@ -47,7 +47,7 @@ export default function ReCaptchaInputForm({
   const handleEnd = () => {
     // URL에 입력값을 추가해 페이지 새로고침
     onClick({
-      itemList,
+      elevenStreetItemList: itemList,
       selectedTileList: getSelectedGridList(inputGrid).join(','),
       isReCaptchaEnd: true,
     });
@@ -55,7 +55,7 @@ export default function ReCaptchaInputForm({
 
   const handleNext = () => {
     onClick({
-      itemList,
+      elevenStreetItemList: itemList,
       selectedTileList: getSelectedGridList(inputGrid).join(','),
     });
   };

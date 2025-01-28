@@ -7,7 +7,7 @@ import { QUERY_KEYS } from '@/constants/queryKey';
 import { useGenericMutation } from '@/hooks/query/globalQuery';
 import { Platform } from '@/types';
 import { useQueryClient } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { postPlatform } from '@/lib/api';
 
@@ -16,6 +16,9 @@ export default function MembershipDetail({
 }: {
   params: { shop: string };
 }) {
+  const searchParams = useSearchParams();
+  const from = searchParams.get('from');
+
   const router = useRouter();
   const queryClient = useQueryClient();
   const [id, setId] = useState('');
@@ -28,7 +31,8 @@ export default function MembershipDetail({
     {
       onSuccess: (data) => {
         if (data.code === 200) {
-          router.push(`/mypage/membership`);
+          router.push(from === 'payments' ? `/payments` : `/mypage/membership`);
+
           queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.PLATFORM] });
         }
       },

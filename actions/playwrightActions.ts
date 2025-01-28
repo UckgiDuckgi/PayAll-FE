@@ -82,13 +82,12 @@ export const getPlaywrightActions = async ({
     },
     addCart: async ({ productId, itemId, quantity }: Item) => {
       const { page, status } = sessionBrowserManager;
-
       if (status !== 'SIGNIN') {
         return;
       }
 
       const { inputQuantitySelector, buttonCartSelector } = elementSelector;
-      console.log('Add Cart Function!! ~ ', status);
+      console.log('Add Cart Function!! ~ ', status, ' ~ ', key);
       const url = itemId
         ? DETAIL_BASE_URL + productId + '?vendorItemId=' + itemId
         : DETAIL_BASE_URL + productId;

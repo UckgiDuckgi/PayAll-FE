@@ -106,13 +106,13 @@ export const getCoupangActions = async ({
 
       await page.locator(buttonOrderSelector).click();
       console.log('Order Button Clicked!');
-      await delay(Math.random() * DELAY + RANGE);
+      await delay(Math.random() * (DELAY + 1000) + RANGE);
 
       await page.locator(buttonPaymentSelector).click();
       console.log('Payment Button Clicked!');
-      await delay(Math.random() * DELAY + RANGE);
+      await delay(Math.random() * (DELAY + 3000) + RANGE);
 
-      await delay(Math.random() * (DELAY + 2000) + RANGE);
+      await page.waitForLoadState('networkidle');
       const screenshotBuffer = await page
         .locator(modalPaymentSelector)
         .screenshot();

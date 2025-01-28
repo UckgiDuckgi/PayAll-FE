@@ -7,21 +7,20 @@ export function PaymentInputForm({
   itemList,
 }: { base64Image: string } & ElevenStreetInputFormProps) {
   const handleOnclick = () => {
-    onClick({ itemList });
+    onClick({ elevenStreetItemList: itemList });
   };
 
   return (
     <div className='flex flex-col w-full'>
-      <div className='relative w-[500px] h-[496.72px] mx-auto'>
+      <div className='relative w-full h-auto mx-auto'>
         <Image
           src={base64Image}
           alt='KbPay'
           width={500}
           height={496.72}
           unoptimized
-          className='absolute'
         />
-        <div className='absolute bottom-0 w-full h-[61px]'>
+        <div className='absolute bottom-0 w-full h-[12%]'>
           <button
             className='bg-[#DDDDDD] text-black font-extrabold w-full h-full hover:bg-[#CCCCCC]'
             onClick={handleOnclick}

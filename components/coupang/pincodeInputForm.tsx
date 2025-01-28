@@ -1,7 +1,7 @@
 'use client';
 
+import { OnClick } from '@/app/(head)/payments/page';
 import { Item } from '@/app/api/payments/coupang/route';
-import { OnClick } from '@/app/coupang/page';
 import { useState } from 'react';
 import { Button } from '../ui/button';
 
@@ -18,7 +18,7 @@ export default function PincodeInputForm({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onClick({ itemList, pincode: input });
+    onClick({ coupangItemList: itemList, pincode: input });
   };
 
   return (
