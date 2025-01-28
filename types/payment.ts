@@ -70,8 +70,31 @@ export type CoupangOrderList = {
   bundleReceiptList: bundleRecipt[];
 };
 
+export type CoupangPostResponse = {
+  success: boolean;
+  status: 'C_PINCODE' | 'C_PASSWORD' | 'C_COMPLETED' | 'C_ERROR';
+  result: string;
+};
+
 export type CoupangPaymentResponse = {
   pageIndex: number;
   size: number;
   orderList: CoupangOrderList[];
+};
+
+export type Item = {
+  productId: string;
+  itemId?: string;
+  quantity: number;
+};
+
+export type ElevenStreetResponse = {
+  success: boolean;
+  status:
+    | '11_PINCODE'
+    | '11_RECAPTCHA'
+    | '11_PAYMENT'
+    | '11_COMPLETED'
+    | '11_ERROR';
+  result: { base64Image: string; tableSize: number };
 };

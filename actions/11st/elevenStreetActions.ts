@@ -107,7 +107,7 @@ export const getElevenStreetActions = async ({
 
       await page.locator(buttonKakaoSignInSelector).click();
       console.log('Login Button Clicked!');
-      await delay(Math.random() * (dTime + 2000) + rTime);
+      await delay(Math.random() * (dTime + 3000) + rTime);
 
       sessionBrowserManager.status = 'SIGNIN';
     },
@@ -117,8 +117,6 @@ export const getElevenStreetActions = async ({
       if (status !== 'SIGNIN') {
         return;
       }
-
-      const popupPromise = context.waitForEvent('page');
 
       const {
         buttonOrderSelector,
@@ -138,6 +136,9 @@ export const getElevenStreetActions = async ({
       console.log('Pay Others Clicked!');
       await delay(Math.random() * (DELAY + 1000) + RANGE);
 
+      // TODO: 좀더 오래 기다리게
+      const popupPromise = context.waitForEvent('page', { timeout: 5000 });
+
       await page.locator(buttonPaymentSelector).click();
       console.log('Payment Button Clicked!');
       await delay(Math.random() * (DELAY + 1000) + RANGE);
@@ -149,6 +150,7 @@ export const getElevenStreetActions = async ({
 
       await popup.frameLocator('#kbframe').locator(buttonKbPaySelector).click();
 
+      await delay(Math.random() * (DELAY + 1000) + RANGE);
       const screenshotBuffer = await popup
         .frameLocator('#kbframe')
         .locator('.appcardr_window_popup')
@@ -341,6 +343,7 @@ export const getElevenStreetActions = async ({
 
       const { modalPropSelector } = elementSelector;
 
+      await delay(Math.random() * DELAY + RANGE);
       const isModal = (await page.locator(modalPropSelector).count()) > 0;
 
       console.log('🚀 ~ reCaptcha: ~ isModal:', isModal);

@@ -43,10 +43,10 @@ class SessionBrowserManager {
 
   constructor({ browser, context, page, status }: SessionBrowser, key: MapKey) {
     if (SessionBrowserManager.instance[key]) {
-      console.log('Not Created!');
+      console.log('Not Created! ~ ', key);
       return SessionBrowserManager.instance[key];
     }
-    console.log('Created!');
+    console.log('Created! ~ ', key);
     this.browser = browser;
     this.context = context;
     this.page = page;
@@ -55,8 +55,13 @@ class SessionBrowserManager {
   }
 
   public static async getInstance(key: MapKey) {
-    if (!this.instance[key] || !this.instance[key].page) {
-      console.log('New Browser Created!');
+    if (
+      !this.instance[key] ||
+      !this.instance[key].browser ||
+      !this.instance[key].context ||
+      !this.instance[key].page
+    ) {
+      console.log('New Browser Created! ~ ', key);
 
       if (this.instance[key]) {
         this.instance[key].browser.close();
@@ -81,7 +86,7 @@ class SessionBrowserManager {
         ],
       });
 
-      console.log('New Context Created!');
+      console.log('New Context Created! ~ ', key);
       const context = await browser.newContext({
         javaScriptEnabled: true,
         viewport: { width: 1280, height: 720 },
@@ -98,7 +103,7 @@ class SessionBrowserManager {
         });
       });
 
-      console.log('New Page Created!');
+      console.log('New Page Created! ~ ', key);
       const page = await context.newPage();
       await setPageHeader(page);
 

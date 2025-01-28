@@ -1,6 +1,5 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
 import Circle from '@/public/icons/Circle.png';
 import Image from 'next/image';
 import { useState } from 'react';
@@ -17,12 +16,13 @@ export default function PasswordInputForm({
 
   console.log('🚀 ~ PasswordInputForm ~ input:', input);
 
-  const handleSubmit = (cancel = false) => {
+  const handleSubmit = (input: number[], cancel = false) => {
     if (cancel) {
-      onClick({ itemList, password: '' });
+      onClick({ coupangItemList: itemList, password: '' });
+      return;
     }
     if (input.length === 6) {
-      onClick({ itemList, password: input.join('') });
+      onClick({ coupangItemList: itemList, password: input.join('') });
     }
   };
 
@@ -31,7 +31,10 @@ export default function PasswordInputForm({
       setInput(input.slice(0, -1));
       return;
     }
-
+    if (input.length === 5) {
+      setInput([...input, numpad]);
+      handleSubmit([...input, numpad]);
+    }
     if (input.length < 6) {
       setInput([...input, numpad]);
     }
@@ -39,63 +42,92 @@ export default function PasswordInputForm({
 
   return (
     <div className='flex flex-col w-full'>
-      <div className='relative w-[500px] h-[792px] mx-auto'>
+      <div className='relative w-full h-auto mx-auto'>
         <Image
           src={base64Image}
           alt='Coupang'
           width={500}
           height={792}
           unoptimized
-          className='absolute'
         />
 
-        <div className='absolute top-[20px] w-full h-[35px] flex justify-end pr-[20px] z-10'>
-          <button
-            className='w-[35px]'
-            onClick={() => handleSubmit(true)}
-          ></button>
-        </div>
-
-        <div className='absolute top-0 w-full h-[290px]  flex flex-col justify-end items-center'>
-          <div className='flex w-full h-[30px] px-[110px] justify-start gap-5'>
-            {input.map((_, idx) => (
-              <Image key={idx} src={Circle} alt='Circle' width={30}></Image>
-            ))}
+        <div className='absolute bottom-0 w-full h-full'>
+          <div className='w-full h-[61%]'>
+            <div className='h-[5%]'></div>
+            <div className='w-full h-[6%] flex justify-end pr-[5%] z-10'>
+              <button
+                className='w-[6%]'
+                onClick={() => handleSubmit([], true)}
+              ></button>
+            </div>
+            <div className='h-[42%]'></div>
+            <div className='w-full flex flex-col justify-end items-center'>
+              <div className='flex w-full px-[22%] justify-start gap-[6%]'>
+                {input.map((_, idx) => (
+                  <Image key={idx} src={Circle} alt='Circle' width={30}></Image>
+                ))}
+              </div>
+            </div>
+          </div>
+          <div className='w-full h-[39%]'>
+            <div className='h-[5%]'></div>
+            <div className='w-[90%] h-[85%] flex flex-col justify-center items-center mx-auto'>
+              <div className='flex w-full h-full'>
+                <button
+                  className='keypad'
+                  onClick={() => handleClick(0)}
+                ></button>
+                <button
+                  className='keypad'
+                  onClick={() => handleClick(1)}
+                ></button>
+                <button
+                  className='keypad'
+                  onClick={() => handleClick(2)}
+                ></button>
+              </div>
+              <div className='flex w-full h-full'>
+                <button
+                  className='keypad'
+                  onClick={() => handleClick(3)}
+                ></button>
+                <button
+                  className='keypad'
+                  onClick={() => handleClick(4)}
+                ></button>
+                <button
+                  className='keypad'
+                  onClick={() => handleClick(5)}
+                ></button>
+              </div>
+              <div className='flex w-full h-full'>
+                <button
+                  className='keypad'
+                  onClick={() => handleClick(6)}
+                ></button>
+                <button
+                  className='keypad'
+                  onClick={() => handleClick(7)}
+                ></button>
+                <button
+                  className='keypad'
+                  onClick={() => handleClick(8)}
+                ></button>
+              </div>
+              <div className='flex w-full h-full'>
+                <button className='keypad not-keypad'></button>
+                <button
+                  className='keypad'
+                  onClick={() => handleClick(9)}
+                ></button>
+                <button
+                  className='keypad'
+                  onClick={() => handleClick(-1)}
+                ></button>
+              </div>
+            </div>
           </div>
         </div>
-
-        <div className='absolute bottom-0 w-full h-[310px]  flex flex-col justify-center items-center pb-[30px] pt-[20px] px-[25px] '>
-          <div className='flex w-full h-full '>
-            <button className='keypad' onClick={() => handleClick(0)}></button>
-            <button className='keypad' onClick={() => handleClick(1)}></button>
-            <button className='keypad' onClick={() => handleClick(2)}></button>
-          </div>
-          <div className='flex w-full h-full'>
-            <button className='keypad' onClick={() => handleClick(3)}></button>
-            <button className='keypad' onClick={() => handleClick(4)}></button>
-            <button className='keypad' onClick={() => handleClick(5)}></button>
-          </div>
-          <div className='flex w-full h-full'>
-            <button className='keypad' onClick={() => handleClick(6)}></button>
-            <button className='keypad' onClick={() => handleClick(7)}></button>
-            <button className='keypad' onClick={() => handleClick(8)}></button>
-          </div>
-          <div className='flex w-full h-full'>
-            <button className='keypad not-keypad'></button>
-            <button className='keypad' onClick={() => handleClick(9)}></button>
-            <button className='keypad' onClick={() => handleClick(-1)}></button>
-          </div>
-        </div>
-      </div>
-
-      <div className='flex gap-3 justify-center pt-10 items-center'>
-        <label htmlFor='input'>비밀번호</label>
-        <div className='px-2 py-1 rounded-md text-black bg-white w-[100px] h-8 text-center'>
-          {input.join('')}
-        </div>
-        <Button onClick={() => handleSubmit} variant='secondary'>
-          입력
-        </Button>
       </div>
     </div>
   );
