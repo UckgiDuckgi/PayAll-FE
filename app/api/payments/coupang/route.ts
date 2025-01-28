@@ -101,10 +101,10 @@ export async function POST(request: Request) {
       status: 'C_COMPLETED',
       result: '',
     } as CoupangResponse);
-  } catch {
-    console.log('error');
+  } catch (error) {
+    console.log('error', error);
     return NextResponse.json({
-      success: true,
+      success: false,
       status: 'C_ERROR',
       result: '',
     } as CoupangResponse);
