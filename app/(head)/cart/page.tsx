@@ -209,7 +209,7 @@ export default function CartPage() {
 
     postPurchaseMutate({
       purchaseList: selectedItems,
-      totalPrice: calculateTotalPrice(),
+      totalPrice: calculateTotalPrice() + calculateDeliveryFee(),
       totalDiscountPrice: calculateTotalSavings(),
     });
 
