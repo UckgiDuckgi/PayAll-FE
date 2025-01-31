@@ -44,6 +44,7 @@ export const ProductCard = ({ searchResult }: { searchResult: Search }) => {
       prevPrice: searchResult.storeList[seletedProduct].price,
       search: true,
     });
+    setQuantity(1);
   };
 
   return (
