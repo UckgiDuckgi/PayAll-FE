@@ -1,4 +1,5 @@
 import type { Preview } from '@storybook/react';
+import React from 'react';
 import '../app/globals.css';
 
 const preview: Preview = {
@@ -24,6 +25,13 @@ const preview: Preview = {
     },
     textColor: '#FFFFFF',
   },
+  decorators: [
+    (Story) => (
+      <div className='App font-sans' style={{ minHeight: 'auto' }}>
+        <Story />
+      </div>
+    ),
+  ],
 };
 
 export default preview;
