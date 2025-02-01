@@ -4,7 +4,7 @@ import Loading from '@/components/Loading';
 import DeliveryFeeProgress from '@/components/molecules/DeliveryFeeProgress';
 import CardSlide from '@/components/molecules/sion/CardSlide';
 import { CartProductCard } from '@/components/molecules/sion/CartProductCard';
-import { ToTalPriceBox } from '@/components/molecules/sion/ToTalPriceBox';
+import { TotalPriceBox } from '@/components/molecules/sion/TotalPriceBox';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { QUERY_KEYS } from '@/constants/queryKey';
@@ -320,7 +320,7 @@ export default function CartPage() {
                 </div>
               </div>
               <div className='w-[111.2%] bg-black -mx-[5.6%]'>
-                <ToTalPriceBox
+                <TotalPriceBox
                   totalPrice={calculateTotalPrice()}
                   deliveryFee={calculateDeliveryFee()}
                 />

@@ -24,10 +24,15 @@ const preview: Preview = {
       ],
     },
     textColor: '#FFFFFF',
+    options: {
+      storySort: {
+        order: ['Logo', 'Atoms', 'Molecules', '*'],
+      },
+    },
   },
   decorators: [
     (Story) => (
-      <div className='App font-sans' style={{ minHeight: 'auto' }}>
+      <div className='App font-sans py-4' style={{ minHeight: 'auto' }}>
         <Story />
       </div>
     ),
