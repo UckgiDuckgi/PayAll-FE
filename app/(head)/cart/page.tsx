@@ -4,7 +4,7 @@ import Loading from '@/components/Loading';
 import DeliveryFeeProgress from '@/components/molecules/DeliveryFeeProgress';
 import CardSlide from '@/components/molecules/sion/CardSlide';
 import { CartProductCard } from '@/components/molecules/sion/CartProductCard';
-import { ToTalPriceBox } from '@/components/molecules/sion/ToTalPriceBox';
+import { TotalPriceBox } from '@/components/molecules/sion/TotalPriceBox';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { QUERY_KEYS } from '@/constants/queryKey';
@@ -35,25 +35,25 @@ const MOCK_CARDS = [
     id: 1,
     bankName: '신한카드',
     cardNumber: '1234-****-****-5678',
-    imageUrl: 'sinhan.svg',
+    imageUrl: 'sinhan.png',
   },
   {
     id: 2,
-    bankName: '삼성카드',
+    bankName: '현대카드',
     cardNumber: '5678-****-****-1234',
-    imageUrl: 'samsung.svg',
+    imageUrl: 'hyundai.png',
   },
   {
     id: 3,
-    bankName: '하나카드',
+    bankName: '국민카드',
     cardNumber: '9012-****-****-3456',
-    imageUrl: 'hana.svg',
+    imageUrl: 'kookmin.png',
   },
   {
     id: 4,
     bankName: '하나카드',
     cardNumber: '9012-****-****-3456',
-    imageUrl: 'hana.svg',
+    imageUrl: 'hana.png',
   },
 ];
 
@@ -187,14 +187,11 @@ export default function CartPage() {
             ...(itemId && { itemId }),
             quantity,
           };
-          console.log(item.storeName);
 
           if (item.storeName === 'Coupang') {
             acc.coupang.push(cartItem);
-            console.log('push! coupang');
           } else if (item.storeName === '11st') {
             acc['11st'].push(cartItem);
-            console.log('push! 11st');
           }
         }
         return acc;
@@ -323,7 +320,7 @@ export default function CartPage() {
                 </div>
               </div>
               <div className='w-[111.2%] bg-black -mx-[5.6%]'>
-                <ToTalPriceBox
+                <TotalPriceBox
                   totalPrice={calculateTotalPrice()}
                   deliveryFee={calculateDeliveryFee()}
                 />
