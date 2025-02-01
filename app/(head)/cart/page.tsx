@@ -187,14 +187,11 @@ export default function CartPage() {
             ...(itemId && { itemId }),
             quantity,
           };
-          console.log(item.storeName);
 
           if (item.storeName === 'Coupang') {
             acc.coupang.push(cartItem);
-            console.log('push! coupang');
           } else if (item.storeName === '11st') {
             acc['11st'].push(cartItem);
-            console.log('push! 11st');
           }
         }
         return acc;
