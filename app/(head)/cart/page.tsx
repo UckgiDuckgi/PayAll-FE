@@ -35,25 +35,25 @@ const MOCK_CARDS = [
     id: 1,
     bankName: '신한카드',
     cardNumber: '1234-****-****-5678',
-    imageUrl: 'sinhan.svg',
+    imageUrl: 'sinhan.png',
   },
   {
     id: 2,
-    bankName: '삼성카드',
+    bankName: '현대카드',
     cardNumber: '5678-****-****-1234',
-    imageUrl: 'samsung.svg',
+    imageUrl: 'hyundai.png',
   },
   {
     id: 3,
-    bankName: '하나카드',
+    bankName: '국민카드',
     cardNumber: '9012-****-****-3456',
-    imageUrl: 'hana.svg',
+    imageUrl: 'kookmin.png',
   },
   {
     id: 4,
     bankName: '하나카드',
     cardNumber: '9012-****-****-3456',
-    imageUrl: 'hana.svg',
+    imageUrl: 'hana.png',
   },
 ];
 
