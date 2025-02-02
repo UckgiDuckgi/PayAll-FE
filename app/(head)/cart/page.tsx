@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { QUERY_KEYS } from '@/constants/queryKey';
 import { useGenericMutation, useGenericQuery } from '@/hooks/query/globalQuery';
-import { shopCartAtom } from '@/stores/atom';
+import { purchaseAtom, shopCartAtom } from '@/stores/atom';
 import { ApiResponse, Cart, Purchase, shopCartItem } from '@/types';
 import { useQueryClient } from '@tanstack/react-query';
 import { useAtom } from 'jotai';
@@ -61,6 +61,7 @@ const DELIVERY_FEE = 2000;
 
 export default function CartPage() {
   const [, setShopCart] = useAtom(shopCartAtom);
+  const [, setPurchase] = useAtom(purchaseAtom);
   const { resData: userInfo, isLoading: userInfoLoading } = useGenericQuery(
     [QUERY_KEYS.USER_INFO],
     () => getUserInfo()
@@ -203,6 +204,11 @@ export default function CartPage() {
     );
 
     setShopCart(groupedItems);
+    setPurchase({
+      purchaseList: selectedItems,
+      totalPrice: calculateTotalPrice() + calculateDeliveryFee(),
+      totalDiscountPrice: calculateTotalSavings(),
+    });
 
     postPurchaseMutate({
       purchaseList: selectedItems,
