@@ -2,14 +2,22 @@
 
 import { PaymentMebershipCard } from '@/components/molecules/PaymentMebershipCard';
 import { Button } from '@/components/ui/button';
+import { QUERY_KEYS } from '@/constants/queryKey';
 import { API_ROUTE } from '@/constants/route';
+import { useGenericMutation, useGenericQuery } from '@/hooks/query/globalQuery';
+import { shopCartAtom } from '@/stores/atom';
+import { Platform, Purchase } from '@/types';
+import { PlatformType } from '@/types/authType';
 import {
   CoupangPostResponse,
   ElevenStreetResponse,
   Item,
 } from '@/types/payment';
+import { useQueryClient } from '@tanstack/react-query';
+import { useAtomValue } from 'jotai';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { getPlatform, postPurchase } from '@/lib/api';
 
 export type OnClick = ({
   coupangItemList,
@@ -30,6 +38,8 @@ export type OnClick = ({
 export default function PaymentMembership() {
   const router = useRouter();
 
+  const cartItems = useAtomValue(shopCartAtom);
+
   const [isClicked, setIsClicked] = useState(false);
   const [coupangResponse, setCoupangResponse] =
     useState<CoupangPostResponse | null>(null);
@@ -39,46 +49,74 @@ export default function PaymentMembership() {
     useState<ElevenStreetResponse | null>(null);
   const [isElevenStreetLoading, setIsElevenStreetLoading] = useState(false);
 
-  // const { resData: platformData, isLoading } = useGenericQuery<PlatformType>(
-  //   [QUERY_KEYS.PLATFORM],
-  //   () => getPlatform()
-  // );
+  const { resData: platformData, isLoading } = useGenericQuery<PlatformType>(
+    [QUERY_KEYS.PLATFORM],
+    () => getPlatform()
+  );
 
-  const coupangItemList: Item[] = [
-    {
-      productId: '7666070794',
-      itemId: '90437044721',
-      quantity: 1,
-    },
-    // {
-    //   productId: '7958974',
-    //   itemId: '91118401786',
-    //   quantity: 2,
-    // },
-    // {
-    //   productId: '2042132',
-    //   itemId: '86533230299',
-    //   quantity: 2,
-    // },
-    // {
-    //   productId: '7591951475',
-    //   quantity: 1,
-    // },
-  ];
+  const queryClient = useQueryClient();
 
-  const elevenStreetItemList: Item[] = [
+  // TODO: 구현해야함.
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { mutate: postPurchaseMutate } = useGenericMutation(
+    [QUERY_KEYS.PURCHASE],
+    (data: Purchase) => postPurchase(data),
     {
-      productId: '7864138029',
-      quantity: 1,
-    },
-  ];
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: [QUERY_KEYS.CART_LIST],
+        });
+      },
+    }
+  );
+
+  // const coupangItemList: Item[] = [
+  //   {
+  //     productId: '7666070794',
+  //     itemId: '90437044721',
+  //     quantity: 1,
+  //   },
+  //   // {
+  //   //   productId: '7958974',
+  //   //   itemId: '91118401786',
+  //   //   quantity: 2,
+  //   // },
+  //   // {
+  //   //   productId: '2042132',
+  //   //   itemId: '86533230299',
+  //   //   quantity: 2,
+  //   // },
+  //   // {
+  //   //   productId: '7591951475',
+  //   //   quantity: 1,
+  //   // },
+  // ];
+  const coupangItemList: Item[] = cartItems['coupang'];
+
+  // const elevenStreetItemList: Item[] = [
+  //   {
+  //     productId: '7864138029',
+  //     quantity: 1,
+  //   },
+  // ];
+  const elevenStreetItemList: Item[] = cartItems['11st'];
+
+  if (coupangItemList.length === 0 && elevenStreetItemList.length === 0) {
+    // TODO: TOAST로 고쳐야함. 근데 바꾸니까 에러뜸 일단 PASS
+    console.log('결제 정보가 없습니다.');
+    router.push('/cart');
+  }
 
   const coupangPromise = async ({
+    id,
+    pw,
     itemList,
     pincode = '',
     password = '',
     init = false,
   }: {
+    id: string;
+    pw: string;
     itemList?: Item[];
     pincode?: string;
     password?: string;
@@ -92,6 +130,8 @@ export default function PaymentMembership() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          id,
+          pw,
           pincode,
           password,
           itemList,
@@ -109,11 +149,15 @@ export default function PaymentMembership() {
   };
 
   const elevnStreetPromise = async ({
+    id,
+    pw,
     itemList,
     pincode = '',
     selectedTileList = '',
     isReCaptchaEnd = false,
   }: {
+    id: string;
+    pw: string;
     itemList?: Item[];
     pincode?: string;
     selectedTileList?: string;
@@ -127,6 +171,8 @@ export default function PaymentMembership() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          id,
+          pw,
           selectedTileList,
           isReCaptchaEnd,
           pincode,
@@ -143,108 +189,171 @@ export default function PaymentMembership() {
     }
   };
 
-  const handleBothClick = async ({
-    coupangItemList,
-    elevenStreetItemList,
-    pincode = '',
-    password = '',
-    selectedTileList = '',
-    isReCaptchaEnd = false,
-    init = false,
-  }: {
-    coupangItemList?: Item[];
-    elevenStreetItemList?: Item[];
-    pincode?: string;
-    password?: string;
-    selectedTileList?: string;
-    isReCaptchaEnd?: boolean;
-    init?: boolean;
-  }) => {
-    await Promise.all([
-      coupangPromise({
+  const getHandleBothClick =
+    ({
+      coupangId,
+      coupangPw,
+      elevenStreetId,
+      elevenStreetPw,
+    }: {
+      coupangId: string;
+      coupangPw: string;
+      elevenStreetId: string;
+      elevenStreetPw: string;
+    }) =>
+    async ({
+      coupangItemList,
+      elevenStreetItemList,
+      pincode = '',
+      password = '',
+      selectedTileList = '',
+      isReCaptchaEnd = false,
+      init = false,
+    }: {
+      coupangItemList?: Item[];
+      elevenStreetItemList?: Item[];
+      pincode?: string;
+      password?: string;
+      selectedTileList?: string;
+      isReCaptchaEnd?: boolean;
+      init?: boolean;
+    }) => {
+      await Promise.all([
+        coupangPromise({
+          id: coupangId,
+          pw: coupangPw,
+          itemList: coupangItemList,
+          pincode,
+          password,
+          init,
+        }),
+        elevnStreetPromise({
+          id: elevenStreetId,
+          pw: elevenStreetPw,
+          itemList: elevenStreetItemList,
+          selectedTileList,
+          isReCaptchaEnd,
+        }),
+      ]);
+    };
+
+  const getHandleCoupangClick =
+    ({ id, pw }: { id: string; pw: string }) =>
+    async ({
+      coupangItemList,
+      pincode = '',
+      password = '',
+      init = false,
+    }: {
+      coupangItemList?: Item[];
+      pincode?: string;
+      password?: string;
+      init?: boolean;
+    }) => {
+      await coupangPromise({
+        id,
+        pw,
         itemList: coupangItemList,
         pincode,
         password,
         init,
-      }),
-      elevnStreetPromise({
+      });
+    };
+
+  const getHandleElevenStreetClick =
+    ({ id, pw }: { id: string; pw: string }) =>
+    async ({
+      elevenStreetItemList,
+      selectedTileList = '',
+      isReCaptchaEnd = false,
+    }: {
+      elevenStreetItemList?: Item[];
+      selectedTileList?: string;
+      isReCaptchaEnd?: boolean;
+    }) => {
+      await elevnStreetPromise({
+        id,
+        pw,
         itemList: elevenStreetItemList,
         selectedTileList,
         isReCaptchaEnd,
-      }),
-    ]);
-  };
+      });
+    };
 
-  const handleCoupangClick = async ({
-    coupangItemList,
-    pincode = '',
-    password = '',
-    init = false,
-  }: {
-    coupangItemList?: Item[];
-    pincode?: string;
-    password?: string;
-    init?: boolean;
-  }) => {
-    await coupangPromise({
-      itemList: coupangItemList,
-      pincode,
-      password,
-      init,
-    });
-  };
+  // const platformData = {
+  //   code: 200,
+  //   status: 'OK',
+  //   message: '플랫폼 계정 조회 성공',
+  //   data: {
+  //     platformInfos: [
+  //       {
+  //         platformName: 'COUPANG',
+  //         id: 'hanaro@hanaro.com',
+  //         pw: 'test1234',
+  //       },
+  //       {
+  //         platformName: 'COUPANG',
+  //         id: 'hanaro@hanaro.com',
+  //         pw: 'test1234',
+  //       },
+  //     ],
+  //   },
+  // };
 
-  const handleElevenStreetClick = async ({
-    elevenStreetItemList,
-    selectedTileList = '',
-    isReCaptchaEnd = false,
-  }: {
-    elevenStreetItemList?: Item[];
-    selectedTileList?: string;
-    isReCaptchaEnd?: boolean;
-  }) => {
-    await elevnStreetPromise({
-      itemList: elevenStreetItemList,
-      selectedTileList,
-      isReCaptchaEnd,
-    });
-  };
-
-  const platformData = {
-    code: 200,
-    status: 'OK',
-    message: '플랫폼 계정 조회 성공',
-    data: {
-      platformInfos: [
-        {
-          platformName: 'COUPANG',
-          id: 'hanaro@hanaro.com',
-          pw: 'test1234',
-        },
-        {
-          platformName: 'COUPANG',
-          id: 'hanaro@hanaro.com',
-          pw: 'test1234',
-        },
-      ],
-    },
-  };
-
-  const isLoading = false;
+  // const isLoading = false;
 
   if (!platformData || !platformData.data || isLoading) return <></>;
 
-  const PLATFORM_LIST = ['COUPANG', '11ST'];
+  const PLATFORM_LIST: Platform[] = ['COUPANG', '11ST'];
 
-  // TODO: 수정 필요
+  // TODO: 수정 필요 : 3개 등록되어있을 수 있음.
   const isActive =
     platformData.data.platformInfos.length === PLATFORM_LIST.length
       ? true
       : false;
 
+  const getPlatformInfo = (pName: Platform) =>
+    platformData.data?.platformInfos.find(
+      ({ platformName }) => platformName === pName
+    );
+
+  const platformInfos = PLATFORM_LIST.map(getPlatformInfo);
+
+  const handleBothClick = getHandleBothClick({
+    coupangId: platformInfos[0]?.id ?? '',
+    coupangPw: platformInfos[0]?.password ?? '',
+    elevenStreetId: platformInfos[1]?.id ?? '',
+    elevenStreetPw: platformInfos[1]?.password ?? '',
+  });
+
+  const handleCoupangClick = getHandleCoupangClick({
+    id: platformInfos[0]?.id ?? '',
+    pw: platformInfos[0]?.password ?? '',
+  });
+
+  const handleElevenStreetClick = getHandleElevenStreetClick({
+    id: platformInfos[1]?.id ?? '',
+    pw: platformInfos[1]?.password ?? '',
+  });
+
   const handleLinking = (shop: string) => {
     router.push(`/mypage/membership/${shop}?from=payments`);
   };
+
+  if (coupangResponse && elevenStreetResponse) {
+    if (
+      coupangResponse.status === 'C_COMPLETED' &&
+      elevenStreetResponse.status === '11_COMPLETED'
+    ) {
+      console.log('결제 완료');
+      router.push('/');
+      // postPurchaseMutate({
+      //   purchaseList: selectedItems,
+      //   totalPrice: calculateTotalPrice(),
+      //   totalDiscountPrice: calculateTotalSavings(),
+      // });
+    }
+  }
 
   return (
     <div className='mt-[1.625rem] pb-10 w-full'>

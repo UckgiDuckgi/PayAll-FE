@@ -1,19 +1,37 @@
 'use client';
 
-import { OrderInfo } from '@/app/api/payment-details/11st/route';
-import { GetCookieResponse } from '@/app/api/payment-details/naverpay/route';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { QUERY_KEYS } from '@/constants/queryKey';
 import { API_ROUTE } from '@/constants/route';
+import { useGenericQuery } from '@/hooks/query/globalQuery';
+import { Platform } from '@/types';
+import { PlatformType } from '@/types/authType';
+import { GetCookieResponse, TransformedOrder } from '@/types/payment';
 import { useState } from 'react';
+import { getPlatform } from '@/lib/api';
 import { formatCookies } from '@/lib/utils';
 
 export default function ElevenStreetPayments() {
-  const [serverData, setServerData] = useState<OrderInfo[] | null>(null);
+  const [serverData, setServerData] = useState<TransformedOrder[] | null>(null);
 
   const [naverPayResponse, setNaverPayResponse] =
     useState<GetCookieResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  const { resData: platformData, isLoading: isPlatformLoading } =
+    useGenericQuery<PlatformType>([QUERY_KEYS.PLATFORM], () => getPlatform());
+
+  if (isPlatformLoading) {
+    return <>Loading...</>;
+  }
+
+  const getPlatformInfo = (pName: Platform) =>
+    platformData.data?.platformInfos.find(
+      ({ platformName }) => platformName === pName
+    );
+
+  const platformInfo = getPlatformInfo('11ST');
 
   const handleOnClick = async () => {
     try {
@@ -47,11 +65,12 @@ export default function ElevenStreetPayments() {
         },
         body: JSON.stringify({
           url: 'https://buy.11st.co.kr/my11st/order/BuyManager.tmall',
-          cookie: formatCookies(naverPayResponse?.result ?? []),
           shDateFrom: '20200701',
           shDateTo: '20250119',
           pageNumber: 1,
           rows: 10,
+          id: platformInfo?.id,
+          pw: platformInfo?.password,
         }),
       });
       const { result } = await response.json();
@@ -93,39 +112,40 @@ export default function ElevenStreetPayments() {
         {serverData ? (
           <div className='pt-2'>
             <div className='flex justify-between'>
-              <span className='w-1/5'>구매일자</span>
-              <span className='w-1/5'>상품명</span>
-              <span className='w-1/5'>가격</span>
-              <span className='w-1/5'>수량</span>
-              <span className='w-1/5'>배송비</span>
+              <span className='w-1/3'>구매일자</span>
+              <span className='w-1/3'>총가격</span>
             </div>
             <Separator />
-            {serverData.map(
-              (
-                {
-                  orderDate,
-                  productInfo,
-                  productPrice,
-                  productAmount,
-                  shippingFee,
-                },
-                idx
-              ) => (
-                <div key={idx}>
-                  <Separator />
+            {serverData.map(({ payment_time, purchase_product_list }, idx) => (
+              <>
+                <Separator />
 
-                  <div className='flex flex-col'>
-                    <div className='flex'>
-                      <span className='w-1/4'>{orderDate}</span>
-                      <span className='w-1/4'>{productInfo}</span>
-                      <span className='w-1/4'>{productPrice}</span>
-                      <span className='w-1/4'>{productAmount}</span>
-                      <span className='w-1/4'>{shippingFee}</span>
-                    </div>
+                <div className='flex flex-col' key={idx}>
+                  <div className='flex'>
+                    <span className='w-1/3'>
+                      {new Date(payment_time).toLocaleDateString()}
+                    </span>
                   </div>
+                  <Separator />
+                  {purchase_product_list.map(
+                    ({ product_name, price, quantity }, idx) => {
+                      return (
+                        <>
+                          <Separator />
+
+                          <div className='flex' key={idx + 100}>
+                            <span className='w-1/3'>{product_name}</span>
+                            <span className='w-1/3'>{quantity}</span>
+                            <span className='w-1/3'>{price}</span>
+                          </div>
+                          <Separator />
+                        </>
+                      );
+                    }
+                  )}
                 </div>
-              )
-            )}
+              </>
+            ))}
           </div>
         ) : (
           <>Loading...</>

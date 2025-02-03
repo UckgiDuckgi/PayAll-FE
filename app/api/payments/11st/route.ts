@@ -13,13 +13,15 @@ export type Item = {
 };
 
 export type ElevenStreetRequest = {
+  id: string;
+  pw: string;
   selectedTileList: string;
   itemList: Item[];
   isReCaptchaEnd: boolean;
 };
 
 export async function POST(request: Request) {
-  const { itemList } = (await request.json()) as ElevenStreetRequest;
+  const { id, pw, itemList } = (await request.json()) as ElevenStreetRequest;
 
   const playwrightActionsProps: PlaywrightActionsProps<ElevenStreetElementSelector> =
     {
@@ -92,8 +94,6 @@ export async function POST(request: Request) {
     // const pw = process.env.ELEVEN_STREET_PW ?? '';
     // await elevenStreetActions.signIn({ id, pw });
 
-    const id = process.env.KAKAO_ID ?? '';
-    const pw = process.env.KAKAO_PW ?? '';
     await elevenStreetActions.kakaoSignIn({ id, pw });
 
     await elevenStreetActions.clickModal();
