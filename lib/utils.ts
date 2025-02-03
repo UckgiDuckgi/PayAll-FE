@@ -24,6 +24,7 @@ export const showToast = (toast: any, description: string) => {
 export const parsePaymentType = (paymentType: PaymentType) => {
   if (paymentType === 'ONLINE') return '온라인';
   if (paymentType === 'OFFLINE') return '오프라인';
+  if (paymentType === 'PAYALL') return 'PayAll';
   return '통합';
 };
 

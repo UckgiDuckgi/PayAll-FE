@@ -48,7 +48,7 @@ export const useGenericMutation = <TVariables>(
 export const useGenericQuery = <TData>(
   queryKey: QueryKey,
   queryFn: QueryFn<TData>,
-  options?: UseQueryOptions<TData, Error>
+  options?: Omit<UseQueryOptions<TData, Error>, 'queryKey' | 'queryFn'>
 ) => {
   const { data, isLoading } = useQuery<TData, Error>({
     queryKey,
