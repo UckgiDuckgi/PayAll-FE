@@ -106,17 +106,17 @@ export const getCoupangActions = async ({
 
       await page.locator(buttonOrderSelector).click();
       console.log('Order Button Clicked!');
-      await delay(Math.random() * DELAY + RANGE);
+      await delay(Math.random() * (DELAY + 1000) + RANGE);
 
       await page.locator(buttonPaymentSelector).click();
       console.log('Payment Button Clicked!');
-      await delay(Math.random() * DELAY + RANGE);
+      await delay(Math.random() * (DELAY + 3000) + RANGE);
 
-      await delay(Math.random() * (DELAY + 2000) + RANGE);
       const screenshotBuffer = await page
         .locator(modalPaymentSelector)
-        .screenshot();
+        .screenshot({ timeout: 10000, animations: 'disabled' });
 
+      console.log('Screenshot Completed! ~ Coupang');
       sessionBrowserManager.status = 'PAYMENT';
       return screenshotBuffer;
     },

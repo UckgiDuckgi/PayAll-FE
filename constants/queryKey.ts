@@ -33,4 +33,6 @@ export const QUERY_KEYS: Record<string, string> = {
   USER: 'user',
   PLATFORM: 'platform',
   POST_PLATFORM: 'post-platform',
+
+  PAYMENT_DETAILS: 'payment-details',
 };

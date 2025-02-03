@@ -1,13 +1,12 @@
 import { getCookies, paymentClose } from '@/actions/payment/paymentActions';
+import { COUPANG_SIGNIN_URL } from '@/constants/url';
 import { NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
 
-const SIGNIN_URL = 'https://mc.coupang.com/ssr/desktop/order/list';
-
 export async function GET() {
   const cookies = await getCookies({
-    signInUrl: SIGNIN_URL,
+    signInUrl: COUPANG_SIGNIN_URL,
     idSelector: '._loginIdInput',
     pwSelector: '._loginPasswordInput',
     buttonSelector: '.login__button--submit',

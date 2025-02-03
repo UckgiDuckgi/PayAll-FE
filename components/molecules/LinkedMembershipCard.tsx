@@ -8,7 +8,7 @@ type AccountProps = {
   onLinkClick: () => void;
 };
 
-export const LinkedAccount = ({
+export const LinkedMembershipCard = ({
   shop,
   isLinked,
   id,
@@ -16,9 +16,12 @@ export const LinkedAccount = ({
 }: AccountProps) => {
   return (
     <>
-      <div className='mb-14'>
+      <div className='mb-6 bg-deepDarkGrey rounded-[1.5rem] px-6 py-8'>
         <div className='flex justify-between mb-6'>
-          <IconIndicator src={`/images/${shop}.png`} height={35} />
+          <IconIndicator
+            src={`/images/vendors/${shop.toLowerCase()}.png`}
+            height={35}
+          />
           {isLinked ? (
             <div className='flex items-center space-x-2'>
               <CircleCheck className='text-main text-xs' />
@@ -26,7 +29,7 @@ export const LinkedAccount = ({
             </div>
           ) : (
             <button
-              className='text-white bg-darkGrey rounded-sm px-5 py-2'
+              className='text-white bg-darkGrey rounded-sm px-5 py-2 hover:bg-[#484848]'
               onClick={onLinkClick}
             >
               연동하기
@@ -34,7 +37,7 @@ export const LinkedAccount = ({
           )}
         </div>
 
-        <div className='space-y-5'>
+        <div className='space-y-3'>
           <div>
             <div className='text-base font-bold text-left w-full text-darkGrey mb-[0.625rem]'>
               아이디

@@ -12,6 +12,8 @@ export type Item = {
 };
 
 export type CoupangRequest = {
+  id: string;
+  pw: string;
   pincode: string;
   password: string;
   itemList: Item[];
@@ -25,7 +27,7 @@ export type CoupangResponse = {
 };
 
 export async function POST(request: Request) {
-  const { pincode, password, itemList } =
+  const { id, pw, pincode, password, itemList } =
     (await request.json()) as CoupangRequest;
 
   const playwrightActionsProps: PlaywrightActionsProps<CoupangElementSelector> =
@@ -59,9 +61,6 @@ export async function POST(request: Request) {
 
   try {
     const coupangActions = await getCoupangActions(playwrightActionsProps);
-
-    const id = process.env.COUPANG_ID ?? '';
-    const pw = process.env.COUPANG_PW ?? '';
 
     await coupangActions.signIn({ id, pw });
     // await coupangSignIn();
@@ -101,10 +100,10 @@ export async function POST(request: Request) {
       status: 'C_COMPLETED',
       result: '',
     } as CoupangResponse);
-  } catch {
-    console.log('error');
+  } catch (error) {
+    console.log('error', error);
     return NextResponse.json({
-      success: true,
+      success: false,
       status: 'C_ERROR',
       result: '',
     } as CoupangResponse);
