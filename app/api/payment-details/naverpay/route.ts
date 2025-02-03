@@ -58,6 +58,7 @@ export async function POST(request: Request) {
   const response = await fetch(url, {
     method: 'GET',
     headers: {
+      'User-agent': 'PostmanRuntime/7.43.0',
       Cookie: formatCookies(cookies),
     },
   });
