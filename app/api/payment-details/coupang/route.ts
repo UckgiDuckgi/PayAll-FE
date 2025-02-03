@@ -42,8 +42,6 @@ function transformCoupangOrders(
 export async function POST(request: Request) {
   // Request
   const { url, requestYear, pageIndex, size, id, pw } = await request.json();
-  console.log('🚀 ~ POST ~ id:', id);
-  console.log('🚀 ~ POST ~ pw:', pw);
 
   if (!url) {
     return NextResponse.json(
@@ -76,7 +74,6 @@ export async function POST(request: Request) {
   const response = await fetch(url + `?${param}`, {
     method: 'GET',
     headers: {
-      'User-Agent': 'PostmanRuntime/7.32.3',
       Cookie: formatCookies(cookies),
     },
   });
