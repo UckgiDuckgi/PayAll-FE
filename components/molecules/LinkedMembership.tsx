@@ -18,7 +18,10 @@ export const LinkedAccount = ({
     <>
       <div className='mb-14'>
         <div className='flex justify-between mb-6'>
-          <IconIndicator src={`/images/${shop}.png`} height={35} />
+          <IconIndicator
+            src={`/images/${shop.toLowerCase()}.png`}
+            height={35}
+          />
           {isLinked ? (
             <div className='flex items-center space-x-2'>
               <CircleCheck className='text-main text-xs' />

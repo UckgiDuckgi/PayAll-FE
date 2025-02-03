@@ -55,12 +55,10 @@ function RecommendationCardsContent() {
                   })
                 }
                 content={
-                  <div key={productId}>
-                    <CardBenefitContent
-                      selectedIdx={selectedIdx}
-                      productId={productId}
-                    />
-                  </div>
+                  <CardBenefitContent
+                    selectedIdx={selectedIdx}
+                    productId={productId}
+                  />
                 }
               >
                 <div>
