@@ -37,7 +37,10 @@ export default function MembershipDetail({
 
   return (
     <div className='mt-8'>
-      <IconIndicator src={`/images/${params.shop}.png`} height={30} />
+      <IconIndicator
+        src={`/images/vendors/${params.shop.toLowerCase()}.png`}
+        height={30}
+      />
       <div className='space-y-[1.375rem] my-16'>
         <LoginInput title='아이디' onChange={setId} />
         <LoginInput title='비밀번호' onChange={setPassword} type='password' />
