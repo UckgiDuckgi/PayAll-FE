@@ -55,17 +55,15 @@ function RecommendationSubContent() {
                   })
                 }
                 content={
-                  <div key={productId}>
-                    <CardBenefitContent
-                      selectedIdx={selectedIdx}
-                      productId={productId}
-                    />
-                  </div>
+                  <CardBenefitContent
+                    selectedIdx={selectedIdx}
+                    productId={productId}
+                  />
                 }
               >
                 <div>
                   <CardInfoCard
-                    cardImg={`/images/subscribes/${productId}.png`}
+                    cardImg={`/images/products/${productId}.png`}
                     cardName={productName}
                     cardDescription={productDescription}
                   />

@@ -60,7 +60,7 @@ export const ProductCard = ({ searchResult }: { searchResult: Search }) => {
           <div className='text-white w-full font-bold text-base flex gap-1 items-center'>
             {searchResult.storeList[seletedProduct].price.toLocaleString()}원
             <IconIndicator
-              src={`/images/${searchResult.storeList[seletedProduct].shopName}.png`}
+              src={`/images/vendors/${searchResult.storeList[seletedProduct].shopName.toLowerCase()}.png`}
               height={16}
             />
           </div>
@@ -77,7 +77,7 @@ export const ProductCard = ({ searchResult }: { searchResult: Search }) => {
                     원
                   </span>
                   <IconIndicator
-                    src={`/images/${searchResult.storeList[seletedProduct].shopName}.png`}
+                    src={`/images/vendors/${searchResult.storeList[seletedProduct].shopName.toLowerCase()}.png`}
                     height={13}
                   />
                 </div>
