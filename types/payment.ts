@@ -26,7 +26,7 @@ type NaverPayStatus = {
 
 export type NaverPayServiceType = 'ORDER' | 'CONTENTS';
 
-type NaverPayItem = {
+export type NaverPayItem = {
   id: string;
   serviceType: NaverPayServiceType;
   status: NaverPayStatus;
@@ -35,6 +35,9 @@ type NaverPayItem = {
   date: number;
   productDetailUrl: string;
   orderDetailUrl: string | null;
+  additionalData: {
+    orderQuantity: number;
+  };
 };
 
 type NaverPayResult = {
@@ -51,6 +54,11 @@ export type NaverPayResponse = {
   result: NaverPayResult;
 };
 
+export type GetCookieResponse = {
+  success: boolean;
+  result: Cookie[];
+};
+
 export type CoupangItem = {
   vendorItemId: number;
   vendorItemName: string;
@@ -65,9 +73,21 @@ type bundleRecipt = {
 export type CoupangOrderList = {
   orderId: number;
   title: string;
-  orderedAt: string;
+  orderedAt: number;
   totalProductPrice: number;
   bundleReceiptList: bundleRecipt[];
+};
+
+export type PurchaseProduct = {
+  product_name: string;
+  price: number;
+  quantity: number;
+};
+
+export type TransformedOrder = {
+  payment_time: number;
+  payment_place: string;
+  purchase_product_list: PurchaseProduct[];
 };
 
 export type CoupangPostResponse = {
@@ -97,4 +117,13 @@ export type ElevenStreetResponse = {
     | '11_COMPLETED'
     | '11_ERROR';
   result: { base64Image: string; tableSize: number };
+};
+
+export type ElevenStreetOrderList = {
+  orderId: string;
+  orderDate: string;
+  productInfo: string;
+  productPrice: string;
+  productAmount: number;
+  shippingFee: string;
 };

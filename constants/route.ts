@@ -1,18 +1,18 @@
 export const API_ROUTE = {
   api: '/api',
   payments: {
-    coupang: '/api/payments/coupang',
-    elevenstreet: '/api/payments/11st',
+    coupang: `${process.env.NEXT_PUBLIC_PLAYWRIGHT_SERVER_URL}/api/payments/coupang`,
+    elevenstreet: `${process.env.NEXT_PUBLIC_PLAYWRIGHT_SERVER_URL}/api/payments/11st`,
   },
   payment_details: {
-    coupang: '/api/payment-details/coupang',
-    elevenstreet: '/api/payment-details/11st',
-    naverpay: '/api/payment-details/naverpay',
+    coupang: `${process.env.NEXT_PUBLIC_PLAYWRIGHT_SERVER_URL}/api/payment-details/coupang`,
+    elevenstreet: `${process.env.NEXT_PUBLIC_PLAYWRIGHT_SERVER_URL}/api/payment-details/11st`,
+    naverpay: `${process.env.NEXT_PUBLIC_PLAYWRIGHT_SERVER_URL}/api/payment-details/naverpay`,
   },
   cookies: {
-    coupang: '/api/cookies/coupang',
-    elevenstreet: '/api/cookies/11st',
-    naverpay: '/api/cookies/naverpay',
+    coupang: `${process.env.NEXT_PUBLIC_PLAYWRIGHT_SERVER_URL}/api/cookies/coupang`,
+    elevenstreet: `${process.env.NEXT_PUBLIC_PLAYWRIGHT_SERVER_URL}/api/cookies/11st`,
+    naverpay: `${process.env.NEXT_PUBLIC_PLAYWRIGHT_SERVER_URL}/api/cookies/naverpay`,
   },
 };
 

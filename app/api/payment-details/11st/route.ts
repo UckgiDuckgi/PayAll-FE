@@ -1,19 +1,19 @@
+import {
+  getCookiesWithKakaoAuth,
+  paymentClose,
+} from '@/actions/payment/paymentActions';
+import { ELEVENSTREET_SIGNIN_URL } from '@/constants/url';
+import { ElevenStreetOrderList, TransformedOrder } from '@/types/payment';
 import * as cheerio from 'cheerio';
 import { NextResponse } from 'next/server';
+import { convertDateToTimestamp, formatCookies } from '@/lib/utils';
 
-export type OrderInfo = {
-  orderId: string;
-  orderDate: string;
-  productInfo: string;
-  productPrice: string;
-  productAmount: number;
-  shippingFee: string;
-};
+export const dynamic = 'force-dynamic';
 
-function parseOrderTable(html: string): OrderInfo[] {
+function parseOrderTable(html: string): ElevenStreetOrderList[] {
   const $ = cheerio.load(html); // Load the HTML content
   const rows = $('tbody tr');
-  const orders: OrderInfo[] = [];
+  const orders: ElevenStreetOrderList[] = [];
 
   rows.each((_index, row) => {
     const orderDateElement = $(row).find('td:first-child .odr_date');
@@ -61,17 +61,56 @@ function parseOrderTable(html: string): OrderInfo[] {
   return orders;
 }
 
+function transformElevenStreetOrder({
+  productPrice,
+  orderDate,
+  productInfo,
+  productAmount,
+}: ElevenStreetOrderList): TransformedOrder {
+  const price = parseFloat(productPrice.replace(/,/g, ''));
+
+  return {
+    payment_time: convertDateToTimestamp(orderDate),
+    payment_place: '11번가', // ElevenStreet 주문은 보통 "11번가"로 표기합니다.
+    purchase_product_list: [
+      {
+        product_name: productInfo,
+        price,
+        quantity: productAmount,
+      },
+    ],
+  };
+}
+
+function transformElevenStreetOrders(
+  orders: ElevenStreetOrderList[]
+): TransformedOrder[] {
+  return orders.map(transformElevenStreetOrder);
+}
+
 export async function POST(request: Request) {
   // Request
-  const { url, cookie, shDateFrom, shDateTo, pageNumber, rows } =
+  const { url, shDateFrom, shDateTo, pageNumber, rows, id, pw } =
     await request.json();
 
-  if (!url || !cookie) {
+  if (!url) {
     return NextResponse.json(
       { error: 'clientData is required' },
       { status: 400 }
     );
   }
+
+  const cookies = await getCookiesWithKakaoAuth({
+    signInUrl: ELEVENSTREET_SIGNIN_URL,
+    buttonKakaoAuthSelector: '.c-sns__link.c-sns__link--kakao',
+    inputKakaoIdSelector: '#loginId--1',
+    inputKakaoPwSelector: '#password--2',
+    buttonKakaoSignInSelector: '.btn_g.highlight.submit',
+    id,
+    pw,
+  });
+
+  await paymentClose('ELEVENSTREET');
 
   const param = new URLSearchParams({
     method: 'getCancelRequestListAjax',
@@ -86,11 +125,15 @@ export async function POST(request: Request) {
   const response = await fetch(url + `?${param}`, {
     method: 'GET',
     headers: {
-      Cookie: cookie,
+      Cookie: formatCookies(cookies),
     },
   });
   const rawString = await response.text();
   const data = parseOrderTable(rawString);
+  console.log('🚀 ~ POST ~ data:', transformElevenStreetOrders(data));
 
-  return NextResponse.json({ success: true, result: data });
+  return NextResponse.json({
+    success: true,
+    result: transformElevenStreetOrders(data),
+  });
 }

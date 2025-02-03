@@ -1,13 +1,12 @@
 import { getCookies, paymentClose } from '@/actions/payment/paymentActions';
+import { NAVERPAY_SIGNIN_URL } from '@/constants/url';
 import { NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
 
-const SIGNIN_URL = 'https://new-m.pay.naver.com/pcpay';
-
 export async function GET() {
   const cookies = await getCookies({
-    signInUrl: SIGNIN_URL,
+    signInUrl: NAVERPAY_SIGNIN_URL,
     idSelector: '#id',
     pwSelector: '#pw',
     buttonSelector: '#submit_btn',

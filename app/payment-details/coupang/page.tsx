@@ -1,27 +1,37 @@
 'use client';
 
-import { GetCookieResponse } from '@/app/api/payment-details/naverpay/route';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { QUERY_KEYS } from '@/constants/queryKey';
 import { API_ROUTE } from '@/constants/route';
-import { CoupangOrderList } from '@/types/payment';
+import { useGenericQuery } from '@/hooks/query/globalQuery';
+import { Platform } from '@/types';
+import { PlatformType } from '@/types/authType';
+import { GetCookieResponse, TransformedOrder } from '@/types/payment';
 import { useState } from 'react';
+import { getPlatform } from '@/lib/api';
 import { formatCookies } from '@/lib/utils';
 
 export default function CoupangPayments() {
-  const [serverData, setServerData] = useState<CoupangOrderList[] | null>(null);
+  const [serverData, setServerData] = useState<TransformedOrder[] | null>(null);
 
   const [naverPayResponse, setNaverPayResponse] =
     useState<GetCookieResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  console.log(
-    (serverData ?? [
-      {
-        bundleReceiptList: 'test',
-      },
-    ])[0].bundleReceiptList
-  );
+  const { resData: platformData, isLoading: isPlatformLoading } =
+    useGenericQuery<PlatformType>([QUERY_KEYS.PLATFORM], () => getPlatform());
+
+  if (isPlatformLoading) {
+    return <>Loading...</>;
+  }
+
+  const getPlatformInfo = (pName: Platform) =>
+    platformData.data?.platformInfos.find(
+      ({ platformName }) => platformName === pName
+    );
+
+  const platformInfo = getPlatformInfo('COUPANG');
 
   const handleOnClick = async (): Promise<void> => {
     try {
@@ -55,10 +65,11 @@ export default function CoupangPayments() {
         },
         body: JSON.stringify({
           url: 'https://mc.coupang.com/ssr/api/myorders/model',
-          cookie: formatCookies(naverPayResponse?.result ?? []),
           requestYear: 2024,
-          pageIndex: 1,
+          pageIndex: 0,
           size: 10,
+          id: platformInfo?.id,
+          pw: platformInfo?.password,
         }),
       });
       const { result } = await response.json();
@@ -67,6 +78,8 @@ export default function CoupangPayments() {
       console.error('Error fetching data:', error);
     }
   };
+
+  console.log(serverData);
 
   return (
     <div className='w-[90%] mx-auto'>
@@ -104,48 +117,36 @@ export default function CoupangPayments() {
               <span className='w-1/3'>총가격</span>
             </div>
             <Separator />
-            {serverData.map(
-              ({
-                orderId,
-                orderedAt,
-                bundleReceiptList,
-                totalProductPrice,
-              }) => (
-                <>
-                  <Separator />
+            {serverData.map(({ payment_time, purchase_product_list }, idx) => (
+              <>
+                <Separator />
 
-                  <div className='flex flex-col' key={orderId}>
-                    <div className='flex'>
-                      <span className='w-1/3'>
-                        {new Date(orderedAt).toLocaleDateString()}
-                      </span>
-                      <span className='w-1/3'>{totalProductPrice}</span>
-                    </div>
-                    <Separator />
-                    {bundleReceiptList.map(({ vendorItems }) => {
-                      const {
-                        vendorItemId,
-                        vendorItemName,
-                        quantity,
-                        unitPrice,
-                      } = vendorItems[0];
+                <div className='flex flex-col' key={idx}>
+                  <div className='flex'>
+                    <span className='w-1/3'>
+                      {new Date(payment_time).toLocaleDateString()}
+                    </span>
+                  </div>
+                  <Separator />
+                  {purchase_product_list.map(
+                    ({ product_name, price, quantity }, idx) => {
                       return (
                         <>
                           <Separator />
 
-                          <div className='flex' key={vendorItemId}>
-                            <span className='w-1/3'>{vendorItemName}</span>
+                          <div className='flex' key={idx + 100}>
+                            <span className='w-1/3'>{product_name}</span>
                             <span className='w-1/3'>{quantity}</span>
-                            <span className='w-1/3'>{unitPrice}</span>
+                            <span className='w-1/3'>{price}</span>
                           </div>
                           <Separator />
                         </>
                       );
-                    })}
-                  </div>
-                </>
-              )
-            )}
+                    }
+                  )}
+                </div>
+              </>
+            ))}
           </div>
         ) : (
           <>Loading...</>

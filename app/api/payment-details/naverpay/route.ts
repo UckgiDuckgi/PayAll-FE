@@ -1,72 +1,71 @@
-import { Cookie, NaverPayResponse } from '@/types/payment';
+import { getCookies, paymentClose } from '@/actions/payment/paymentActions';
+import { NAVERPAY_SIGNIN_URL } from '@/constants/url';
+import {
+  NaverPayItem,
+  NaverPayResponse,
+  TransformedOrder,
+} from '@/types/payment';
 import { NextResponse } from 'next/server';
+import { formatCookies } from '@/lib/utils';
 
-export type GetCookieResponse = {
-  success: boolean;
-  result: Cookie[];
-};
+export const dynamic = 'force-dynamic';
 
-type NaverPaymentItem = {
-  name: string;
-  date: string;
-  price: number;
-};
-
-export type NaverPaymentList = {
-  items: NaverPaymentItem[];
-  totalPrice: number;
-};
+export function transformNaverPayResponse(
+  response: NaverPayResponse
+): TransformedOrder[] {
+  return response.result.items
+    .filter(({ status }: NaverPayItem) => status.name !== 'CANCELLED')
+    .map(({ date, product, additionalData }: NaverPayItem) => {
+      return {
+        payment_time: date,
+        payment_place: '네이버페이',
+        purchase_product_list: [
+          {
+            product_name: product.name,
+            price: product.price,
+            quantity: additionalData.orderQuantity,
+          },
+        ],
+      };
+    });
+}
 
 export async function POST(request: Request) {
   // Request
-  const { url, cookie } = await request.json();
+  const { url, id, pw } = await request.json();
 
-  if (!url || !cookie) {
+  if (!url) {
     return NextResponse.json(
       { error: 'clientData is required' },
       { status: 400 }
     );
   }
   console.log('url: ', url);
-  console.log('cookie: ', cookie);
+
+  const cookies = await getCookies({
+    signInUrl: NAVERPAY_SIGNIN_URL,
+    idSelector: '#id',
+    pwSelector: '#pw',
+    buttonSelector: '#submit_btn',
+    id,
+    pw,
+    key: 'NAVERPAY',
+  });
+
+  await paymentClose('NAVERPAY');
 
   // GET Naverpay Payment List
   const response = await fetch(url, {
     method: 'GET',
     headers: {
-      Cookie: cookie,
+      Cookie: formatCookies(cookies),
     },
   });
   const data = (await response.json()) as NaverPayResponse;
-  const { items } = data.result;
+  console.log('🚀 ~ POST ~ data:', data.result.items);
 
-  let totalPrice = 0;
-  const naverPaymentItems: NaverPaymentItem[] = [];
-  items.forEach(
-    ({
-      //   serviceType,
-      //   status,
-      //   merchantName,
-      product: {
-        name,
-        // imgUrl, infoUrl,
-        price,
-      },
-      date,
-      //   productDetailUrl,
-      //   orderDetailUrl,
-    }) => {
-      naverPaymentItems.push({
-        name,
-        date: new Date(date).toLocaleDateString(),
-        price,
-      });
-      totalPrice += price;
-    }
-  );
-  const naverPaymentList: NaverPaymentList = {
-    items: naverPaymentItems,
-    totalPrice,
-  };
-  return NextResponse.json({ success: true, result: naverPaymentList });
+  return NextResponse.json({
+    success: true,
+    result: transformNaverPayResponse(data),
+  });
 }

@@ -13,6 +13,11 @@ export const formatCookies = (cookies: Cookie[]) => {
   }, '');
 };
 
+export function convertDateToTimestamp(dateString: string): number {
+  const date = new Date(dateString);
+  return date.getTime();
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const showToast = (toast: any, description: string) => {
   toast({
