@@ -48,8 +48,8 @@ export default function MembershipDetail({
 
   const { mutate: mutatePaymentDetails } = useGenericMutation(
     [QUERY_KEYS.PAYMENT_DETAILS],
-    ({ payment_list }: { payment_list: TransformedOrder[] }) =>
-      postPaymentDetail({ payment_list })
+    ({ paymentList }: { paymentList: TransformedOrder[] }) =>
+      postPaymentDetail({ paymentList })
   );
 
   const getUrlByPlatform = () =>
@@ -97,7 +97,7 @@ export default function MembershipDetail({
 
       const { result } = await response.json();
 
-      mutatePaymentDetails({ payment_list: result });
+      mutatePaymentDetails({ paymentList: result });
     } catch (error) {
       console.error('Error fetching data:', error);
     }

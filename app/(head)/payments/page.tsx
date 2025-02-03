@@ -39,6 +39,7 @@ export default function PaymentMembership() {
   const router = useRouter();
 
   const cartItems = useAtomValue(shopCartAtom);
+  console.log('🚀 ~ PaymentMembership ~ cartItems:', cartItems);
   const purcahse = useAtomValue(purchaseAtom);
 
   const [isClicked, setIsClicked] = useState(false);
@@ -90,7 +91,6 @@ export default function PaymentMembership() {
   //   //   quantity: 1,
   //   // },
   // ];
-  const coupangItemList: Item[] = cartItems['coupang'];
 
   // const elevenStreetItemList: Item[] = [
   //   {
@@ -98,16 +98,49 @@ export default function PaymentMembership() {
   //     quantity: 1,
   //   },
   // ];
-  const elevenStreetItemList: Item[] = cartItems['11st'];
+
+  const PLATFORM_LIST: Platform[] = ['COUPANG', '11ST'];
+
+  const itemList = {
+    COUPANG: cartItems['coupang'],
+    '11ST': cartItems['11st'],
+    NAVER: [],
+  };
 
   useEffect(() => {
-    if (coupangItemList.length === 0 && elevenStreetItemList.length === 0) {
+    if (itemList['COUPANG'].length === 0 && itemList['11ST'].length === 0) {
       // TODO: TOAST로 고쳐야함. 근데 바꾸니까 에러뜸 일단 PASS
       console.log('결제 정보가 없습니다.');
       router.push('/cart');
+      return;
+    }
+
+    const isCompleted = PLATFORM_LIST.every((platform) => {
+      if (itemList[platform].length !== 0) {
+        if (platform === 'COUPANG' ? coupangResponse : elevenStreetResponse) {
+          if (
+            platform === 'COUPANG'
+              ? coupangResponse?.status === 'C_COMPLETED'
+              : elevenStreetResponse?.status === '11_COMPLETED'
+          ) {
+            return true;
+          }
+        }
+      } else {
+        return true;
+      }
+
+      return false;
+    });
+
+    if (isCompleted) {
+      console.log('결제 완료');
+      postPurchaseMutate(purcahse);
+      router.push('/');
+      return;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [coupangItemList.length, elevenStreetItemList.length]);
+  }, [coupangResponse, elevenStreetResponse]);
 
   const coupangPromise = async ({
     id,
@@ -306,8 +339,6 @@ export default function PaymentMembership() {
 
   if (!platformData || !platformData.data || isLoading) return <></>;
 
-  const PLATFORM_LIST: Platform[] = ['COUPANG', '11ST'];
-
   // TODO: 수정 필요 : 3개 등록되어있을 수 있음.
   const isActive =
     platformData.data.platformInfos.length === PLATFORM_LIST.length
@@ -342,17 +373,6 @@ export default function PaymentMembership() {
     router.push(`/mypage/membership/${shop}?from=payments`);
   };
 
-  if (coupangResponse && elevenStreetResponse) {
-    if (
-      coupangResponse.status === 'C_COMPLETED' &&
-      elevenStreetResponse.status === '11_COMPLETED'
-    ) {
-      console.log('결제 완료');
-      postPurchaseMutate(purcahse);
-      router.push('/');
-    }
-  }
-
   return (
     <div className='mt-[1.625rem] pb-10 w-full'>
       {PLATFORM_LIST.map((platform, idx) => {
@@ -361,31 +381,33 @@ export default function PaymentMembership() {
             ({ platformName }) => platformName === platform
           ) ?? false;
         return (
-          <PaymentMebershipCard
-            key={idx}
-            shop={platform}
-            isLinked={isContain}
-            id={
-              platformData.data?.platformInfos?.find(
-                ({ platformName }) => platformName === platform
-              )?.id
-            }
-            onLinkClick={() => handleLinking(platform)}
-            response={
-              platform === 'COUPANG' ? coupangResponse : elevenStreetResponse
-            }
-            isLoading={
-              platform === 'COUPANG' ? isCoupangLoading : isElevenStreetLoading
-            }
-            onButtonClick={
-              platform === 'COUPANG'
-                ? handleCoupangClick
-                : handleElevenStreetClick
-            }
-            itemList={
-              platform === 'COUPANG' ? coupangItemList : elevenStreetItemList
-            }
-          />
+          itemList[platform].length !== 0 && (
+            <PaymentMebershipCard
+              key={idx}
+              shop={platform}
+              isLinked={isContain}
+              id={
+                platformData.data?.platformInfos?.find(
+                  ({ platformName }) => platformName === platform
+                )?.id
+              }
+              onLinkClick={() => handleLinking(platform)}
+              response={
+                platform === 'COUPANG' ? coupangResponse : elevenStreetResponse
+              }
+              isLoading={
+                platform === 'COUPANG'
+                  ? isCoupangLoading
+                  : isElevenStreetLoading
+              }
+              onButtonClick={
+                platform === 'COUPANG'
+                  ? handleCoupangClick
+                  : handleElevenStreetClick
+              }
+              itemList={itemList[platform]}
+            />
+          )
         );
       })}
 
@@ -396,7 +418,18 @@ export default function PaymentMembership() {
           className='fixed bottom-[100px] z-10 w-[90%] max-w-[460.8px]'
           onClick={() => {
             setIsClicked(true);
-            handleBothClick({ coupangItemList, elevenStreetItemList });
+            if (itemList['COUPANG'].length && itemList['11ST'].length) {
+              handleBothClick({
+                coupangItemList: itemList['COUPANG'],
+                elevenStreetItemList: itemList['11ST'],
+              });
+            } else if (itemList['COUPANG'].length) {
+              handleCoupangClick({ coupangItemList: itemList['COUPANG'] });
+            } else if (itemList['11ST'].length) {
+              handleElevenStreetClick({
+                elevenStreetItemList: itemList['11ST'],
+              });
+            }
           }}
         >
           결제하기

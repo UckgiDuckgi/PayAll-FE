@@ -70,11 +70,11 @@ function transformElevenStreetOrder({
   const price = parseFloat(productPrice.replace(/,/g, ''));
 
   return {
-    payment_time: convertDateToTimestamp(orderDate),
-    payment_place: '11번가', // ElevenStreet 주문은 보통 "11번가"로 표기합니다.
-    purchase_product_list: [
+    paymentTime: convertDateToTimestamp(orderDate),
+    paymentPlace: '11번가', // ElevenStreet 주문은 보통 "11번가"로 표기합니다.
+    purchaseProductList: [
       {
-        product_name: productInfo,
+        productName: productInfo,
         price,
         quantity: productAmount,
       },
