@@ -19,7 +19,7 @@ export const LinkedAccount = ({
       <div className='mb-14'>
         <div className='flex justify-between mb-6'>
           <IconIndicator
-            src={`/images/${shop.toLowerCase()}.png`}
+            src={`/images/vendors/${shop.toLowerCase()}.png`}
             height={35}
           />
           {isLinked ? (

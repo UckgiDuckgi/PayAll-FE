@@ -46,7 +46,10 @@ export const CartProductCard = ({
             <X />
           </button>
         </div>
-        <IconIndicator src={`/images/${shop}.png`} height={12} />
+        <IconIndicator
+          src={`/images/vendors/${shop.toLowerCase()}.png`}
+          height={12}
+        />
         <div className='flex justify-between'>
           <Counter
             pid={productId}

@@ -25,7 +25,10 @@ export const VenderCard = ({
           ]
         )}
       >
-        <IconIndicator src={`/images/${shop}.png`} height={13} />
+        <IconIndicator
+          src={`/images/vendors/${shop.toLowerCase()}.png`}
+          height={13}
+        />
         <div className='text-white text-xs font-bold text-right'>
           {price.toLocaleString()}원
         </div>

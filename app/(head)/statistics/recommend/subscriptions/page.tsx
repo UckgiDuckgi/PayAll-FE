@@ -63,7 +63,7 @@ function RecommendationSubContent() {
               >
                 <div>
                   <CardInfoCard
-                    cardImg={`/images/subscribes/${productId}.png`}
+                    cardImg={`/images/products/${productId}.png`}
                     cardName={productName}
                     cardDescription={productDescription}
                   />
