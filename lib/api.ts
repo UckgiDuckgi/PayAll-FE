@@ -207,6 +207,6 @@ export const postPaymentDetail = async ({
 }: {
   payment_list: TransformedOrder[];
 }) =>
-  await apiCall.post(BASE_URL + '/accounts/payments/detail', {
+  await apiCall.post(BASE_URL + '/accounts/payments/details', {
     payment_list,
   });
