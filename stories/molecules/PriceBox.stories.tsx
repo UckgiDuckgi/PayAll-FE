@@ -1,9 +1,9 @@
-import { TotalPriceBox } from '@/components/molecules/sion/TotalPriceBox';
+import { PriceBox } from '@/components/molecules/sion/PriceBox';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
-  title: 'Molecules/TotalPriceBox',
-  component: TotalPriceBox,
+  title: 'Molecules/PriceBox',
+  component: PriceBox,
   tags: ['autodocs'],
   decorators: [
     (Story) => (
@@ -16,10 +16,10 @@ const meta = {
     totalPrice: { control: 'number' },
     deliveryFee: { control: 'number' },
   },
-} satisfies Meta<typeof TotalPriceBox>;
+} satisfies Meta<typeof PriceBox>;
 
 export default meta;
-type Story = StoryObj<typeof TotalPriceBox>;
+type Story = StoryObj<typeof PriceBox>;
 
 export const Default: Story = {
   args: {
