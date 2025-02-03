@@ -79,15 +79,15 @@ export type CoupangOrderList = {
 };
 
 export type PurchaseProduct = {
-  product_name: string;
+  productName: string;
   price: number;
   quantity: number;
 };
 
 export type TransformedOrder = {
-  payment_time: number;
-  payment_place: string;
-  purchase_product_list: PurchaseProduct[];
+  paymentTime: number;
+  paymentPlace: string;
+  purchaseProductList: PurchaseProduct[];
 };
 
 export type CoupangPostResponse = {

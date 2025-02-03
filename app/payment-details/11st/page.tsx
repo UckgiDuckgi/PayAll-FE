@@ -116,25 +116,25 @@ export default function ElevenStreetPayments() {
               <span className='w-1/3'>총가격</span>
             </div>
             <Separator />
-            {serverData.map(({ payment_time, purchase_product_list }, idx) => (
+            {serverData.map(({ paymentTime, purchaseProductList }, idx) => (
               <>
                 <Separator />
 
                 <div className='flex flex-col' key={idx}>
                   <div className='flex'>
                     <span className='w-1/3'>
-                      {new Date(payment_time).toLocaleDateString()}
+                      {new Date(paymentTime).toLocaleDateString()}
                     </span>
                   </div>
                   <Separator />
-                  {purchase_product_list.map(
-                    ({ product_name, price, quantity }, idx) => {
+                  {purchaseProductList.map(
+                    ({ productName, price, quantity }, idx) => {
                       return (
                         <>
                           <Separator />
 
                           <div className='flex' key={idx + 100}>
-                            <span className='w-1/3'>{product_name}</span>
+                            <span className='w-1/3'>{productName}</span>
                             <span className='w-1/3'>{quantity}</span>
                             <span className='w-1/3'>{price}</span>
                           </div>

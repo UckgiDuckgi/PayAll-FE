@@ -17,11 +17,11 @@ function transformNaverPayResponse(
     .filter(({ status }: NaverPayItem) => status.name !== 'CANCELLED')
     .map(({ date, product, additionalData }: NaverPayItem) => {
       return {
-        payment_time: date,
-        payment_place: '네이버페이',
-        purchase_product_list: [
+        paymentTime: date,
+        paymentPlace: '네이버페이',
+        purchaseProductList: [
           {
-            product_name: product.name,
+            productName: product.name,
             price: product.price,
             quantity: additionalData.orderQuantity,
           },

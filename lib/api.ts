@@ -203,10 +203,10 @@ export const getUserInfo = async () => {
 };
 
 export const postPaymentDetail = async ({
-  payment_list,
+  paymentList,
 }: {
-  payment_list: TransformedOrder[];
+  paymentList: TransformedOrder[];
 }) =>
   await apiCall.post(BASE_URL + '/accounts/payments/details', {
-    payment_list,
+    paymentList,
   });

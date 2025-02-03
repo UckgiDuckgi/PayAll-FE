@@ -24,7 +24,7 @@ export type CartItem = {
   quantity: number;
 };
 
-export type shopCartItem = {
+export type ShopCartItem = {
   coupang: CartItem[];
   '11st': CartItem[];
 };

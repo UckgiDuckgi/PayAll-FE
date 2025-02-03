@@ -14,22 +14,20 @@ function transformCoupangOrder({
   orderedAt,
   bundleReceiptList,
 }: CoupangOrderList): TransformedOrder {
-  const payment_time = orderedAt;
+  const paymentPlace = '쿠팡';
 
-  const payment_place = '쿠팡';
-
-  const purchase_product_list: PurchaseProduct[] = bundleReceiptList
+  const purchaseProductList: PurchaseProduct[] = bundleReceiptList
     .flatMap(({ vendorItems }) => vendorItems)
     .map(({ vendorItemName, unitPrice, quantity }) => ({
-      product_name: vendorItemName,
+      productName: vendorItemName,
       price: unitPrice,
       quantity: quantity,
     }));
 
   return {
-    payment_time,
-    payment_place,
-    purchase_product_list,
+    paymentTime: orderedAt,
+    paymentPlace,
+    purchaseProductList,
   };
 }
 
