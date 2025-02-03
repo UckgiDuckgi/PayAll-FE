@@ -1,9 +1,9 @@
-import { LinkedAccount } from '@/components/molecules/LinkedMembership';
+import { LinkedMembershipCard } from '@/components/molecules/LinkedMembershipCard';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
   title: 'Molecules/LinkedAccount',
-  component: LinkedAccount,
+  component: LinkedMembershipCard,
   tags: ['autodocs'],
   decorators: [
     (Story) => (
@@ -18,10 +18,10 @@ const meta = {
     id: { control: 'text' },
     onLinkClick: { action: 'clicked' },
   },
-} satisfies Meta<typeof LinkedAccount>;
+} satisfies Meta<typeof LinkedMembershipCard>;
 
 export default meta;
-type Story = StoryObj<typeof LinkedAccount>;
+type Story = StoryObj<typeof LinkedMembershipCard>;
 
 export const Linked: Story = {
   args: {
