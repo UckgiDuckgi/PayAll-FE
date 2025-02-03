@@ -29,10 +29,10 @@ export const parsePaymentType = (paymentType: PaymentType) => {
 
 export const parseURL = (url: string, key: string) => {
   if (key === 'productId') {
-    const match = url.match(/products\/(\d+)/);
+    const match = url.match(/(?:ctag|prdNo)=(\d+)/);
     return match ? match[1] : null;
   } else if (key === 'itemId') {
-    const match = url.match(/vendorItemId=(\d+)/);
+    const match = url.match(/itemId=(\d+)/);
     return match ? match[1] : null;
   }
 };

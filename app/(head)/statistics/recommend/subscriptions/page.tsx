@@ -26,7 +26,6 @@ function RecommendationSubContent() {
   };
 
   const [selectedIdx, setSelectedIdx] = useState(0);
-  const [isOpen, setIsOpen] = useState(false);
 
   const { resData: subscriptionsData, isLoading } = useGenericQuery<
     ProductType[]
@@ -48,11 +47,23 @@ function RecommendationSubContent() {
           ({ productId, productName, productDescription }: ProductType) => (
             <li key={productId}>
               <SimpleBottomSheet
-                isOpen={isOpen}
-                onOpenChange={setIsOpen}
-                content={<CardBenefitContent selectedIdx={selectedIdx} />}
+                isOpen={selectedIdx === productId}
+                onOpenChange={() =>
+                  setSelectedIdx((prev) => {
+                    if (prev === productId) return 0;
+                    return productId;
+                  })
+                }
+                content={
+                  <div key={productId}>
+                    <CardBenefitContent
+                      selectedIdx={selectedIdx}
+                      productId={productId}
+                    />
+                  </div>
+                }
               >
-                <div onClick={() => setSelectedIdx(productId)}>
+                <div>
                   <CardInfoCard
                     cardImg={`/images/subscribes/${productId}.png`}
                     cardName={productName}

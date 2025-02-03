@@ -37,7 +37,7 @@ jobs:
 
       # 압축된 아티팩트 저장
       - name: Upload build artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: next-build
           path: deployment.tar.gz
@@ -49,7 +49,7 @@ jobs:
     steps:
       # 빌드된 아티팩트 다운로드
       - name: Download build artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: next-build
 

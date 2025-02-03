@@ -2,7 +2,7 @@ import { AccentText } from '@/components/ui/AccentText';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof AccentText> = {
-  title: 'Components/AccentText',
+  title: 'Atoms/AccentText',
   component: AccentText,
   tags: ['autodocs'],
   argTypes: {

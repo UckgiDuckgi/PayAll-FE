@@ -17,9 +17,9 @@ import CardCarouselItem from './CardCarouselItem';
 import SimpleBottomSheet from './ui/SimpleBottomSheet';
 
 export const cardImgs = [
-  '/images/cards/hana.svg',
-  '/images/cards/sinhan.svg',
-  '/images/cards/samsung.svg',
+  '/images/cards/hana.png',
+  '/images/cards/sinhan.png',
+  '/images/cards/hyundai.png',
 ];
 
 export const payment_detail = [
@@ -79,7 +79,12 @@ export const CardCarousel = ({ cards }: { cards: RecommendationsType[] }) => {
                 <SimpleBottomSheet
                   isOpen={isOpen}
                   onOpenChange={onOpenChange}
-                  content={<CardBenefitContent selectedIdx={clickIdx} />}
+                  content={
+                    <CardBenefitContent
+                      selectedIdx={clickIdx}
+                      productId={productId}
+                    />
+                  }
                 >
                   <div
                     onClick={() => setClickIdx(productId)}

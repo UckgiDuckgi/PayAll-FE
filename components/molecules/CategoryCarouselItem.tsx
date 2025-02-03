@@ -20,7 +20,7 @@ function CategoryCarouselItem({
         style={{ background: color }}
       >
         <Image
-          src={`/icons/Category/${categoryIconName}.svg`}
+          src={`/icons/Category/${categoryIconName.toLowerCase()}.svg`}
           alt='category'
           width={18}
           height={18}

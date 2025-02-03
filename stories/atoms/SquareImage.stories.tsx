@@ -2,7 +2,7 @@ import { SquareImage } from '@/components/ui/SquareImage';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof SquareImage> = {
-  title: 'Components/SquareImage',
+  title: 'Atoms/SquareImage',
   component: SquareImage,
   tags: ['autodocs'],
   argTypes: {

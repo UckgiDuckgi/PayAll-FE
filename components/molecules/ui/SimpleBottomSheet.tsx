@@ -8,7 +8,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer';
-import { Dispatch, ReactNode, SetStateAction, useEffect, useRef } from 'react';
+import { ReactNode, useEffect, useRef } from 'react';
 
 function SimpleBottomSheet({
   isOpen,
@@ -17,7 +17,7 @@ function SimpleBottomSheet({
   children,
 }: {
   isOpen: boolean;
-  onOpenChange: Dispatch<SetStateAction<boolean>>;
+  onOpenChange?: () => void;
   content: ReactNode;
   children: ReactNode;
 }) {

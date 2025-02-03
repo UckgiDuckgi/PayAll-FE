@@ -1,4 +1,5 @@
 import type { Preview } from '@storybook/react';
+import React from 'react';
 import '../app/globals.css';
 
 const preview: Preview = {
@@ -23,7 +24,19 @@ const preview: Preview = {
       ],
     },
     textColor: '#FFFFFF',
+    options: {
+      storySort: {
+        order: ['Logo', 'Atoms', 'Molecules', '*'],
+      },
+    },
   },
+  decorators: [
+    (Story) => (
+      <div className='App font-sans py-4' style={{ minHeight: 'auto' }}>
+        <Story />
+      </div>
+    ),
+  ],
 };
 
 export default preview;

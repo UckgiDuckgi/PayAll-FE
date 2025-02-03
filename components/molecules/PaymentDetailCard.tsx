@@ -46,6 +46,7 @@ function PaymentDetailCard({
       prevPrice: price,
       search: false,
     });
+    setNew_quantity(1);
   };
 
   const onCountChange = (pid: number, count: number) => {
