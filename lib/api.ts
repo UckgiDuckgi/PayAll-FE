@@ -2,6 +2,7 @@ import { API_ROUTE } from '@/constants/route';
 import apiCall from '@/hooks/useFetch';
 import { CartBySearch, Category, Purchase, User } from '@/types';
 import { PlatformDetailType } from '@/types/authType';
+import { TransformedOrder } from '@/types/payment';
 
 const BASE_URL = API_ROUTE.api;
 
@@ -200,3 +201,12 @@ export const getRecommendationsProduct = async () => {
 export const getUserInfo = async () => {
   return await apiCall.get(BASE_URL + '/user');
 };
+
+export const postPaymentDetail = async ({
+  payment_list,
+}: {
+  payment_list: TransformedOrder[];
+}) =>
+  await apiCall.post(BASE_URL + '/accounts/payments/detail', {
+    payment_list,
+  });

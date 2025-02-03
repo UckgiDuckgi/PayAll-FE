@@ -10,19 +10,13 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { QUERY_KEYS } from '@/constants/queryKey';
 import { useGenericMutation, useGenericQuery } from '@/hooks/query/globalQuery';
 import { purchaseAtom, shopCartAtom } from '@/stores/atom';
-import { ApiResponse, Cart, Purchase, shopCartItem } from '@/types';
+import { ApiResponse, Cart, shopCartItem } from '@/types';
 import { useQueryClient } from '@tanstack/react-query';
 import { useAtom } from 'jotai';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import {
-  deleteCart,
-  getCart,
-  getUserInfo,
-  postPurchase,
-  updateCart,
-} from '@/lib/api';
+import { deleteCart, getCart, getUserInfo, updateCart } from '@/lib/api';
 import { parseURL } from '@/lib/utils';
 
 type CartItemState = {
@@ -87,18 +81,6 @@ export default function CartPage() {
   const { mutate: updateCartMutate } = useGenericMutation(
     [QUERY_KEYS.UPDATE_CART],
     (data: { cartId: number; quantity: number }) => updateCart(data)
-  );
-
-  const { mutate: postPurchaseMutate } = useGenericMutation(
-    [QUERY_KEYS.PURCHASE],
-    (data: Purchase) => postPurchase(data),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries({
-          queryKey: [QUERY_KEYS.CART_LIST],
-        });
-      },
-    }
   );
 
   const [itemStates, setItemStates] = useState<Map<number, CartItemState>>(
@@ -210,13 +192,7 @@ export default function CartPage() {
       totalDiscountPrice: calculateTotalSavings(),
     });
 
-    postPurchaseMutate({
-      purchaseList: selectedItems,
-      totalPrice: calculateTotalPrice() + calculateDeliveryFee(),
-      totalDiscountPrice: calculateTotalSavings(),
-    });
-
-    router.push('/');
+    router.push('/payments');
   };
 
   const calculateTotalPrice = () => {

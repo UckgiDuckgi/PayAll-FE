@@ -1,7 +1,7 @@
 'use client';
 
 import Loading from '@/components/Loading';
-import { LinkedAccount } from '@/components/molecules/LinkedMembership';
+import { LinkedMembershipCard } from '@/components/molecules/LinkedMembershipCard';
 import { QUERY_KEYS } from '@/constants/queryKey';
 import { useGenericQuery } from '@/hooks/query/globalQuery';
 import { PlatformType } from '@/types/authType';
@@ -32,7 +32,7 @@ export default function Membership() {
             ({ platformName }) => platformName === platform
           ) ?? false;
         return (
-          <LinkedAccount
+          <LinkedMembershipCard
             key={idx}
             shop={platform}
             isLinked={isContain}
