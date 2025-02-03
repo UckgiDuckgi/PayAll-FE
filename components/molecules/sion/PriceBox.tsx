@@ -1,4 +1,4 @@
-export const TotalPriceBox = ({
+export const PriceBox = ({
   totalPrice,
   deliveryFee,
 }: {
