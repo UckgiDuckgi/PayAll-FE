@@ -59,6 +59,13 @@ export default function MembershipDetail({
         ? ELEVENSTREET_PAYMENT_DETAIL_URL
         : NAVERPAY_PAYMENT_DETAIL_URL;
 
+  const getFetchUrlByPlatfrom = () =>
+    params.shop === 'COUPANG'
+      ? API_ROUTE.payment_details.coupang
+      : params.shop === '11ST'
+        ? API_ROUTE.payment_details.elevenstreet
+        : API_ROUTE.payment_details.naverpay;
+
   const getBodyByPlatform = () => {
     const commonObj = {
       url: getUrlByPlatform(),
@@ -87,7 +94,7 @@ export default function MembershipDetail({
 
   const handleOnclick = async () => {
     try {
-      const response = await fetch(API_ROUTE.payment_details.coupang, {
+      const response = await fetch(getFetchUrlByPlatfrom(), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
