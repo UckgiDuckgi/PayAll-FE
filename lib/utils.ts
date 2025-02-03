@@ -38,7 +38,7 @@ export const parseURL = (url: string, key: string) => {
     const match = url.match(/(?:ctag|prdNo)=(\d+)/);
     return match ? match[1] : null;
   } else if (key === 'itemId') {
-    const match = url.match(/itemId=(\d+)/);
+    const match = url.match(/vendorItemId=(\d+)/);
     return match ? match[1] : null;
   }
 };
