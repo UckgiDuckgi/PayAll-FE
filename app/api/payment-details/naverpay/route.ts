@@ -10,7 +10,7 @@ import { formatCookies } from '@/lib/utils';
 
 export const dynamic = 'force-dynamic';
 
-export function transformNaverPayResponse(
+function transformNaverPayResponse(
   response: NaverPayResponse
 ): TransformedOrder[] {
   return response.result.items

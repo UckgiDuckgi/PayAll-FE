@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { QUERY_KEYS } from '@/constants/queryKey';
 import { API_ROUTE } from '@/constants/route';
 import { useGenericMutation, useGenericQuery } from '@/hooks/query/globalQuery';
-import { shopCartAtom } from '@/stores/atom';
+import { purchaseAtom, shopCartAtom } from '@/stores/atom';
 import { Platform, Purchase } from '@/types';
 import { PlatformType } from '@/types/authType';
 import {
@@ -16,7 +16,7 @@ import {
 import { useQueryClient } from '@tanstack/react-query';
 import { useAtomValue } from 'jotai';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getPlatform, postPurchase } from '@/lib/api';
 
 export type OnClick = ({
@@ -39,6 +39,7 @@ export default function PaymentMembership() {
   const router = useRouter();
 
   const cartItems = useAtomValue(shopCartAtom);
+  const purcahse = useAtomValue(purchaseAtom);
 
   const [isClicked, setIsClicked] = useState(false);
   const [coupangResponse, setCoupangResponse] =
@@ -56,8 +57,6 @@ export default function PaymentMembership() {
 
   const queryClient = useQueryClient();
 
-  // TODO: 구현해야함.
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { mutate: postPurchaseMutate } = useGenericMutation(
     [QUERY_KEYS.PURCHASE],
     (data: Purchase) => postPurchase(data),
@@ -101,11 +100,14 @@ export default function PaymentMembership() {
   // ];
   const elevenStreetItemList: Item[] = cartItems['11st'];
 
-  if (coupangItemList.length === 0 && elevenStreetItemList.length === 0) {
-    // TODO: TOAST로 고쳐야함. 근데 바꾸니까 에러뜸 일단 PASS
-    console.log('결제 정보가 없습니다.');
-    router.push('/cart');
-  }
+  useEffect(() => {
+    if (coupangItemList.length === 0 && elevenStreetItemList.length === 0) {
+      // TODO: TOAST로 고쳐야함. 근데 바꾸니까 에러뜸 일단 PASS
+      console.log('결제 정보가 없습니다.');
+      router.push('/cart');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [coupangItemList.length, elevenStreetItemList.length]);
 
   const coupangPromise = async ({
     id,
@@ -346,12 +348,8 @@ export default function PaymentMembership() {
       elevenStreetResponse.status === '11_COMPLETED'
     ) {
       console.log('결제 완료');
+      postPurchaseMutate(purcahse);
       router.push('/');
-      // postPurchaseMutate({
-      //   purchaseList: selectedItems,
-      //   totalPrice: calculateTotalPrice(),
-      //   totalDiscountPrice: calculateTotalSavings(),
-      // });
     }
   }
 
