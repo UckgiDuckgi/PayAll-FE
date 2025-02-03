@@ -20,7 +20,7 @@ type Category =
 
 type ProductType = 'CARD' | 'SUBSCRIBE';
 
-type PaymentType = 'ONLINE' | 'OFFLINE';
+type PaymentType = 'ONLINE' | 'OFFLINE' | 'PAYALL';
 
 type Store = {
   storeId: number;

@@ -56,9 +56,9 @@ function PaymentDetailCard({
   return (
     <div className='w-full px-2 py-4 space-y-1 border-b-[1px] border-darkGrey'>
       <div className='flex items-center justify-between'>
-        <div className='flex gap-3'>
+        <div className='flex gap-3 max-w-60'>
           <span className='text-[.875rem] font-medium'>{productName}</span>
-          <span className='text-[.625rem] font-semibold bg-[#464646] px-2 rounded-full flex justify-center items-center'>
+          <span className='text-[.625rem] font-semibold bg-[#464646] px-2 rounded-full flex justify-center items-center min-w-8 max-h-5'>
             {quantity}개
           </span>
         </div>
