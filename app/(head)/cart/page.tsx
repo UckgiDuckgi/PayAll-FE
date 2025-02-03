@@ -10,7 +10,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { QUERY_KEYS } from '@/constants/queryKey';
 import { useGenericMutation, useGenericQuery } from '@/hooks/query/globalQuery';
 import { purchaseAtom, shopCartAtom } from '@/stores/atom';
-import { ApiResponse, Cart, shopCartItem } from '@/types';
+import { ApiResponse, Cart, ShopCartItem } from '@/types';
 import { useQueryClient } from '@tanstack/react-query';
 import { useAtom } from 'jotai';
 import Image from 'next/image';
@@ -182,7 +182,7 @@ export default function CartPage() {
       {
         coupang: [],
         '11st': [],
-      } as shopCartItem
+      } as ShopCartItem
     );
 
     setShopCart(groupedItems);
