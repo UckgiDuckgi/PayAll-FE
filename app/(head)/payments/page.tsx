@@ -339,11 +339,15 @@ export default function PaymentMembership() {
 
   if (!platformData || !platformData.data || isLoading) return <></>;
 
-  // TODO: 수정 필요 : 3개 등록되어있을 수 있음.
-  const isActive =
-    platformData.data.platformInfos.length === PLATFORM_LIST.length
-      ? true
-      : false;
+  const isActive = PLATFORM_LIST.every((platform) => {
+    if (itemList[platform].length !== 0) {
+      return platformData.data?.platformInfos.some(
+        ({ platformName }) => platformName === platform
+      );
+    } else {
+      return true;
+    }
+  });
 
   const getPlatformInfo = (pName: Platform) =>
     platformData.data?.platformInfos.find(

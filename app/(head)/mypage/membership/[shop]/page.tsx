@@ -4,12 +4,6 @@ import { LoginInput } from '@/components/molecules/sion/LoginInput';
 import { IconIndicator } from '@/components/ui/IconIndicator';
 import { Button } from '@/components/ui/button';
 import { QUERY_KEYS } from '@/constants/queryKey';
-import { API_ROUTE } from '@/constants/route';
-import {
-  COUPANG_PAYMENT_DETAIL_URL,
-  ELEVENSTREET_PAYMENT_DETAIL_URL,
-  NAVERPAY_PAYMENT_DETAIL_URL,
-} from '@/constants/url';
 import { useGenericMutation } from '@/hooks/query/globalQuery';
 import { Platform } from '@/types';
 import { TransformedOrder } from '@/types/payment';
@@ -17,6 +11,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { postPaymentDetail, postPlatform } from '@/lib/api';
+import { getBodyByPlatform, getFetchUrlByPlatfrom } from '@/lib/utils';
 
 export default function MembershipDetail({
   params,
@@ -52,54 +47,14 @@ export default function MembershipDetail({
       postPaymentDetail({ paymentList })
   );
 
-  const getUrlByPlatform = () =>
-    params.shop === 'COUPANG'
-      ? COUPANG_PAYMENT_DETAIL_URL
-      : params.shop === '11ST'
-        ? ELEVENSTREET_PAYMENT_DETAIL_URL
-        : NAVERPAY_PAYMENT_DETAIL_URL;
-
-  const getFetchUrlByPlatfrom = () =>
-    params.shop === 'COUPANG'
-      ? API_ROUTE.payment_details.coupang
-      : params.shop === '11ST'
-        ? API_ROUTE.payment_details.elevenstreet
-        : API_ROUTE.payment_details.naverpay;
-
-  const getBodyByPlatform = () => {
-    const commonObj = {
-      url: getUrlByPlatform(),
-      id,
-      pw: password,
-    };
-    return params.shop === 'COUPANG'
-      ? {
-          ...commonObj,
-          requestYear: 2024,
-          pageIndex: 0,
-          size: 10,
-        }
-      : params.shop === '11ST'
-        ? {
-            ...commonObj,
-            shDateFrom: '20200701',
-            shDateTo: '20250119',
-            pageNumber: 1,
-            rows: 10,
-          }
-        : {
-            ...commonObj,
-          };
-  };
-
   const handleOnclick = async () => {
     try {
-      const response = await fetch(getFetchUrlByPlatfrom(), {
+      const response = await fetch(getFetchUrlByPlatfrom(params.shop), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(getBodyByPlatform()),
+        body: JSON.stringify(getBodyByPlatform(params.shop, id, password)),
       });
 
       const { result } = await response.json();

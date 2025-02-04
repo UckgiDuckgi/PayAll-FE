@@ -3,6 +3,7 @@
 import Loading from '@/components/Loading';
 import ProgressBar from '@/components/molecules/GoalProgress';
 import { BenefitCard } from '@/components/molecules/sion/BenefitCard';
+import { SavingRecommendCard } from '@/components/molecules/sion/SavingRecommendCard';
 import { AccentText } from '@/components/ui/AccentText';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -261,8 +262,10 @@ function StatisticsGoalContent() {
             <span className='text-[.75rem] text-darkGrey pb-5'>
               PayAll 이용으로 혜택받은 금액이에요
             </span>
-
-            <BenefitCard />
+            <div className='flex flex-col gap-7'>
+              <BenefitCard />
+              <SavingRecommendCard />
+            </div>
           </motion.div>
         </div>
       </motion.div>
