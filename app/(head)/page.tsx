@@ -18,6 +18,7 @@ import {
   getRecommendationsProduct,
   getStatisticsDiff,
 } from '@/lib/api';
+import { cn } from '@/lib/utils';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -183,7 +184,13 @@ export default function Home() {
             )}
           </motion.div>
 
-          <motion.div variants={item} className='flex flex-col mt-4 w-full'>
+          <motion.div
+            variants={item}
+            className={cn(
+              'flex flex-col w-full',
+              limit?.data?.limitPrice ? 'mt-16' : 'mt-4'
+            )}
+          >
             <LowestProductList products={recommendationsProduct?.data} />
           </motion.div>
         </motion.div>
