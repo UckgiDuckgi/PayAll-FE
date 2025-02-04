@@ -76,7 +76,9 @@ export default function MyPage() {
           <hr className='border-t-1 border-[#D9D9D9]' />
           <div className='flex justify-between items-center py-[0.34375rem]'>
             <span>고객 센터</span>
-            <ChevronRight className='text-[#999999]' />
+            <Link href='/customer'>
+              <ChevronRight className='text-[#999999]' />
+            </Link>
           </div>
           <div className='flex justify-between items-center py-[0.34375rem]'>
             <span>이용 약관</span>
