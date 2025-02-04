@@ -28,12 +28,19 @@ const MOCK_PRODUCT = [
 ];
 export const LowestProductList = ({ products }: LowestProductListProps) => {
   return (
-    <div className='flex space-x-4 overflow-x-scroll scrollbar-hide'>
-      {(products && products.length > 0 ? products : MOCK_PRODUCT).map(
-        (product, index) => (
-          <LowestProductCard key={index} {...product} />
-        )
-      )}
-    </div>
+    <>
+      <span className='text-base font-bold text-grey mb-4'>
+        {products && products.length > 0
+          ? '최근 지출 품목의 최저가 상품'
+          : '실시간 추천 상품'}
+      </span>
+      <div className='flex space-x-4 overflow-x-scroll scrollbar-hide'>
+        {(products && products.length > 0 ? products : MOCK_PRODUCT).map(
+          (product, index) => (
+            <LowestProductCard key={index} {...product} />
+          )
+        )}
+      </div>
+    </>
   );
 };
