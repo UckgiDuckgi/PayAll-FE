@@ -71,7 +71,7 @@ export default function LoginPage() {
       return;
     }
 
-    setIsLoading(true);
+    // setIsLoading(true);
     mutate({ authId, password });
 
     // const response = await apiCall.post(API_ROUTE.api + '/auth/sign-in', {
