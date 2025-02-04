@@ -1,8 +1,9 @@
 import Image from 'next/image';
 import { ReactNode } from 'react';
+import { cn } from '@/lib/utils';
 
 type AdCarouselItemProps = {
-  title1: string;
+  title1: string | ReactNode;
   title2: string;
   index: number;
   subItem: ReactNode;
@@ -28,7 +29,12 @@ export const AdCarouselItem = ({
         </div>
         <div className='font-sans'>{subItem}</div>
       </div>
-      <div className='w-1/2 flex items-center justify-center'>
+      <div
+        className={cn(
+          'flex items-center justify-center',
+          index === 2 ? 'w-1/3' : 'w-1/2'
+        )}
+      >
         <Image
           src={`/images/ads/ad${index}.png`}
           alt='ad'
