@@ -75,6 +75,14 @@ function PaymentCard({
               <ChevronRight className='w-2 h-2' />
             </Link>
           )
+        ) : paymentType === 'OFFLINE' ? (
+          <Link
+            href={`/accounts/payments/${paymentId}`}
+            className='text-[0.5rem] font-medium flex items-center gap-1'
+          >
+            상세보기
+            <ChevronRight className='w-2 h-2' />
+          </Link>
         ) : (
           generalPlatform &&
           (isConnect ? (
