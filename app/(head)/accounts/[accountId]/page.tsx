@@ -14,7 +14,6 @@ import { getAccountsDetail } from '@/lib/api';
 
 dayjs.locale('ko');
 
-export const PLATFORMS = ['쿠팡', '11번가', '네이버페이'];
 export default function AccountDetail({
   params,
 }: {
