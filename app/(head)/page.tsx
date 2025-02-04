@@ -183,10 +183,7 @@ export default function Home() {
             )}
           </motion.div>
 
-          <motion.div variants={item} className='flex flex-col mt-16 w-full'>
-            <span className='text-base font-bold text-grey mb-4'>
-              최근 지출 품목의 최저가 상품
-            </span>
+          <motion.div variants={item} className='flex flex-col mt-4 w-full'>
             <LowestProductList products={recommendationsProduct?.data} />
           </motion.div>
         </motion.div>

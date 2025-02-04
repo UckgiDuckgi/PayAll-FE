@@ -52,9 +52,9 @@ export const AdCarousel = ({ userName }: { userName: string }) => {
               title2=''
               index={2}
               subItem={
-                <div className='font-dohyeon text-[.8375rem]'>
+                <div className='font-sans text-[.8375rem] pt-3'>
                   <p>
-                    <span className=''>하나원큐</span>가 {userName}
+                    <span className=''>하나원큐</span>가 {userName}님
                   </p>
                   <p>맞춤 의료보험을 추천해드려요</p>
                 </div>
