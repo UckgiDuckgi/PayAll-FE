@@ -29,6 +29,9 @@ function PaymentCard({
 
   const generalPlatform = PLATFORMS.includes(paymentPlace);
 
+  // 온라인 & payAll & shootNeed -> 상세보기
+  // 오프라인 & shootNeed -> 영수증 촬영
+
   return (
     <div className='w-full py-3 border-b-[1px] border-darkGrey space-y-2'>
       <div className='flex items-center justify-between'>
@@ -63,9 +66,20 @@ function PaymentCard({
           ) : null}
         </div>
         {shootNeed ? (
-          <UploadButton paymentId={paymentId} />
-        ) : generalPlatform ? (
-          isConnect ? (
+          paymentType === 'OFFLINE' ? (
+            <UploadButton paymentId={paymentId} />
+          ) : (
+            <a
+              href={`/accounts/payments/${paymentId}`}
+              className='text-[0.5rem] font-medium flex items-center gap-1'
+            >
+              상세보기
+              <ChevronRight className='w-2 h-2' />
+            </a>
+          )
+        ) : (
+          generalPlatform &&
+          (isConnect ? (
             <a
               href={`/accounts/payments/${paymentId}`}
               className='text-[0.5rem] font-medium flex items-center gap-1'
@@ -80,15 +94,7 @@ function PaymentCard({
             >
               연동하기
             </a>
-          )
-        ) : (
-          <a
-            href={`/accounts/payments/${paymentId}`}
-            className='text-[0.5rem] font-medium flex items-center gap-1'
-          >
-            상세보기
-            <ChevronRight className='w-2 h-2' />
-          </a>
+          ))
         )}
       </div>
     </div>
