@@ -1,5 +1,6 @@
 'use client';
 
+import Loading from '@/components/Loading';
 import { LoginInput } from '@/components/molecules/sion/LoginInput';
 import { IconIndicator } from '@/components/ui/IconIndicator';
 import { Button } from '@/components/ui/button';
@@ -25,6 +26,7 @@ export default function MembershipDetail({
   const queryClient = useQueryClient();
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const { mutate } = useGenericMutation(
     [QUERY_KEYS.POST_PLATFORM],
@@ -55,6 +57,7 @@ export default function MembershipDetail({
 
   const handleOnclick = async () => {
     try {
+      setIsLoading(true);
       const response = await fetch(getFetchUrlByPlatfrom(params.shop), {
         method: 'POST',
         headers: {
@@ -70,6 +73,7 @@ export default function MembershipDetail({
       console.error('Error fetching data:', error);
     }
     mutate({ id, password });
+    setIsLoading(false);
   };
 
   return (
@@ -78,19 +82,29 @@ export default function MembershipDetail({
         src={`/images/vendors/${params.shop.toLowerCase()}.png`}
         height={30}
       />
-      <div className='space-y-[1.375rem] my-16'>
-        <LoginInput title='아이디' onChange={setId} />
-        <LoginInput title='비밀번호' onChange={setPassword} type='password' />
-      </div>
-      <div className='fixed bottom-0 mb-[100px] max-w-[460px] w-[90%]'>
-        <Button
-          onClick={handleOnclick}
-          variant='basic'
-          disabled={id === '' || password === ''}
-        >
-          등록
-        </Button>
-      </div>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <>
+          <div className='space-y-[1.375rem] my-16'>
+            <LoginInput title='아이디' onChange={setId} />
+            <LoginInput
+              title='비밀번호'
+              onChange={setPassword}
+              type='password'
+            />
+          </div>
+          <div className='fixed bottom-0 mb-[100px] max-w-[460px] w-[90%]'>
+            <Button
+              onClick={handleOnclick}
+              variant='basic'
+              disabled={id === '' || password === ''}
+            >
+              등록
+            </Button>
+          </div>
+        </>
+      )}
     </div>
   );
 }
