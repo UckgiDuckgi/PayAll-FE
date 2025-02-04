@@ -2,14 +2,9 @@
 
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { QUERY_KEYS } from '@/constants/queryKey';
 import { API_ROUTE } from '@/constants/route';
-import { useGenericQuery } from '@/hooks/query/globalQuery';
-import { Platform } from '@/types';
-import { PlatformType } from '@/types/authType';
 import { GetCookieResponse, TransformedOrder } from '@/types/payment';
 import { useState } from 'react';
-import { getPlatform } from '@/lib/api';
 import { formatCookies } from '@/lib/utils';
 
 export default function CoupangPayments() {
@@ -18,20 +13,6 @@ export default function CoupangPayments() {
   const [naverPayResponse, setNaverPayResponse] =
     useState<GetCookieResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-
-  const { resData: platformData, isLoading: isPlatformLoading } =
-    useGenericQuery<PlatformType>([QUERY_KEYS.PLATFORM], () => getPlatform());
-
-  if (isPlatformLoading) {
-    return <>Loading...</>;
-  }
-
-  const getPlatformInfo = (pName: Platform) =>
-    platformData.data?.platformInfos.find(
-      ({ platformName }) => platformName === pName
-    );
-
-  const platformInfo = getPlatformInfo('COUPANG');
 
   const handleOnClick = async (): Promise<void> => {
     try {
@@ -68,8 +49,8 @@ export default function CoupangPayments() {
           requestYear: 2024,
           pageIndex: 0,
           size: 10,
-          id: platformInfo?.id,
-          pw: platformInfo?.password,
+          id: process.env.NEXT_PUBLIC_COUPANG_ID,
+          pw: process.env.NEXT_PUBLIC_COUPANG_PW,
         }),
       });
       const { result } = await response.json();

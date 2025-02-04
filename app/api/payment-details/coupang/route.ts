@@ -34,7 +34,9 @@ function transformCoupangOrder({
 function transformCoupangOrders(
   orders: CoupangOrderList[]
 ): TransformedOrder[] {
-  return orders.map(transformCoupangOrder);
+  return orders
+    .filter(({ allCanceled }) => !allCanceled)
+    .map(transformCoupangOrder);
 }
 
 export async function POST(request: Request) {
