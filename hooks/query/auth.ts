@@ -37,7 +37,7 @@ export const usePostSignIn = (
         console.log(data.code);
         if (data.code === 200) {
           showToast(toast, '로그인에 성공하였습니다.');
-          await onSuccessFunc();
+          // await onSuccessFunc();
           setIsLoading(false);
         }
         if (data.status === 'OK') router.push(ROUTE.mydata);
