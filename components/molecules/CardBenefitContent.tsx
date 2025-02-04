@@ -15,7 +15,6 @@ function CardBenefitContent({
   selectedIdx: number;
   productId: number;
 }) {
-  console.log(selectedIdx, productId);
   const { resData: productData, isLoading } =
     useGenericQuery<ProductDetailType>(
       [QUERY_KEYS.PRODUCT_DETAIL, selectedIdx],

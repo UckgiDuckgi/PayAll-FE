@@ -6,6 +6,7 @@ import { AccountDetailCard } from '@/components/molecules/sion/AccountDetailCard
 import TitleBottomLine from '@/components/ui/TitleBottomLine';
 import { QUERY_KEYS } from '@/constants/queryKey';
 import { useGenericQuery } from '@/hooks/query/globalQuery';
+import usePlatformCheck from '@/hooks/usePlatformCheck';
 import { AccountsPayment } from '@/types';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
@@ -13,11 +14,13 @@ import { getAccountsDetail } from '@/lib/api';
 
 dayjs.locale('ko');
 
+export const PLATFORMS = ['쿠팡', '11번가', '네이버페이'];
 export default function AccountDetail({
   params,
 }: {
   params: { accountId: string };
 }) {
+  const { platforms } = usePlatformCheck();
   const { resData: accountsDetail, isLoading } = useGenericQuery(
     [QUERY_KEYS.ACCOUNTS_DETAIL, params.accountId],
     () =>
@@ -27,37 +30,42 @@ export default function AccountDetail({
       })
   );
 
+  if (!platforms || isLoading || !accountsDetail) {
+    return <Loading />;
+  }
+
   return (
     <>
-      {isLoading || !accountsDetail ? (
-        <Loading />
-      ) : (
-        <div className='overflow-y-scroll scrollbar-hide min-h-full'>
-          <div className='mt-3'>
-            <AccountDetailCard account={accountsDetail.data} />
-          </div>
-          <div className='mt-7 font-bold'>지출내역</div>
-          <div className='mt-[1.125rem] flex flex-col gap-[1.875rem]'>
-            {accountsDetail.data.paymentList.map((item: AccountsPayment) => (
-              <div key={item.paymentDate}>
-                <TitleBottomLine
-                  left={dayjs(item.paymentDate).format('MM.DD (ddd)')}
-                  right={'-' + item.dayPaymentPrice.toLocaleString() + '원'}
-                >
-                  {item.paymentDetail.map((payment) => (
-                    <div key={payment.paymentId}>
-                      <PaymentCard
-                        showAccount={params.accountId === '0'}
-                        paymentInfo={payment}
-                      />
-                    </div>
-                  ))}
-                </TitleBottomLine>
-              </div>
-            ))}
-          </div>
+      <div className='overflow-y-scroll scrollbar-hide min-h-full'>
+        <div className='mt-3'>
+          <AccountDetailCard account={accountsDetail.data} />
         </div>
-      )}
+        <div className='mt-7 font-bold'>지출내역</div>
+        <div className='mt-[1.125rem] flex flex-col gap-[1.875rem]'>
+          {accountsDetail.data.paymentList.map((item: AccountsPayment) => (
+            <div key={item.paymentDate}>
+              <TitleBottomLine
+                left={dayjs(item.paymentDate).format('MM.DD (ddd)')}
+                right={'-' + item.dayPaymentPrice.toLocaleString() + '원'}
+              >
+                {item?.paymentDetail?.map((payment) => (
+                  <div key={payment.paymentId}>
+                    <PaymentCard
+                      showAccount={params.accountId === '0'}
+                      paymentInfo={payment}
+                      isConnect={
+                        platforms?.includes(
+                          payment?.paymentPlace ?? '11번가'
+                        ) ?? false
+                      }
+                    />
+                  </div>
+                ))}
+              </TitleBottomLine>
+            </div>
+          ))}
+        </div>
+      </div>
     </>
   );
 }

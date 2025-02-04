@@ -81,7 +81,7 @@ export default function Home() {
           animate='show'
           className='flex justify-center flex-col items-center w-full'
         >
-          <AdCarousel />
+          <AdCarousel userName={statisticsDiff?.data?.userName ?? ''} />
 
           <motion.div
             variants={item}
@@ -107,8 +107,8 @@ export default function Home() {
             <AccentText
               prefix='지난달 대비'
               accent={
-                (
-                  Math.abs(statisticsDiff?.data?.monthlyPaymentDifference) ?? 0
+                Math.abs(
+                  statisticsDiff?.data?.monthlyPaymentDifference
                 )?.toLocaleString() ?? 0
               }
               suffix='원 지출했어요.'

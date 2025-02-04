@@ -21,7 +21,7 @@ function CardCarouselItem({
           style={{ background: color }}
         >
           <Image
-            src={`/icons/Category/${category}.svg`}
+            src={`/icons/Category/${category.toLowerCase()}.svg`}
             alt='category'
             width={10}
             height={10}

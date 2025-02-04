@@ -135,7 +135,7 @@ function RecommendationContent() {
                     >
                       <div>
                         <CategorySubCard
-                          img={`/images/subscribes/${productId}.png`}
+                          img={`/images/products/${productId}.png`}
                           category={category}
                           color={COLORS[idx]}
                           paymentName={storeName}
