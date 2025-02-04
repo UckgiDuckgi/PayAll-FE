@@ -33,7 +33,13 @@ export default function MembershipDetail({
     {
       onSuccess: (data) => {
         if (data.code === 200) {
-          router.push(from === 'payments' ? `/payments` : `/mypage/membership`);
+          if (from === 'accounts') {
+            router.back();
+          } else {
+            router.push(
+              from === 'payments' ? '/payments' : '/mypage/membership'
+            );
+          }
 
           queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.PLATFORM] });
         }

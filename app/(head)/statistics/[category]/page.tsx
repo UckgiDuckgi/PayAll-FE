@@ -9,6 +9,7 @@ import { CATEGORY } from '@/constants/category';
 import { COLORS } from '@/constants/color';
 import { QUERY_KEYS } from '@/constants/queryKey';
 import { useGenericQuery } from '@/hooks/query/globalQuery';
+import usePlatformCheck from '@/hooks/usePlatformCheck';
 import { AccountsPayment, AccountsPayments } from '@/types/paymentType';
 import { Category } from '@/types/table';
 import dayjs from 'dayjs';
@@ -24,13 +25,16 @@ function PaymentCategoryContent({ category }: { category: Category }) {
   const searchParams = useSearchParams();
   const date = searchParams.get('date');
 
+  const { platforms } = usePlatformCheck();
+
   const { resData: paymentsData, isLoading } =
     useGenericQuery<AccountsPayments>(
       [QUERY_KEYS.STATISTICS_CATEGORY, category],
       () => getPaymentsCategory({ category })
     );
 
-  if (!paymentsData || !paymentsData.data || isLoading) return <Loading />;
+  if (!platforms || !paymentsData || !paymentsData.data || isLoading)
+    return <Loading />;
 
   const {
     // paymentCount,
@@ -95,7 +99,13 @@ function PaymentCategoryContent({ category }: { category: Category }) {
             >
               {paymentDetail?.map((pd) => (
                 <div key={pd.paymentId}>
-                  <PaymentCard showAccount={true} paymentInfo={pd} />
+                  <PaymentCard
+                    showAccount={true}
+                    paymentInfo={pd}
+                    isConnect={
+                      platforms?.includes(pd?.paymentPlace ?? '11번가') ?? false
+                    }
+                  />
                 </div>
               ))}
             </TitleBottomLine>

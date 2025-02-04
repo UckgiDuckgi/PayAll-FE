@@ -23,5 +23,5 @@ export const Default: Story = {
 
 export const WithCustomContent: Story = {
   args: {},
-  render: () => <AdCarousel />,
+  render: () => <AdCarousel userName='홍길동' />,
 };

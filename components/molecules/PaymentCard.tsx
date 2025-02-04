@@ -1,6 +1,6 @@
-import { PLATFORMS } from '@/app/(head)/accounts/[accountId]/page';
+import { platformMap, PLATFORMS } from '@/constants/category';
 import { AccountsPaymentsDetail } from '@/types';
-import { Badge, ChevronRight } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 import { parseCategory, parsePaymentType } from '@/lib/utils';
 import UploadButton from './ui/UploadButton';
 
@@ -62,18 +62,31 @@ function PaymentCard({
             </span>
           ) : null}
         </div>
-        {shootNeed && paymentType === 'OFFLINE' ? (
+        {shootNeed ? (
           <UploadButton paymentId={paymentId} />
-        ) : generalPlatform && !isConnect ? (
-          <Badge className='bg-main text-white text-[0.5rem] font-medium'>
-            연동하기
-          </Badge>
+        ) : generalPlatform ? (
+          isConnect ? (
+            <a
+              href={`/accounts/payments/${paymentId}`}
+              className='text-[0.5rem] font-medium flex items-center gap-1'
+            >
+              상세내역 불러오기
+              <ChevronRight className='w-2 h-2' />
+            </a>
+          ) : (
+            <a
+              className='px-3 py-1 text-[.625rem] rounded-full cursor-pointer bg-main text-white font-medium'
+              href={`/mypage/membership/${platformMap[paymentPlace]}?from=accounts`}
+            >
+              연동하기
+            </a>
+          )
         ) : (
           <a
             href={`/accounts/payments/${paymentId}`}
             className='text-[0.5rem] font-medium flex items-center gap-1'
           >
-            {shootNeed ? '상세내역 불러오기' : '상세보기'}{' '}
+            상세보기
             <ChevronRight className='w-2 h-2' />
           </a>
         )}

@@ -95,7 +95,7 @@ export const CardCarousel = ({ cards }: { cards: RecommendationsType[] }) => {
                   >
                     <Image
                       ref={imageRef}
-                      src={`/images/subscribes/${productId}.png`}
+                      src={`/images/products/${productId}.png`}
                       alt='card'
                       width={0}
                       height={0}

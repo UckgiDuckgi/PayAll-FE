@@ -77,7 +77,7 @@ export default function CardSlide({ cards: initialCards }: CardSlideProps) {
           })}
         </ul>
       </div>
-      <div className='absolute bottom-0 left-0 w-full h-10 flex flex-col justify-center items-center'>
+      <div className='absolute -bottom-1 left-0 w-full h-10 flex flex-col justify-center items-center'>
         <p className='text-sm font-medium text-darkGrey'>{cards[0].bankName}</p>
         <p className='text-[0.9375rem]'>{cards[0].cardNumber}</p>
       </div>

@@ -6,20 +6,20 @@ import { AccountDetailCard } from '@/components/molecules/sion/AccountDetailCard
 import TitleBottomLine from '@/components/ui/TitleBottomLine';
 import { QUERY_KEYS } from '@/constants/queryKey';
 import { useGenericQuery } from '@/hooks/query/globalQuery';
+import usePlatformCheck from '@/hooks/usePlatformCheck';
 import { AccountsPayment } from '@/types';
-import { PlatformType } from '@/types/authType';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
-import { getAccountsDetail, getPlatform } from '@/lib/api';
+import { getAccountsDetail } from '@/lib/api';
 
 dayjs.locale('ko');
 
-export const PLATFORMS = ['쿠팡', '11번가', '네이버페이'];
 export default function AccountDetail({
   params,
 }: {
   params: { accountId: string };
 }) {
+  const { platforms } = usePlatformCheck();
   const { resData: accountsDetail, isLoading } = useGenericQuery(
     [QUERY_KEYS.ACCOUNTS_DETAIL, params.accountId],
     () =>
@@ -29,23 +29,9 @@ export default function AccountDetail({
       })
   );
 
-  const { resData: platformData, isLoading: platformLoading } =
-    useGenericQuery<PlatformType>([QUERY_KEYS.PLATFORM], () => getPlatform());
-
-  if (isLoading || platformLoading || !platformData || !accountsDetail) {
+  if (!platforms || isLoading || !accountsDetail) {
     return <Loading />;
   }
-
-  const platforms = platformData?.data?.platformInfos
-    ?.map(({ platformName }) => {
-      const platformMap: Record<string, string> = {
-        COUPANG: '쿠팡',
-        '11ST': '11번가',
-        NAVER: '네이버페이',
-      };
-      return platformMap[platformName];
-    })
-    .filter((platform) => !PLATFORMS.includes(platform ?? ''));
 
   return (
     <>
