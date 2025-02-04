@@ -196,19 +196,16 @@ function StatisticsContent() {
           />
           <AccentText
             prefix='지난달 대비'
-            accent={((difference ?? 0 < 0)
-              ? Math.abs(difference)
-              : difference
-            )?.toLocaleString()}
+            accent={(Math.abs(difference) ?? 0)?.toLocaleString()}
             suffix='원 지출했어요.'
             icon={
-              (difference ?? 0 > 0) ? (
+              difference > 0 ? (
                 <Triangle className='rotate-180' color='#FF6F6F' />
               ) : (
                 <Triangle color='#6A8DFF' />
               )
             }
-            accentColor={(difference ?? 0 > 0) ? 'text-red' : 'text-main'}
+            accentColor={difference > 0 ? 'text-red' : 'text-main'}
             className='text-[0.8125rem]'
             accentSize='text-[1.375rem]'
           />

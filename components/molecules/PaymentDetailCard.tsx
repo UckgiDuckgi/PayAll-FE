@@ -110,7 +110,7 @@ function PaymentDetailCard({
                 </div>
                 <Counter
                   pid={0}
-                  initialCount={quantity}
+                  initialCount={1}
                   onCountChange={onCountChange}
                 />
               </div>

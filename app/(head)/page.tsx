@@ -136,14 +136,14 @@ export default function Home() {
               }
               suffix='원 지출했어요.'
               icon={
-                (statisticsDiff?.data?.monthlyPaymentDifference ?? 0 > 0) ? (
+                statisticsDiff?.data?.monthlyPaymentDifference > 0 ? (
                   <Triangle className='rotate-180' color='#FF6F6F' />
                 ) : (
                   <Triangle color='#6A8DFF' />
                 )
               }
               accentColor={
-                (statisticsDiff?.data?.monthlyPaymentDifference ?? 0 > 0)
+                statisticsDiff?.data?.monthlyPaymentDifference > 0
                   ? 'text-red'
                   : 'text-main'
               }
