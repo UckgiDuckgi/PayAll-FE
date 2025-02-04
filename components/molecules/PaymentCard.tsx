@@ -1,6 +1,7 @@
 import { platformMap, PLATFORMS } from '@/constants/category';
 import { AccountsPaymentsDetail } from '@/types';
 import { ChevronRight } from 'lucide-react';
+import Link from 'next/link';
 import { parseCategory, parsePaymentType } from '@/lib/utils';
 import UploadButton from './ui/UploadButton';
 
@@ -28,9 +29,6 @@ function PaymentCard({
   } = paymentInfo;
 
   const generalPlatform = PLATFORMS.includes(paymentPlace);
-
-  // 온라인 & payAll & shootNeed -> 상세보기
-  // 오프라인 & shootNeed -> 영수증 촬영
 
   return (
     <div className='w-full py-3 border-b-[1px] border-darkGrey space-y-2'>
@@ -69,31 +67,31 @@ function PaymentCard({
           paymentType === 'OFFLINE' ? (
             <UploadButton paymentId={paymentId} />
           ) : (
-            <a
+            <Link
               href={`/accounts/payments/${paymentId}`}
               className='text-[0.5rem] font-medium flex items-center gap-1'
             >
               상세보기
               <ChevronRight className='w-2 h-2' />
-            </a>
+            </Link>
           )
         ) : (
           generalPlatform &&
           (isConnect ? (
-            <a
+            <Link
               href={`/accounts/payments/${paymentId}`}
               className='text-[0.5rem] font-medium flex items-center gap-1'
             >
               상세내역 불러오기
               <ChevronRight className='w-2 h-2' />
-            </a>
+            </Link>
           ) : (
-            <a
+            <Link
               className='px-3 py-1 text-[.625rem] rounded-full cursor-pointer bg-main text-white font-medium'
               href={`/mypage/membership/${platformMap[paymentPlace]}?from=accounts`}
             >
               연동하기
-            </a>
+            </Link>
           ))
         )}
       </div>

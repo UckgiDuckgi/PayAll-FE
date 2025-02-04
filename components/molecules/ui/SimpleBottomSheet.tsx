@@ -37,7 +37,7 @@ function SimpleBottomSheet({
       </DrawerTrigger>
       <DrawerContent
         ref={drawerRef}
-        className='pb-24 pt-6 mx-auto max-w-[512px] px-2 w-full flex flex-col items-start justify-center border-none bg-black text-white'
+        className='font-sans pb-24 pt-6 mx-auto max-w-[512px] px-2 w-full flex flex-col items-start justify-center border-none bg-black text-white'
         role='dialog'
         aria-modal='true'
       >

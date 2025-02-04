@@ -6,13 +6,18 @@ import { IconIndicator } from '@/components/ui/IconIndicator';
 import { Button } from '@/components/ui/button';
 import { QUERY_KEYS } from '@/constants/queryKey';
 import { useGenericMutation } from '@/hooks/query/globalQuery';
+import { useToast } from '@/hooks/use-toast';
 import { Platform } from '@/types';
 import { TransformedOrder } from '@/types/payment';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { postPaymentDetail, postPlatform } from '@/lib/api';
-import { getBodyByPlatform, getFetchUrlByPlatfrom } from '@/lib/utils';
+import {
+  getBodyByPlatform,
+  getFetchUrlByPlatfrom,
+  showToast,
+} from '@/lib/utils';
 
 export default function MembershipDetail({
   params,
@@ -22,6 +27,7 @@ export default function MembershipDetail({
   const searchParams = useSearchParams();
   const from = searchParams.get('from');
 
+  const { toast } = useToast();
   const router = useRouter();
   const queryClient = useQueryClient();
   const [id, setId] = useState('');
@@ -44,6 +50,7 @@ export default function MembershipDetail({
           }
 
           queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.PLATFORM] });
+          showToast(toast, '계정이 연동되었습니다.');
         }
       },
     }

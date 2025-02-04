@@ -2,7 +2,6 @@
 
 import Loading from '@/components/Loading';
 import ProgressBar from '@/components/molecules/GoalProgress';
-import { BenefitCard } from '@/components/molecules/sion/BenefitCard';
 import { SavingRecommendCard } from '@/components/molecules/sion/SavingRecommendCard';
 import { AccentText } from '@/components/ui/AccentText';
 import { Button } from '@/components/ui/button';
@@ -228,7 +227,7 @@ function StatisticsGoalContent() {
               </div>
 
               {dayAvg > 0 && (
-                <div className='py-3'>
+                <div className='py-3 mx-auto w-full'>
                   <AccentText
                     prefix='목표 달성을 위해서는 하루 평균'
                     accent={`${dayAvg.toLocaleString()}원`}
@@ -262,8 +261,7 @@ function StatisticsGoalContent() {
             <span className='text-[.75rem] text-darkGrey pb-5'>
               PayAll 이용으로 혜택받은 금액이에요
             </span>
-            <div className='flex flex-col gap-7'>
-              <BenefitCard />
+            <div className='py-4 flex flex-col gap-7'>
               <SavingRecommendCard />
             </div>
           </motion.div>

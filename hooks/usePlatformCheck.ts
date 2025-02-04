@@ -16,7 +16,7 @@ function usePlatformCheck() {
     if (platformData?.data) {
       const platforms = platformData.data.platformInfos
         .map(({ platformName }) => platformMap[platformName])
-        .filter((platform) => !PLATFORMS.includes(platform ?? ''));
+        .filter((platform) => PLATFORMS.includes(platform ?? ''));
       setPlatforms(platforms);
     }
   }, [platformData]);
