@@ -34,7 +34,10 @@ export const PaymentMebershipCard = ({
     <>
       <div className='mb-6 bg-deepDarkGrey rounded-[1.5rem] w-full'>
         <div className='flex justify-between mb-6 px-6 pt-8'>
-          <IconIndicator src={`/images/${shop}.png`} height={35} />
+          <IconIndicator
+            src={`/images/vendors/${shop.toLowerCase()}.png`}
+            height={35}
+          />
           {isLinked ? (
             <div className='flex items-center space-x-2'>
               <CircleCheck className='text-main text-xs' />

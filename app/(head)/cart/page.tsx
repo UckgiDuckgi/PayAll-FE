@@ -309,7 +309,7 @@ export default function CartPage() {
               </div>
               <div className='fixed bottom-24 w-[90%] max-w-[460px] mx-auto items-center z-50'>
                 <Button
-                  className='w-full bg-[#6A8DFF] rounded-xl hover:none'
+                  className='w-full bg-[#6A8DFF] rounded-xl hover:bg-[#476BE3]'
                   onClick={handlePurchase}
                 >
                   <div className='flex items-center justify-between'>
