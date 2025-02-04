@@ -38,10 +38,8 @@ export const payment_detail = [
 export const CardCarousel = ({ cards }: { cards: RecommendationsType[] }) => {
   const [selectedIdx, setSelectedIdx] = useState(0); // 현재 맨 앞에 나와있는 카드
   const [clickIdx, setClickIdx] = useState(0); // 클릭된 카드
-  const [isOpen, setIsOpen] = useState(false);
   const [showText, setShowText] = useState(false);
 
-  const onOpenChange = () => setIsOpen((prev) => !prev);
   const imageRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
@@ -77,8 +75,13 @@ export const CardCarousel = ({ cards }: { cards: RecommendationsType[] }) => {
                 )}
               >
                 <SimpleBottomSheet
-                  isOpen={isOpen}
-                  onOpenChange={onOpenChange}
+                  isOpen={selectedIdx === productId}
+                  onOpenChange={() =>
+                    setSelectedIdx((prev) => {
+                      if (prev === productId) return 0;
+                      return productId;
+                    })
+                  }
                   content={
                     <CardBenefitContent
                       selectedIdx={clickIdx}
@@ -92,7 +95,7 @@ export const CardCarousel = ({ cards }: { cards: RecommendationsType[] }) => {
                   >
                     <Image
                       ref={imageRef}
-                      src={cardImgs[index % 3]}
+                      src={`/images/subscribes/${productId}.png`}
                       alt='card'
                       width={0}
                       height={0}

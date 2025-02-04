@@ -196,7 +196,7 @@ function StatisticsGoalContent() {
           />
         </motion.div>
 
-        <div className='mt-16 space-y-6'>
+        <div className='mt-10 space-y-6'>
           <motion.div variants={item} className='w-full'>
             <EmotionBox spentAmount={spentAmount} limitPrice={limitPrice} />
           </motion.div>
