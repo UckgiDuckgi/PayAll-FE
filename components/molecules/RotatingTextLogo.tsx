@@ -2,21 +2,25 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import Link from 'next/link';
 import { PayAllLogo } from '../ui/PayAllLogo';
 
+type Team = {
+  name: string;
+  tel: string;
+};
 interface RotatingTextLogoProps {
-  text: string;
+  team: Team[];
   speed?: number; // 회전 속도 (초 단위, 기본값: 10)
   size?: number; // 로고 크기 (기본값: 100)
 }
 
 export const RotatingTextLogo = ({
-  text,
+  team,
   speed = 10,
   size = 100,
 }: RotatingTextLogoProps) => {
-  const chars = text.split(' ');
-  const numChars = chars.length;
+  const numChars = team.length;
 
   return (
     <div className='relative w-full h-full flex items-center justify-center perspective-[1000px]'>
@@ -42,7 +46,7 @@ export const RotatingTextLogo = ({
           },
         }}
       >
-        {chars.map((char, i) => (
+        {team.map((t, i) => (
           <motion.span
             key={i}
             className='absolute left-1/2 top-1/4 font-bold'
@@ -57,7 +61,7 @@ export const RotatingTextLogo = ({
               backfaceVisibility: 'hidden',
             }}
           >
-            <ProfileImage text={char} />
+            <ProfileImage text={t.name} tel={t.tel} />
           </motion.span>
         ))}
       </motion.div>
@@ -85,19 +89,21 @@ export const RotatingTextLogo = ({
   );
 };
 
-const ProfileImage = ({ text }: { text: string }) => {
+const ProfileImage = ({ text, tel }: { text: string; tel: string }) => {
   return (
     <div className='flex flex-col items-center justify-between min-h-[180px]'>
-      <div className='flex items-center justify-center bg-white rounded-sm'>
-        <Image
-          src={`/images/teammates/${text}.jpeg`}
-          width={100}
-          height={100}
-          alt={text}
-          priority
-          className='p-1'
-        />
-      </div>
+      <Link href={`tel:${tel}`}>
+        <div className='flex items-center justify-center bg-white rounded-sm'>
+          <Image
+            src={`/images/teammates/${text}.jpeg`}
+            width={100}
+            height={100}
+            alt={text}
+            priority
+            className='p-1'
+          />
+        </div>
+      </Link>
       <span className='text-xl font-bold'>{text}</span>
     </div>
   );
