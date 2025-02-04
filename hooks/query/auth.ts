@@ -1,6 +1,7 @@
 import { QUERY_KEYS } from '@/constants/queryKey';
 import { ROUTE } from '@/constants/route';
 import { useRouter } from 'next/navigation';
+import { Dispatch, SetStateAction } from 'react';
 import { postSignIn, postSignUp } from '@/lib/api';
 import { showToast } from '@/lib/utils';
 import { useToast } from '../use-toast';
@@ -19,7 +20,10 @@ type SignUp = {
   address: string;
 };
 
-export const usePostSignIn = () => {
+export const usePostSignIn = (
+  onSuccessFunc: () => Promise<void>,
+  setIsLoading: Dispatch<SetStateAction<boolean>>
+) => {
   const { toast } = useToast();
   const router = useRouter();
 
@@ -29,9 +33,13 @@ export const usePostSignIn = () => {
       return postSignIn({ authId, password });
     },
     {
-      onSuccess: (data) => {
+      onSuccess: async (data) => {
         console.log(data.code);
-        if (data.code === 200) showToast(toast, '로그인에 성공하였습니다.');
+        if (data.code === 200) {
+          showToast(toast, '로그인에 성공하였습니다.');
+          await onSuccessFunc();
+          setIsLoading(false);
+        }
         if (data.status === 'OK') router.push(ROUTE.mydata);
         if (data.status === 'Already Exists') router.push(ROUTE.home);
         else showToast(toast, data.message);
