@@ -55,6 +55,7 @@ export default function Accounts() {
     return promises;
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handle = async () => {
     const paymentList = await Promise.all(
       getPaymentDetailPromises().map((asyncFunc) => asyncFunc())
