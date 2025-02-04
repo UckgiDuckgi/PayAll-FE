@@ -1,6 +1,7 @@
 import { IconIndicator } from '@/components/ui/IconIndicator';
 import { COLORS_MAP } from '@/constants/color';
 import { Account } from '@/types';
+import Image from 'next/image';
 
 export const AccountCard = ({
   account,
@@ -22,22 +23,28 @@ export const AccountCard = ({
       >
         <div className='flex gap-2'>
           <div className='flex flex-col'>
-            <div className='tracking-wider text-[0.6875rem] w-full text-left'>
+            <div className='tracking-wider text-[0.9rem] w-full text-left font-bold pt-1'>
               {account.accountName}
             </div>
-            <div className='tracking-wider text-[1.125rem] font-bold'>
+            <div className='tracking-wider text-[1.2rem] font-bold'>
               {account.balance.toLocaleString()}원
             </div>
           </div>
         </div>
-        <div className='text-right text-[0.625rem]'>
-          지출내역 상세보기<span className='ml-1'>{'>'}</span>
+        <div className='flex self-end items-center text-right font-bold'>
+          <span className='text-[0.75rem]'>지출내역 상세보기</span>
+          <Image
+            src='/icons/RightBracket.svg'
+            width={15}
+            height={15}
+            alt='Right'
+          />
         </div>
-        <div className='absolute -top-7 right-10 overflow-hidden'>
+        <div className='absolute -top-2 right-10 overflow-hidden'>
           <IconIndicator
-            src={`/images/banks/${account.bankName}.png`}
-            height={180}
-            opacity={0.4}
+            src={`/images/banks/${account.bankName}.svg`}
+            width={180}
+            opacity={0.8}
           />
         </div>
       </div>

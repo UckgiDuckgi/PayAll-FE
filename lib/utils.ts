@@ -1,3 +1,9 @@
+import { API_ROUTE } from '@/constants/route';
+import {
+  COUPANG_PAYMENT_DETAIL_URL,
+  ELEVENSTREET_PAYMENT_DETAIL_URL,
+  NAVERPAY_PAYMENT_DETAIL_URL,
+} from '@/constants/url';
 import { Category, PaymentType } from '@/types';
 import { Cookie } from '@/types/payment';
 import { clsx, type ClassValue } from 'clsx';
@@ -66,4 +72,44 @@ export const parseCategory = (category: Category) => {
     default:
       return '통합';
   }
+};
+
+const getUrlByPlatform = (shop: string) =>
+  shop === 'COUPANG'
+    ? COUPANG_PAYMENT_DETAIL_URL
+    : shop === '11ST'
+      ? ELEVENSTREET_PAYMENT_DETAIL_URL
+      : NAVERPAY_PAYMENT_DETAIL_URL;
+
+export const getFetchUrlByPlatfrom = (shop: string) =>
+  shop === 'COUPANG'
+    ? API_ROUTE.payment_details.coupang
+    : shop === '11ST'
+      ? API_ROUTE.payment_details.elevenstreet
+      : API_ROUTE.payment_details.naverpay;
+
+export const getBodyByPlatform = (shop: string, id: string, pw: string) => {
+  const commonObj = {
+    url: getUrlByPlatform(shop),
+    id,
+    pw,
+  };
+  return shop === 'COUPANG'
+    ? {
+        ...commonObj,
+        requestYear: 2024,
+        pageIndex: 0,
+        size: 10,
+      }
+    : shop === '11ST'
+      ? {
+          ...commonObj,
+          shDateFrom: '20200701',
+          shDateTo: '20250119',
+          pageNumber: 1,
+          rows: 10,
+        }
+      : {
+          ...commonObj,
+        };
 };

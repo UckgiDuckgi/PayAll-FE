@@ -23,12 +23,10 @@ export default function AccountUnionCard({
       onClick={() => router.push('/accounts/0')}
     >
       <div className='flex flex-col w-full pb-2 text-left'>
-        <div className='text-[0.6875rem]'>
-          <span className='text-sm font-semibold'>{username}</span> 님의 총자산
+        <div className='text-[1rem] font-bold'>
+          <span className='text-[1.1rem] font-bold'>{username}</span>님의 총자산
         </div>
-        <div className='text-[0.5625rem] mt-2'>
-          {formattedLastMonthDate} 대비
-        </div>
+        <div className='text-[0.85rem] mt-2'>{formattedLastMonthDate} 대비</div>
         {difference < 0 ? (
           <AccentText
             prefix=''
@@ -50,7 +48,7 @@ export default function AccountUnionCard({
             className='text-[0.6875rem]'
           />
         )}
-        <div className='text-2xl font-bold'>
+        <div className='text-[1.4rem] font-bold'>
           {totalBalance.toLocaleString()}원
         </div>
       </div>
