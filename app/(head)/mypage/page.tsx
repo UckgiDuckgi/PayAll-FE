@@ -2,6 +2,7 @@
 
 import Loading from '@/components/Loading';
 import { Modal } from '@/components/molecules/ui/Modal';
+import { Button } from '@/components/ui/button';
 import { QUERY_KEYS } from '@/constants/queryKey';
 import { useGenericQuery } from '@/hooks/query/globalQuery';
 import { User } from '@/types';
@@ -19,8 +20,8 @@ export default function MyPage() {
     () => getUserInfo()
   );
 
-  const toMembershipPage = () => {
-    router.push('/mypage/membership');
+  const routerPage = (route: string) => {
+    router.push(route);
   };
 
   if (!userData || !userData.data || isLoading) return <Loading />;
@@ -68,7 +69,7 @@ export default function MyPage() {
 
           <div
             className='cursor-pointer flex justify-between items-center py-[0.34375rem]'
-            onClick={toMembershipPage}
+            onClick={() => routerPage('/mypage/membership')}
           >
             <span>연동 계정 관리</span>
             <ChevronRight className='text-[#999999]' />
@@ -87,7 +88,9 @@ export default function MyPage() {
         </div>
       </div>
       <p className='w-full text-right'>
-        <Link href='/login'>로그아웃</Link>
+        <Button type='button' onClick={() => routerPage('login')}>
+          로그아웃
+        </Button>
       </p>
     </>
   );
