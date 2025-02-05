@@ -28,17 +28,6 @@ export default function Home() {
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  // useEffect(() => {
-  //   queryClient.invalidateQueries({
-  //     queryKey: [
-  //       QUERY_KEYS.RECOMMENDATIONS_PRODUCT,
-  //       QUERY_KEYS.STATISTICS_DIFF,
-  //       QUERY_KEYS.LIMIT,
-  //     ],
-  //   });
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
-
   useEffect(() => {
     queryClient.invalidateQueries({
       queryKey: [QUERY_KEYS.RECOMMENDATIONS_PRODUCT],
