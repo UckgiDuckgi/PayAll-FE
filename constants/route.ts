@@ -14,6 +14,7 @@ export const API_ROUTE = {
     elevenstreet: '/api/cookies/11st',
     naverpay: '/api/cookies/naverpay',
   },
+  pcodes: '/api/pcodes',
 };
 
 export const ROUTE = {

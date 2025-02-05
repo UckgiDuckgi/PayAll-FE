@@ -16,7 +16,7 @@ export type SessionBrowser = {
   status: BrowserStatus;
 };
 
-export type MapKey = 'COUPANG' | 'ELEVENSTREET' | 'NAVERPAY';
+export type MapKey = 'COUPANG' | 'ELEVENSTREET' | 'NAVERPAY' | 'DANAWA';
 
 const setPageHeader = async (page: Page) =>
   await page.setExtraHTTPHeaders({
@@ -35,6 +35,7 @@ class SessionBrowserManager {
     COUPANG: null,
     ELEVENSTREET: null,
     NAVERPAY: null,
+    DANAWA: null,
   };
   public browser!: Browser;
   public context!: BrowserContext;
