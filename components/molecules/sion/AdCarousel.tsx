@@ -9,7 +9,7 @@ import {
 import Autoplay from 'embla-carousel-autoplay';
 import { AdCarouselItem } from './AdCarouselItem';
 
-export const AdCarousel = () => {
+export const AdCarousel = ({ userName }: { userName: string }) => {
   return (
     <div className='relative'>
       <Carousel
@@ -39,6 +39,26 @@ export const AdCarousel = () => {
               title2='특별한 사람에게'
               index={1}
               subItem={<div>오늘의 추천 상품</div>}
+            />
+          </CarouselItem>
+          <CarouselItem>
+            <AdCarouselItem
+              title1={
+                <div className='text-[1rem]'>
+                  최근 <span className='text-main text-[1.375rem]'>병원비</span>{' '}
+                  지출 증가
+                </div>
+              }
+              title2=''
+              index={2}
+              subItem={
+                <div className='font-sans text-[.8375rem] pt-3'>
+                  <p>
+                    <span className=''>하나원큐</span>가 {userName}님
+                  </p>
+                  <p>맞춤 의료보험을 추천해드려요</p>
+                </div>
+              }
             />
           </CarouselItem>
         </CarouselContent>

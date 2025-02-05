@@ -18,6 +18,7 @@ import {
   getRecommendationsProduct,
   getStatisticsDiff,
 } from '@/lib/api';
+import { cn } from '@/lib/utils';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -81,7 +82,7 @@ export default function Home() {
           animate='show'
           className='flex justify-center flex-col items-center w-full'
         >
-          <AdCarousel />
+          <AdCarousel userName={statisticsDiff?.data?.userName ?? ''} />
 
           <motion.div
             variants={item}
@@ -107,8 +108,8 @@ export default function Home() {
             <AccentText
               prefix='지난달 대비'
               accent={
-                (
-                  Math.abs(statisticsDiff?.data?.monthlyPaymentDifference) ?? 0
+                Math.abs(
+                  statisticsDiff?.data?.monthlyPaymentDifference
                 )?.toLocaleString() ?? 0
               }
               suffix='원 지출했어요.'
@@ -183,10 +184,13 @@ export default function Home() {
             )}
           </motion.div>
 
-          <motion.div variants={item} className='flex flex-col mt-16 w-full'>
-            <span className='text-base font-bold text-grey mb-4'>
-              최근 지출 품목의 최저가 상품
-            </span>
+          <motion.div
+            variants={item}
+            className={cn(
+              'flex flex-col w-full',
+              limit?.data?.limitPrice ? 'mt-16' : 'mt-4'
+            )}
+          >
             <LowestProductList products={recommendationsProduct?.data} />
           </motion.div>
         </motion.div>

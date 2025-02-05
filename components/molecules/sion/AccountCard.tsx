@@ -32,7 +32,7 @@ export const AccountCard = ({
           </div>
         </div>
         <div className='flex self-end items-center text-right font-bold'>
-          <span className='text-[0.75rem]'>지출내역 상세보기</span>
+          <span className='text-[0.75rem] z-10'>지출내역 상세보기</span>
           <Image
             src='/icons/RightBracket.svg'
             width={15}

@@ -9,7 +9,6 @@ function CardInfoCard({
   cardName: string;
   cardDescription: string;
 }) {
-  console.log(cardImg, cardName, cardDescription);
   return (
     <div className='flex items-center justify-start gap-5 py-5 px-3'>
       <Image src={cardImg} alt='card' width={75} height={47} />

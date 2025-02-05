@@ -62,9 +62,11 @@ export default function PasswordInputForm({
             </div>
             <div className='h-[42%]'></div>
             <div className='w-full flex flex-col justify-end items-center'>
-              <div className='flex w-full px-[22%] justify-start gap-[6%]'>
+              <div className='flex w-[55%] h-auto justify-start gap-[5.5%]'>
                 {input.map((_, idx) => (
-                  <Image key={idx} src={Circle} alt='Circle' width={30}></Image>
+                  <div key={idx} className='w-[12%]'>
+                    <Image src={Circle} alt='Circle' width={30}></Image>
+                  </div>
                 ))}
               </div>
             </div>

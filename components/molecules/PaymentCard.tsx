@@ -1,14 +1,18 @@
+import { platformMap, PLATFORMS } from '@/constants/category';
 import { AccountsPaymentsDetail } from '@/types';
 import { ChevronRight } from 'lucide-react';
+import Link from 'next/link';
 import { parseCategory, parsePaymentType } from '@/lib/utils';
 import UploadButton from './ui/UploadButton';
 
 function PaymentCard({
   showAccount = true,
   paymentInfo,
+  isConnect,
 }: {
   showAccount: boolean;
   paymentInfo: AccountsPaymentsDetail;
+  isConnect: boolean;
 }) {
   if (!paymentInfo) return;
 
@@ -23,6 +27,8 @@ function PaymentCard({
     accountName,
     shootNeed,
   } = paymentInfo;
+
+  const generalPlatform = PLATFORMS.includes(paymentPlace);
 
   return (
     <div className='w-full py-3 border-b-[1px] border-darkGrey space-y-2'>
@@ -57,19 +63,44 @@ function PaymentCard({
             </span>
           ) : null}
         </div>
-        {shootNeed && paymentType === 'OFFLINE' ? (
-          <UploadButton paymentId={paymentId} />
+        {shootNeed ? (
+          paymentType === 'OFFLINE' ? (
+            <UploadButton paymentId={paymentId} />
+          ) : (
+            <Link
+              href={`/accounts/payments/${paymentId}`}
+              className='text-[0.5rem] font-medium flex items-center gap-1'
+            >
+              상세보기
+              <ChevronRight className='w-2 h-2' />
+            </Link>
+          )
+        ) : paymentType === 'OFFLINE' ? (
+          <Link
+            href={`/accounts/payments/${paymentId}`}
+            className='text-[0.5rem] font-medium flex items-center gap-1'
+          >
+            상세보기
+            <ChevronRight className='w-2 h-2' />
+          </Link>
         ) : (
-          <div>
-            {!shootNeed && (
-              <a
-                href={`/accounts/payments/${paymentId}`}
-                className='text-[0.5rem] font-medium flex items-center gap-1'
-              >
-                상세보기 <ChevronRight className='w-2 h-2' />
-              </a>
-            )}
-          </div>
+          generalPlatform &&
+          (isConnect ? (
+            <Link
+              href={`/accounts/payments/${paymentId}`}
+              className='text-[0.5rem] font-medium flex items-center gap-1'
+            >
+              상세내역 불러오기
+              <ChevronRight className='w-2 h-2' />
+            </Link>
+          ) : (
+            <Link
+              className='px-3 py-1 text-[.625rem] rounded-full cursor-pointer bg-main text-white font-medium'
+              href={`/mypage/membership/${platformMap[paymentPlace]}?from=accounts`}
+            >
+              연동하기
+            </Link>
+          ))
         )}
       </div>
     </div>

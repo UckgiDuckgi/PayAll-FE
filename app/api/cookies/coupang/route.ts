@@ -10,8 +10,8 @@ export async function GET() {
     idSelector: '._loginIdInput',
     pwSelector: '._loginPasswordInput',
     buttonSelector: '.login__button--submit',
-    id: process.env.COUPANG_ID ?? '',
-    pw: process.env.COUPANG_PW ?? '',
+    id: process.env.NEXT_PUBLIC_COUPANG_ID ?? '',
+    pw: process.env.NEXT_PUBLIC_COUPANG_PW ?? '',
     key: 'COUPANG',
   });
 

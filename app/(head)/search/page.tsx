@@ -94,9 +94,6 @@ function SearchContent() {
                 deleteWord={handleDeleteWord}
               />
               <div className='flex flex-col mt-10 w-full'>
-                <span className='text-base font-bold text-grey mb-4'>
-                  최근 지출 품목의 최저가 상품
-                </span>
                 <LowestProductList products={recommendationsProduct?.data} />
               </div>
             </>

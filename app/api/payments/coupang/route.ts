@@ -46,7 +46,7 @@ export async function POST(request: Request) {
         buttonCartSelector: '.prod-cart-btn',
         //Payment
         buttonOrderSelector: '.order-buttons',
-        buttonPaymentSelector: '.paymentBtn-v2-style',
+        buttonPaymentSelector: '#paymentBtn',
         modalPaymentSelector: '#modal-callLGPayment',
         //Set PWD
         frameSelector: '#callLGPayment',

@@ -12,6 +12,7 @@ import { RecommendationsType } from '@/types/recommendationsType';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
+import Loading from '../Loading';
 import CardBenefitContent from './CardBenefitContent';
 import CardCarouselItem from './CardCarouselItem';
 import SimpleBottomSheet from './ui/SimpleBottomSheet';
@@ -36,12 +37,10 @@ export const payment_detail = [
 ];
 
 export const CardCarousel = ({ cards }: { cards: RecommendationsType[] }) => {
-  const [selectedIdx, setSelectedIdx] = useState(0); // 현재 맨 앞에 나와있는 카드
-  const [clickIdx, setClickIdx] = useState(0); // 클릭된 카드
+  const [selectedIdx, setSelectedIdx] = useState(-1); // 현재 맨 앞에 나와있는 카드
   const [isOpen, setIsOpen] = useState(false);
   const [showText, setShowText] = useState(false);
 
-  const onOpenChange = () => setIsOpen((prev) => !prev);
   const imageRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
@@ -55,6 +54,14 @@ export const CardCarousel = ({ cards }: { cards: RecommendationsType[] }) => {
     };
   }, [selectedIdx]);
 
+  useEffect(() => {
+    if (cards && selectedIdx === -1) {
+      setSelectedIdx(cards[0].productId);
+    }
+  }, [cards, selectedIdx]);
+
+  if (!cards) return <Loading />;
+
   return (
     <div className='relative top-10'>
       <Carousel
@@ -64,45 +71,49 @@ export const CardCarousel = ({ cards }: { cards: RecommendationsType[] }) => {
         }}
         className='w-full'
         onSlideChange={(index) => {
-          setSelectedIdx(index);
+          setSelectedIdx(cards[index].productId);
+          console.log(cards[index].productId);
         }}
       >
         <CarouselContent className='flex -ml-1 w-full mx-auto'>
           {cards?.map(
             ({ category, storeName, discountAmount, productId }, index) => (
               <CarouselItem
-                key={index}
+                key={productId}
                 className={cn(
                   'flex-shrink-0 basis-2/3 md:basis-1/3 lg:basis-3/4 mx-auto'
                 )}
               >
                 <SimpleBottomSheet
-                  isOpen={isOpen}
-                  onOpenChange={onOpenChange}
+                  isOpen={selectedIdx === productId && isOpen}
+                  onOpenChange={() => {
+                    if (selectedIdx === productId)
+                      return setIsOpen((prev) => !prev);
+                  }}
                   content={
                     <CardBenefitContent
-                      selectedIdx={clickIdx}
+                      selectedIdx={selectedIdx}
                       productId={productId}
                     />
                   }
                 >
                   <div
-                    onClick={() => setClickIdx(productId)}
+                    onClick={() => setSelectedIdx(productId)}
                     className='flex flex-col items-center justify-center'
                   >
                     <Image
                       ref={imageRef}
-                      src={cardImgs[index % 3]}
+                      src={`/images/products/${productId}.png`}
                       alt='card'
                       width={0}
                       height={0}
                       sizes='(max-width: 768px) 30vw, (max-width: 1200px) 25vw, 20vw'
                       style={{
-                        width: index === selectedIdx ? '220px' : '180px',
+                        width: productId === selectedIdx ? '220px' : '180px',
                         height: 'auto',
-                        margin: `${index === selectedIdx ? '0' : '12px'} auto 0 auto`,
+                        margin: `${productId === selectedIdx ? '0' : '12px'} auto 0 auto`,
                         transition: 'width 0.8s ease-in-out',
-                        opacity: index === selectedIdx ? '1' : '0.5',
+                        opacity: productId === selectedIdx ? '1' : '0.5',
                       }}
                     />
                     <div
@@ -115,7 +126,7 @@ export const CardCarousel = ({ cards }: { cards: RecommendationsType[] }) => {
                         transition: 'opacity 0.5s ease, transform 0.5s ease',
                       }}
                     >
-                      {showText && index === selectedIdx && (
+                      {showText && selectedIdx === productId && (
                         <CardCarouselItem
                           category={category}
                           paymentName={storeName}

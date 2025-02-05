@@ -76,6 +76,13 @@ export type CoupangOrderList = {
   orderedAt: number;
   totalProductPrice: number;
   bundleReceiptList: bundleRecipt[];
+  allCanceled: boolean;
+};
+
+export type CoupangPaymentResponse = {
+  pageIndex: number;
+  size: number;
+  orderList: CoupangOrderList[];
 };
 
 export type PurchaseProduct = {
@@ -94,12 +101,6 @@ export type CoupangPostResponse = {
   success: boolean;
   status: 'C_PINCODE' | 'C_PASSWORD' | 'C_COMPLETED' | 'C_ERROR';
   result: string;
-};
-
-export type CoupangPaymentResponse = {
-  pageIndex: number;
-  size: number;
-  orderList: CoupangOrderList[];
 };
 
 export type Item = {

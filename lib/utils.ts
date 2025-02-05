@@ -97,7 +97,7 @@ export const getBodyByPlatform = (shop: string, id: string, pw: string) => {
   return shop === 'COUPANG'
     ? {
         ...commonObj,
-        requestYear: 2024,
+        requestYear: 2025,
         pageIndex: 0,
         size: 10,
       }
@@ -105,7 +105,7 @@ export const getBodyByPlatform = (shop: string, id: string, pw: string) => {
       ? {
           ...commonObj,
           shDateFrom: '20200701',
-          shDateTo: '20250119',
+          shDateTo: '20250204',
           pageNumber: 1,
           rows: 10,
         }

@@ -136,7 +136,7 @@ export default function PaymentMembership() {
     if (isCompleted) {
       console.log('결제 완료');
       postPurchaseMutate(purcahse);
-      router.push('/');
+      setTimeout(() => router.push('/'), 1000);
       return;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
