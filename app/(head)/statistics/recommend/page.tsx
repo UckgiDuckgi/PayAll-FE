@@ -8,6 +8,7 @@ import SimpleBottomSheet from '@/components/molecules/ui/SimpleBottomSheet';
 import { COLORS } from '@/constants/color';
 import { QUERY_KEYS } from '@/constants/queryKey';
 import { useGenericQuery } from '@/hooks/query/globalQuery';
+import { ProductType } from '@/types';
 import { RecommendationsType } from '@/types/recommendationsType';
 import { cubicBezier, motion } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
@@ -25,12 +26,17 @@ function RecommendationContent() {
 
   if (!recommendsData || !recommendsData.data || isLoading) return <Loading />;
 
-  const cards = recommendsData.data.filter(
-    ({ productType }) => productType === 'CARD'
-  );
-  const subscribes = recommendsData.data.filter(
-    ({ productType }) => productType === 'SUBSCRIBE'
-  );
+  const uniqueByProductId = (data: RecommendationsType[], pt: ProductType) => {
+    const seen = new Map();
+    return data.filter(({ productId, productType }) => {
+      if (seen.has(productId) || productType !== pt) return false;
+      seen.set(productId, true);
+      return true;
+    });
+  };
+
+  const cards = uniqueByProductId(recommendsData.data, 'CARD');
+  const subscribes = uniqueByProductId(recommendsData.data, 'SUBSCRIBE');
 
   const easeCustom = cubicBezier(0.4, 0, 0.2, 1);
 

@@ -131,7 +131,6 @@ export async function POST(request: Request) {
   });
   const rawString = await response.text();
   const data = parseOrderTable(rawString);
-  console.log('🚀 ~ POST ~ data:', transformElevenStreetOrders(data));
 
   return NextResponse.json({
     success: true,

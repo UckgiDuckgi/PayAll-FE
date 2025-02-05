@@ -21,7 +21,6 @@ function Header() {
 const HeaderIcon = () => {
   const pathname = usePathname();
   const router = useRouter();
-  console.log(pathname);
 
   const homeRoute = ['/', '/search', '/accounts', '/statistics', '/mypage'];
   return (

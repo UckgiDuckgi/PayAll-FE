@@ -50,8 +50,6 @@ export async function POST(request: Request) {
     );
   }
 
-  console.log('url: ', url);
-
   const cookies = await getCookies({
     signInUrl: COUPANG_SIGNIN_URL,
     idSelector: '._loginIdInput',
@@ -80,7 +78,6 @@ export async function POST(request: Request) {
   });
   // const data = (await response.json()) as CoupangPaymentResponse;
   const data = await response.json();
-  console.log('🚀 ~ POST ~ data:', data);
   const { orderList: CoupangOrderList } = data;
 
   return NextResponse.json({

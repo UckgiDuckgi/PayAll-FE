@@ -119,12 +119,7 @@ function PaymentDetailCard({
             onClick={handleAddCart}
           >
             <div className='relative cursor-pointer'>
-              <button
-                className='w-9 h-9 rounded-full bg-darkGrey flex items-center justify-center'
-                onClick={() => {
-                  console.log('장바구니 모달 열기');
-                }}
-              >
+              <button className='w-9 h-9 rounded-full bg-darkGrey flex items-center justify-center'>
                 <Image
                   src='/icons/HeaderCart.svg'
                   alt='cart'

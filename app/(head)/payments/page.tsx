@@ -39,7 +39,6 @@ export default function PaymentMembership() {
   const router = useRouter();
 
   const cartItems = useAtomValue(shopCartAtom);
-  console.log('🚀 ~ PaymentMembership ~ cartItems:', cartItems);
   const purcahse = useAtomValue(purchaseAtom);
 
   const [isClicked, setIsClicked] = useState(false);
@@ -110,7 +109,6 @@ export default function PaymentMembership() {
   useEffect(() => {
     if (itemList['COUPANG'].length === 0 && itemList['11ST'].length === 0) {
       // TODO: TOAST로 고쳐야함. 근데 바꾸니까 에러뜸 일단 PASS
-      console.log('결제 정보가 없습니다.');
       router.push('/cart');
       return;
     }
@@ -134,7 +132,6 @@ export default function PaymentMembership() {
     });
 
     if (isCompleted) {
-      console.log('결제 완료');
       postPurchaseMutate(purcahse);
       setTimeout(() => router.push('/'), 1000);
       return;

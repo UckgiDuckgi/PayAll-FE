@@ -49,7 +49,6 @@ function GoalRegisterContent() {
     e.preventDefault();
     if (goal) {
       mutate(+goal.replace(/\D/g, ''));
-      console.log(goal);
       router.push(
         `/statistics/goal/register?avgSpent=${avgSpent}&complete=${true}`
       );

@@ -10,6 +10,13 @@ import Autoplay from 'embla-carousel-autoplay';
 import { AdCarouselItem } from './AdCarouselItem';
 
 export const AdCarousel = ({ userName }: { userName: string }) => {
+  const onClickHandler = () => {
+    if (window.confirm('하나원큐로 이동하시겠습니까?')) {
+      window.location.href =
+        'https://mbp.hanabank.com/oneqplus.jsp?MENUM/mbp/resource/html/BCOM/BCOM02/BCOM0204001.html';
+    }
+  };
+
   return (
     <div className='relative'>
       <Carousel
@@ -41,7 +48,7 @@ export const AdCarousel = ({ userName }: { userName: string }) => {
               subItem={<div>오늘의 추천 상품</div>}
             />
           </CarouselItem>
-          <CarouselItem>
+          <CarouselItem onClick={onClickHandler} className='cursor-pointer'>
             <AdCarouselItem
               title1={
                 <div className='text-[1rem]'>
@@ -54,7 +61,10 @@ export const AdCarousel = ({ userName }: { userName: string }) => {
               subItem={
                 <div className='font-sans text-[.8375rem] pt-3'>
                   <p>
-                    <span className=''>하나원큐</span>가 {userName}님
+                    <span className='font-bold bg-gradient-to-r from-[#008485] via-[#83C5C5] to-[#83C5C5] text-transparent bg-clip-text'>
+                      하나원큐
+                    </span>
+                    가 {userName}님
                   </p>
                   <p>맞춤 의료보험을 추천해드려요</p>
                 </div>

@@ -6,7 +6,6 @@ export const AccountDetailCard = ({
 }: {
   account: AccountsPayments;
 }) => {
-  console.log(account);
   return (
     <div
       className='flex flex-col w-full rounded-xl p-5 items-start justify-around'

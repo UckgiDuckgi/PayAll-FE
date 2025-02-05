@@ -26,14 +26,9 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
 
   const getPaymentDetailPromises = (platformData: PlatformType) => {
-    console.log('🚀 ~ getPaymentDetailPromises ~ platformData:', platformData);
     const promises = [];
     for (const { platformName, id, password } of platformData?.platformInfos ??
       []) {
-      console.log(
-        '🚀 ~ getPaymentDetailPromises ~ platformName:',
-        platformName
-      );
       promises.push(async () => {
         const response = await fetch(getFetchUrlByPlatfrom(platformName), {
           method: 'POST',
@@ -71,14 +66,7 @@ export default function LoginPage() {
       return;
     }
 
-    // setIsLoading(true);
     mutate({ authId, password });
-
-    // const response = await apiCall.post(API_ROUTE.api + '/auth/sign-in', {
-    //   authId,
-    //   password,
-    // });
-    // console.log(response);
   }, [authId, password, mutate]);
 
   const throttledSignIn = useThrottle(signIn, 2000);
@@ -86,11 +74,14 @@ export default function LoginPage() {
   const registerSignIn = async (e: FormEvent) => {
     e.preventDefault();
     throttledSignIn();
-    console.log('dd');
   };
 
   if (isLoading) {
-    return <Loading />;
+    return (
+      <div className='h-[100dvh] flex flex-col items-center justify-center'>
+        <Loading />
+      </div>
+    );
   }
 
   return (

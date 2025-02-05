@@ -8,11 +8,13 @@ import { AccentText } from '@/components/ui/AccentText';
 import { QUERY_KEYS } from '@/constants/queryKey';
 import { useGenericQuery } from '@/hooks/query/globalQuery';
 import { Triangle } from '@/public/icons/Triangle';
+import { useQueryClient } from '@tanstack/react-query';
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from 'chart.js';
 import { cubicBezier, motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import {
   getLimit,
   getRecommendationsProduct,
@@ -24,6 +26,27 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 export default function Home() {
   const router = useRouter();
+  const queryClient = useQueryClient();
+
+  // useEffect(() => {
+  //   queryClient.invalidateQueries({
+  //     queryKey: [
+  //       QUERY_KEYS.RECOMMENDATIONS_PRODUCT,
+  //       QUERY_KEYS.STATISTICS_DIFF,
+  //       QUERY_KEYS.LIMIT,
+  //     ],
+  //   });
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
+
+  useEffect(() => {
+    queryClient.invalidateQueries({
+      queryKey: [QUERY_KEYS.RECOMMENDATIONS_PRODUCT],
+    });
+    queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.STATISTICS_DIFF] });
+    queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.LIMIT] });
+  }, [queryClient]);
+
   const {
     resData: recommendationsProduct,
     isLoading: recommendationsProductLoading,
