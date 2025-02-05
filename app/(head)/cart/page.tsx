@@ -134,7 +134,6 @@ export default function CartPage() {
         };
       }
     );
-    console.log(queryClient.getQueryData([QUERY_KEYS.CART_LIST]));
   };
 
   const handleSelectAll = (checked: boolean) => {

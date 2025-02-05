@@ -33,8 +33,6 @@ export default function ReCaptchaInputForm({
 } & ElevenStreetInputFormProps) {
   const [inputGrid, setInputGrid] = useState<boolean[]>([]);
 
-  console.log('🚀 ~ PasswordInputForm ~ input:', inputGrid);
-
   const tableList = [];
   for (let i = 0; i < tableSize; i++) {
     const table = [];

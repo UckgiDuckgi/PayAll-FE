@@ -89,24 +89,19 @@ export const getElevenStreetActions = async ({
 
       if (status !== 'RECAPTCHA_SUCCESS') {
         await page.goto(SIGNIN_URL);
-        console.log('Goto SignIn Page');
         await delay(Math.random() * dTime + rTime);
       }
 
       await page.locator(buttonKakaoAuthSelector).click();
-      console.log('Kakao Auth Button Clicked!');
       await delay(Math.random() * dTime + rTime);
 
       await page.locator(inputKakaoIdSelector).fill(id);
-      console.log('Login ID Filled!');
       await delay(Math.random() * dTime + rTime);
 
       await page.locator(inputKakaoPwSelector).fill(pw);
-      console.log('Login PWD Filled!');
       await delay(Math.random() * dTime + rTime);
 
       await page.locator(buttonKakaoSignInSelector).click();
-      console.log('Login Button Clicked!');
       await delay(Math.random() * (dTime + 3000) + rTime);
 
       sessionBrowserManager.status = 'SIGNIN';
@@ -123,30 +118,24 @@ export const getElevenStreetActions = async ({
         buttonPaymentSelector,
         buttonKbPaySelector,
       } = elementSelector;
-      console.log('Pay All Function!!');
 
       await page.goto(CART_URL);
       await delay(Math.random() * DELAY + RANGE);
 
       await page.locator(buttonOrderSelector).click();
-      console.log('Order Button Clicked!');
       await delay(Math.random() * (DELAY + 1000) + RANGE);
 
       await page.locator('#tabPayId5').click();
-      console.log('Pay Others Clicked!');
       await delay(Math.random() * (DELAY + 1000) + RANGE);
 
       // TODO: 좀더 오래 기다리게
       const popupPromise = context.waitForEvent('page', { timeout: 5000 });
 
       await page.locator(buttonPaymentSelector).click();
-      console.log('Payment Button Clicked!');
       await delay(Math.random() * (DELAY + 1000) + RANGE);
 
       const popup = await popupPromise;
       await popup.waitForLoadState();
-      console.log('Popup URL:', popup.url());
-      console.log('Popup Title:', await popup.title());
 
       await popup.frameLocator('#kbframe').locator(buttonKbPaySelector).click();
 
@@ -183,7 +172,6 @@ export const getElevenStreetActions = async ({
           .frameLocator(iframeReCaptchaSelector)
           .locator(buttonReCaptchaSelector)
           .count()) > 0;
-      console.log('🚀 ~ reCaptcha: ~ isPresent:', isPresent);
 
       if (!isPresent) {
         sessionBrowserManager.status = 'RECAPTCHA_SUCCESS';
@@ -203,10 +191,6 @@ export const getElevenStreetActions = async ({
           .last()
           .count()) > 0;
 
-      console.log(
-        '🚀 ~ reCaptcha: ~ isPhotoSelectPresent:',
-        isPhotoSelectPresent
-      );
       if (!isPhotoSelectPresent) {
         return;
       }
@@ -236,7 +220,6 @@ export const getElevenStreetActions = async ({
         return;
       }
 
-      console.log('🚀 ~ clickReCaptcha ~ ', status);
       const { iframeReCaptchaPhotoSelector, buttonReCaptchaEndSelector } =
         elementSelector;
 
@@ -251,14 +234,11 @@ export const getElevenStreetActions = async ({
         await iframe
           .locator(`[tabindex="${selectedTile}"].rc-imageselect-tile`)
           .click();
-        console.log('selectedTile ', selectedTile, 'clicked!');
         await delay(Math.random() * 100 + 200);
       }
       const textContent = await iframe
         .locator(buttonReCaptchaEndSelector)
         .textContent();
-
-      console.log('🚀 ~ textContent:', textContent);
 
       const type =
         textContent === '다음' ||
@@ -266,7 +246,6 @@ export const getElevenStreetActions = async ({
         selectedTiles[0] === ''
           ? 'ONCE'
           : 'MULTIPLE';
-      console.log('🚀 ~ type:', type);
 
       if (isReCaptchaEnd) {
         await iframe.locator(buttonReCaptchaEndSelector).click();
@@ -302,11 +281,6 @@ export const getElevenStreetActions = async ({
           .locator(imageBoxSelector)
           .last()
           .count()) > 0;
-
-      console.log(
-        '🚀 ~ reCaptcha: ~ isPhotoSelectPresent:',
-        isPhotoSelectPresent
-      );
 
       if (!isPhotoSelectPresent) {
         sessionBrowserManager.status = 'RECAPTCHA_SUCCESS';
@@ -345,8 +319,6 @@ export const getElevenStreetActions = async ({
 
       await delay(Math.random() * DELAY + RANGE);
       const isModal = (await page.locator(modalPropSelector).count()) > 0;
-
-      console.log('🚀 ~ reCaptcha: ~ isModal:', isModal);
 
       if (!isModal) {
         return;

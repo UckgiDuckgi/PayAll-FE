@@ -10,7 +10,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useAtom } from 'jotai';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useRef, useState, Suspense } from 'react';
+import { Suspense, useEffect, useRef, useState } from 'react';
 import { postReceipt } from '@/lib/api';
 import { requestWithFile } from '@/lib/ocrRequest';
 
@@ -56,7 +56,6 @@ function ReceiptContent() {
   const router = useRouter();
   const titleRef = useRef('');
   const bizNumRef = useRef('');
-  console.log(paymentId);
   useEffect(() => {
     if (file) {
       requestWithFile(file)

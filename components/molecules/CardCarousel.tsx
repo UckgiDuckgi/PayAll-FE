@@ -72,7 +72,6 @@ export const CardCarousel = ({ cards }: { cards: RecommendationsType[] }) => {
         className='w-full'
         onSlideChange={(index) => {
           setSelectedIdx(cards[index].productId);
-          console.log(cards[index].productId);
         }}
       >
         <CarouselContent className='flex -ml-1 w-full mx-auto'>
@@ -97,10 +96,7 @@ export const CardCarousel = ({ cards }: { cards: RecommendationsType[] }) => {
                     />
                   }
                 >
-                  <div
-                    onClick={() => setSelectedIdx(productId)}
-                    className='flex flex-col items-center justify-center'
-                  >
+                  <div className='flex flex-col items-center justify-center'>
                     <Image
                       ref={imageRef}
                       src={`/images/products/${productId}.png`}

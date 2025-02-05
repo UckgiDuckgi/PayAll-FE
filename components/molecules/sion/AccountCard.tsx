@@ -26,7 +26,7 @@ export const AccountCard = ({
             <div className='tracking-wider text-[0.9rem] w-full text-left font-bold pt-1'>
               {account.accountName}
             </div>
-            <div className='tracking-wider text-[1.2rem] font-bold'>
+            <div className='text-left tracking-wider text-[1.2rem] font-bold'>
               {account.balance.toLocaleString()}원
             </div>
           </div>
