@@ -1,6 +1,6 @@
 'use server';
 
-import SessionBrowserManager from '@/hooks/sessionBrowserManager';
+import SessionBrowserManagerForPcode from '@/hooks/sessionBrowserManagerForPcode';
 import { delay } from '../playwrightActions';
 
 export type DanawaProps = {
@@ -9,7 +9,7 @@ export type DanawaProps = {
 
 export const getDanawaActions = async ({ url }: DanawaProps) => {
   const sessionBrowserManager =
-    await SessionBrowserManager.getInstance('DANAWA');
+    await SessionBrowserManagerForPcode.getInstance('DANAWA');
 
   return {
     getPcode: async () => {
@@ -21,7 +21,7 @@ export const getDanawaActions = async ({ url }: DanawaProps) => {
       return html;
     },
     close: async () => {
-      await SessionBrowserManager.close('DANAWA');
+      await SessionBrowserManagerForPcode.close('DANAWA');
     },
   };
 };

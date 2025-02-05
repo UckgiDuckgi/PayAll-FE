@@ -1,0 +1,132 @@
+import { Browser, BrowserContext, chromium, Page } from 'playwright';
+import { BrowserStatus, MapKey, SessionBrowser } from './sessionBrowserManager';
+
+const setPageHeader = async (page: Page) =>
+  await page.setExtraHTTPHeaders({
+    'sec-ch-ua-platform': '"Windows"',
+    'accept-language': 'ko,en-US;q=0.9,en;q=0.8',
+    // 'sec-ch-ua':
+    //   '"Google Chrome";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
+    'sec-ch-ua-mobile': '?0',
+    'accept-encoding': 'gzip, deflate, br, zstd',
+    'user-agent': process.env.USER_AGENT ?? '',
+    'cache-control': 'no-cache',
+    pragma: 'no-cache',
+    referer: 'https://www.danawa.com/',
+    'sec-fetch-site': 'same-site',
+  });
+
+class SessionBrowserManagerForPcode {
+  private static instance: Record<
+    MapKey,
+    SessionBrowserManagerForPcode | null
+  > = {
+    COUPANG: null,
+    ELEVENSTREET: null,
+    NAVERPAY: null,
+    DANAWA: null,
+  };
+  public browser!: Browser;
+  public context!: BrowserContext;
+  public page!: Page;
+  public status: BrowserStatus = 'NOT_SIGNIN';
+
+  constructor({ browser, context, page, status }: SessionBrowser, key: MapKey) {
+    if (SessionBrowserManagerForPcode.instance[key]) {
+      return SessionBrowserManagerForPcode.instance[key];
+    }
+    this.browser = browser;
+    this.context = context;
+    this.page = page;
+    this.status = status;
+    SessionBrowserManagerForPcode.instance[key] = this;
+  }
+
+  public static async getInstance(key: MapKey) {
+    if (
+      !this.instance[key] ||
+      !this.instance[key].browser ||
+      !this.instance[key].context ||
+      !this.instance[key].page
+    ) {
+      if (this.instance[key]) {
+        this.instance[key].browser.close();
+      }
+
+      const browser = await chromium.launch({
+        executablePath: process.env.CHROME_PATH,
+        headless: false,
+        args: [
+          // '--window-position=-10000,-10000',
+          '--window-position=0,0',
+          '--disable-quic',
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+          '--disable-blink-features=AutomationControlled',
+          '--disable-machine-learning',
+          '--disable-speech-api',
+          '--disable-voice-input',
+          '--disable-translate',
+          '--start-minimized',
+          '--log-level=3',
+        ],
+      });
+
+      const context = await browser.newContext({
+        javaScriptEnabled: true,
+        viewport: { width: 1280, height: 720 },
+        deviceScaleFactor: 1, // 기본 스케일 설정
+      });
+
+      await context.addInitScript(() => {
+        Object.defineProperty(navigator, 'plugins', {
+          get: () => [1, 2, 3], // 임의의 플러그인 값 추가
+        });
+        Object.defineProperty(navigator, 'mimeTypes', {
+          get: () => ['application/pdf'], // PDF MIME 타입 추가
+        });
+      });
+
+      const page = await context.newPage();
+      await setPageHeader(page);
+
+      this.instance[key] = new this(
+        {
+          browser,
+          context,
+          page,
+          status: 'NOT_SIGNIN',
+        },
+        key
+      );
+    } else {
+      try {
+        this.instance[key].page.content();
+      } catch {
+        const page = await this.instance[key].context.newPage();
+        await setPageHeader(page);
+
+        this.instance[key] = new this(
+          {
+            ...this.instance[key],
+            page,
+            status: 'NOT_SIGNIN',
+          },
+          key
+        );
+      }
+    }
+    return this.instance[key];
+  }
+
+  public static async close(key: MapKey): Promise<void> {
+    if (this.instance[key]) {
+      const { browser, page } = this.instance[key];
+      await page.close();
+      await browser.close();
+      this.instance[key] = null;
+    }
+  }
+}
+
+export default SessionBrowserManagerForPcode;
