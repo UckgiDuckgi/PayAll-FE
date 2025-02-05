@@ -47,6 +47,9 @@ function ReceiptContent() {
     {
       onSuccess: () => {
         queryClient.invalidateQueries({
+          queryKey: [QUERY_KEYS.ACCOUNTS_DETAIL, paymentId],
+        });
+        queryClient.invalidateQueries({
           queryKey: [QUERY_KEYS.ACCOUNTS_DETAIL],
         });
         router.back();
