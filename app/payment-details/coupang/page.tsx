@@ -60,8 +60,6 @@ export default function CoupangPayments() {
     }
   };
 
-  console.log(serverData);
-
   return (
     <div className='w-[90%] mx-auto'>
       <div className='mx-auto text-4xl pt-10 text-center'>

@@ -100,8 +100,8 @@ export async function POST(request: Request) {
       status: 'C_COMPLETED',
       result: '',
     } as CoupangResponse);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
-    console.log('error', error);
     return NextResponse.json({
       success: false,
       status: 'C_ERROR',

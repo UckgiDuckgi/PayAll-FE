@@ -40,7 +40,6 @@ export async function POST(request: Request) {
       { status: 400 }
     );
   }
-  console.log('url: ', url);
 
   const cookies = await getCookies({
     signInUrl: NAVERPAY_SIGNIN_URL,
@@ -63,7 +62,6 @@ export async function POST(request: Request) {
     },
   });
   const data = (await response.json()) as NaverPayResponse;
-  console.log('🚀 ~ POST ~ data:', data.result.items);
 
   return NextResponse.json({
     success: true,

@@ -72,7 +72,6 @@ export const CardCarousel = ({ cards }: { cards: RecommendationsType[] }) => {
         className='w-full'
         onSlideChange={(index) => {
           setSelectedIdx(cards[index].productId);
-          console.log(cards[index].productId);
         }}
       >
         <CarouselContent className='flex -ml-1 w-full mx-auto'>

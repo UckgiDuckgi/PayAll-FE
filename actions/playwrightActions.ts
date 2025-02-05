@@ -60,20 +60,16 @@ export const getPlaywrightActions = async ({
 
       if (status !== 'RECAPTCHA_SUCCESS') {
         await page.goto(SIGNIN_URL);
-        console.log('Goto SignIn Page');
         await delay(Math.random() * dTime + rTime);
       }
 
       await page.locator(inputIdSelector).fill(id);
-      console.log('Login ID Filled!');
       await delay(Math.random() * dTime + rTime);
 
       await page.locator(inputPwSelector).fill(pw);
-      console.log('Login PWD Filled!');
       await delay(Math.random() * dTime + rTime);
 
       await page.locator(buttonSignInSelector).click();
-      console.log('Login Button Clicked!');
       await delay(Math.random() * (dTime + 3000) + rTime);
 
       if (status === 'RECAPTCHA_SUCCESS') {
@@ -87,7 +83,6 @@ export const getPlaywrightActions = async ({
       }
 
       const { inputQuantitySelector, buttonCartSelector } = elementSelector;
-      console.log('Add Cart Function!! ~ ', status, ' ~ ', key);
       const url = itemId
         ? DETAIL_BASE_URL + productId + '?vendorItemId=' + itemId
         : DETAIL_BASE_URL + productId;
@@ -95,11 +90,9 @@ export const getPlaywrightActions = async ({
       await delay(Math.random() * DELAY + RANGE);
 
       await page.locator(inputQuantitySelector).fill(quantity.toString());
-      console.log('Product Quantity Set');
       await delay(Math.random() * DELAY + RANGE);
 
       await page.locator(buttonCartSelector).click();
-      console.log('Product Cart Button Clicked!');
       await delay(Math.random() * (DELAY + 1000) + RANGE);
     },
     close: async () => {

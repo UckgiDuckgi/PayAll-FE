@@ -21,7 +21,6 @@ function Header() {
 const HeaderIcon = () => {
   const pathname = usePathname();
   const router = useRouter();
-  console.log(pathname);
 
   const homeRoute = ['/', '/search', '/accounts', '/statistics', '/mypage'];
   return (
@@ -32,7 +31,7 @@ const HeaderIcon = () => {
         </Link>
       ) : (
         <span onClick={() => router.back()}>
-          <ChevronRight className='text-[#ffffff] rotate-180 cursor-pointer' />
+          <ChevronRight className='text-[#ffffff] rotate-180' />
         </span>
       )}
     </>

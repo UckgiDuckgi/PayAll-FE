@@ -99,24 +99,20 @@ export const getCoupangActions = async ({
         buttonPaymentSelector,
         modalPaymentSelector,
       } = elementSelector;
-      console.log('Pay All Function!!');
 
       await page.goto(CART_URL);
       await delay(Math.random() * DELAY + RANGE);
 
       await page.locator(buttonOrderSelector).click();
-      console.log('Order Button Clicked!');
       await delay(Math.random() * (DELAY + 1000) + RANGE);
 
       await page.locator(buttonPaymentSelector).click();
-      console.log('Payment Button Clicked!');
       await delay(Math.random() * (DELAY + 3000) + RANGE);
 
       const screenshotBuffer = await page
         .locator(modalPaymentSelector)
         .screenshot({ timeout: 10000, animations: 'disabled' });
 
-      console.log('Screenshot Completed! ~ Coupang');
       sessionBrowserManager.status = 'PAYMENT';
       return screenshotBuffer;
     },
@@ -127,13 +123,11 @@ export const getCoupangActions = async ({
         return;
       }
 
-      console.log('🚀 ~ coupangPayment ~ ', status);
       const { frameSelector } = elementSelector;
 
       const iframe = page.frameLocator(frameSelector);
       for (const numpad of password) {
         await iframe.locator(`[data-key="${numpad}"]`).click();
-        console.log('numpad ', numpad, 'clicked!');
         await delay(Math.random() * 1000 + RANGE);
       }
       return;

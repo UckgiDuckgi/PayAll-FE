@@ -43,10 +43,8 @@ class SessionBrowserManager {
 
   constructor({ browser, context, page, status }: SessionBrowser, key: MapKey) {
     if (SessionBrowserManager.instance[key]) {
-      console.log('Not Created! ~ ', key);
       return SessionBrowserManager.instance[key];
     }
-    console.log('Created! ~ ', key);
     this.browser = browser;
     this.context = context;
     this.page = page;
@@ -61,8 +59,6 @@ class SessionBrowserManager {
       !this.instance[key].context ||
       !this.instance[key].page
     ) {
-      console.log('New Browser Created! ~ ', key);
-
       if (this.instance[key]) {
         this.instance[key].browser.close();
       }
@@ -86,14 +82,12 @@ class SessionBrowserManager {
         ],
       });
 
-      console.log('New Context Created! ~ ', key);
       const context = await browser.newContext({
         javaScriptEnabled: true,
         viewport: { width: 1280, height: 720 },
         deviceScaleFactor: 1, // 기본 스케일 설정
       });
 
-      console.log('Add Init Script!!');
       await context.addInitScript(() => {
         Object.defineProperty(navigator, 'plugins', {
           get: () => [1, 2, 3], // 임의의 플러그인 값 추가
@@ -103,7 +97,6 @@ class SessionBrowserManager {
         });
       });
 
-      console.log('New Page Created! ~ ', key);
       const page = await context.newPage();
       await setPageHeader(page);
 
@@ -133,7 +126,6 @@ class SessionBrowserManager {
         );
       }
     }
-    console.log('Get Instance Excuted!');
     return this.instance[key];
   }
 

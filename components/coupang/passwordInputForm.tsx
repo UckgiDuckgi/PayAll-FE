@@ -14,8 +14,6 @@ export default function PasswordInputForm({
 } & CoupangInputFormProps) {
   const [input, setInput] = useState<number[]>([]);
 
-  console.log('🚀 ~ PasswordInputForm ~ input:', input);
-
   const handleSubmit = (input: number[], cancel = false) => {
     if (cancel) {
       onClick({ coupangItemList: itemList, password: '' });
