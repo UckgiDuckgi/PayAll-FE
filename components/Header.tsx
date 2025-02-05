@@ -32,7 +32,7 @@ const HeaderIcon = () => {
         </Link>
       ) : (
         <span onClick={() => router.back()}>
-          <ChevronRight className='text-[#ffffff] rotate-180' />
+          <ChevronRight className='text-[#ffffff] rotate-180 cursor-pointer' />
         </span>
       )}
     </>

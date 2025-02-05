@@ -90,7 +90,11 @@ export default function LoginPage() {
   };
 
   if (isLoading) {
-    return <Loading />;
+    return (
+      <div className='h-[100dvh] flex flex-col items-center justify-center'>
+        <Loading />
+      </div>
+    );
   }
 
   return (

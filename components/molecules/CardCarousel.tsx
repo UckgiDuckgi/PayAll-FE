@@ -97,10 +97,7 @@ export const CardCarousel = ({ cards }: { cards: RecommendationsType[] }) => {
                     />
                   }
                 >
-                  <div
-                    onClick={() => setSelectedIdx(productId)}
-                    className='flex flex-col items-center justify-center'
-                  >
+                  <div className='flex flex-col items-center justify-center'>
                     <Image
                       ref={imageRef}
                       src={`/images/products/${productId}.png`}
