@@ -15,7 +15,7 @@ export const getDanawaActions = async ({ url }: DanawaProps) => {
     getPcode: async () => {
       const { page } = sessionBrowserManager;
       await page.goto(url);
-      await delay(Math.random() * 5000 + 500);
+      await delay(Math.random() * 10000 + 500);
 
       const html = await page.content();
       return html;

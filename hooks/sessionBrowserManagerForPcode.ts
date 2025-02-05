@@ -3,17 +3,17 @@ import { BrowserStatus, MapKey, SessionBrowser } from './sessionBrowserManager';
 
 const setPageHeader = async (page: Page) =>
   await page.setExtraHTTPHeaders({
-    'sec-ch-ua-platform': '"Windows"',
-    'accept-language': 'ko,en-US;q=0.9,en;q=0.8',
+    // 'sec-ch-ua-platform': '"Windows"',
+    // 'accept-language': 'ko,en-US;q=0.9,en;q=0.8',
     // 'sec-ch-ua':
     //   '"Google Chrome";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
-    'sec-ch-ua-mobile': '?0',
-    'accept-encoding': 'gzip, deflate, br, zstd',
+    // 'sec-ch-ua-mobile': '?0',
+    // 'accept-encoding': 'gzip, deflate, br, zstd',
     'user-agent': process.env.USER_AGENT ?? '',
-    'cache-control': 'no-cache',
-    pragma: 'no-cache',
-    referer: 'https://www.danawa.com/',
-    'sec-fetch-site': 'same-site',
+    // 'cache-control': 'no-cache',
+    // pragma: 'no-cache',
+    // referer: 'https://www.danawa.com/',
+    // 'sec-fetch-site': 'same-site',
   });
 
 class SessionBrowserManagerForPcode {
@@ -64,10 +64,10 @@ class SessionBrowserManagerForPcode {
           '--disable-setuid-sandbox',
           '--disable-blink-features=AutomationControlled',
           '--disable-machine-learning',
-          '--disable-speech-api',
-          '--disable-voice-input',
-          '--disable-translate',
-          '--start-minimized',
+          // '--disable-speech-api',
+          // '--disable-voice-input',
+          // '--disable-translate',
+          // '--start-minimized',
           '--log-level=3',
         ],
       });
